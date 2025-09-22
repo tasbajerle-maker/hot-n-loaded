@@ -2,9 +2,9 @@
 
 import React from 'react';
 import ElosztoPage from './ElosztoPage';
-import fagyiIntroKep from './assets/fagyi-intro.jpg';
-import { useSwipeable } from 'react-swipeable'; // HOZZÁADVA
-import { useNavigate } from 'react-router-dom'; // HOZZÁADVA
+import fagyiIntroKep from './assets/fagyi-intro.png'; // JAVÍTVA: Visszaírtam .png-re
+import { useSwipeable } from 'react-swipeable';
+import { useNavigate } from 'react-router-dom';
 
 export const fagyiData = [
   // Ide jöhetnek vissza a fagyik
@@ -34,15 +34,13 @@ const fagyiPromoDataRaw = fagyiData.map(fagyi => ({
 const finalPromoData = [introCard, ...fagyiPromoDataRaw];
 
 function FagyiPage() {
-  // HOZZÁADVA: Navigáció és swipe logika
   const navigate = useNavigate();
   const handlers = useSwipeable({
-    onSwipedLeft: () => navigate('/'), // Balra húzásra visszalép a főoldalra
+    onSwipedLeft: () => navigate('/'),
     trackMouse: true
   });
 
   return (
-    // HOZZÁADVA: a "...handlers" a div-hez, ami körbeveszi az egészet
     <div {...handlers}>
       <ElosztoPage 
         pageType="fagyi" 
