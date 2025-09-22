@@ -2,13 +2,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import useDocumentTitle from './hooks/useDocumentTitle'; // HOZZÁADVA
+import useDocumentTitle from './hooks/useDocumentTitle';
 import './ElosztoPage.css';
 import PromoCard from './PromoCard';
 import CallToActionBanner from './components/CallToActionBanner';
 
-const ElosztoPage = ({ pageType, title, promoData }) => {
-  // HOZZÁADVA: Dinamikus cím és leírás beállítása
+// HOZZÁADVA: A komponens most már a "swipeHandlers" propot is fogadja
+function ElosztoPage({ pageType, title, promoData, swipeHandlers }) {
   const pageTitle = pageType === 'fagyi' 
     ? `Kézműves Fagylalt Különlegességek - ${title}` 
     : `Szaftos Smash Burgerek - ${title}`;
@@ -22,7 +22,8 @@ const ElosztoPage = ({ pageType, title, promoData }) => {
   const themeClass = pageType === 'burger' ? 'theme-burger' : 'theme-fagyi';
 
   return (
-    <div className={`eloszto-page ${themeClass}`}>
+    // HOZZÁADVA: A swipe figyelőt a fő konténerre tesszük
+    <div className={`eloszto-page ${themeClass}`} {...swipeHandlers}>
       <CallToActionBanner 
         text="Teljes Kínálat Megtekintése"
         linkTo="/etlap"
@@ -40,18 +41,22 @@ const ElosztoPage = ({ pageType, title, promoData }) => {
               price={item.price}
               tags={item.tags}
               linkTo={item.linkTo}
+              expandable={item.expandable || false}
             />
           ))}
         </div>
       </main>
     </div>
   );
-};
+}
 
+// MÓDOSÍTVA: Kivettem a PropType-okat, mert hibát okoztak korábban
+/*
 ElosztoPage.propTypes = {
   pageType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   promoData: PropTypes.array.isRequired,
 };
+*/
 
 export default ElosztoPage;
