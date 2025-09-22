@@ -1,10 +1,12 @@
 // Fájl: src/BurgerPage.jsx
 
 import React from 'react';
-import useDocumentTitle from './hooks/useDocumentTitle'; // HOZZÁADVA
+import useDocumentTitle from './hooks/useDocumentTitle';
 import CallToActionBanner from './components/CallToActionBanner';
 import PromoCard from './PromoCard';
 import './BurgerPage.css';
+import { useSwipeable } from 'react-swipeable'; // HOZZÁADVA
+import { useNavigate } from 'react-router-dom'; // HOZZÁADVA
 
 const burgerPromoData = [
   { 
@@ -28,14 +30,21 @@ const burgerPromoData = [
 ];
 
 function BurgerPage() {
-  // HOZZÁADVA: Beállítja az oldal címét és leírását
   useDocumentTitle(
     'Szaftos Smash Burgerek - Hot & Loaded',
     'Kóstold meg Budapest legjobb smash burgereit! Kézműves buci, friss alapanyagok és egyedi szószok. Kattints a teljes étlapért!'
   );
 
+  // HOZZÁADVA: Navigáció és swipe logika
+  const navigate = useNavigate();
+  const handlers = useSwipeable({
+    onSwipedRight: () => navigate('/'), // Jobbra húzásra visszalép a főoldalra
+    trackMouse: true
+  });
+
   return (
-    <div className="burger-page-container">
+    // HOZZÁADVA: a "...handlers" a div-hez
+    <div className="burger-page-container" {...handlers}>
       <CallToActionBanner 
         text="Teljes Kínálat Megtekintése"
         linkTo="/etlap"
@@ -52,6 +61,7 @@ function BurgerPage() {
               price={item.price}
               tags={item.tags}
               linkTo={item.linkTo}
+              expandable={item.expandable || false}
             />
           ))}
         </div>
