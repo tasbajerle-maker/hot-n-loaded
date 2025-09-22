@@ -1,0 +1,123 @@
+/* Fájl: src/SideMenu.css */
+
+.sidemenu-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.sidemenu-container.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidemenu-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sidemenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  max-width: 80%;
+  height: 100%;
+  background-color: #222;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidemenu-container.show .sidemenu {
+  transform: translateX(0);
+}
+
+.sidemenu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #444;
+}
+
+.sidemenu-header h2 {
+  color: white;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 2.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.close-button:hover {
+  color: white;
+}
+
+.sidemenu ul {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.sidemenu ul button {
+  display: flex; /* MÓDOSÍTVA: Az ikonok és szöveg igazításához */
+  align-items: center; /* MÓDOSÍTVA */
+  gap: 15px; /* MÓDOSÍTVA */
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 15px;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.sidemenu ul button:hover {
+  background-color: var(--burger-theme-color);
+  color: #222;
+}
+
+/* ÚJ SZABÁLYOK */
+.sidemenu-icon {
+  width: 24px;
+  height: 24px;
+}
+.sidemenu-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sidemenu-divider {
+  padding: 10px 15px;
+}
+.sidemenu-divider hr {
+  border: none;
+  border-top: 1px solid #444;
+}

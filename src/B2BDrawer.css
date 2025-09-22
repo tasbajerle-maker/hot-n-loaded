@@ -1,0 +1,100 @@
+/* The button that opens the drawer */
+.drawer-toggle-button {
+  position: fixed; /* Stays on screen */
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* Appears above everything */
+  
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.drawer-toggle-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* The dark backdrop behind the drawer */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+/* The drawer container itself */
+.drawer-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 500px; /* Doesn't get too wide on PC */
+  left: 50%;
+  transform: translate(-50%, 100%); /* Hidden below the screen by default */
+  z-index: 1002;
+  
+  background-color: white;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.drawer-container.open {
+  transform: translate(-50%, 0); /* Slides into view when open */
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.drawer-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.drawer-content {
+  padding: 20px;
+}
+
+.drawer-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drawer-content li {
+  padding: 15px 10px;
+  font-size: 1.2rem;
+  color: #555;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.drawer-content li:last-child {
+  border-bottom: none;
+}

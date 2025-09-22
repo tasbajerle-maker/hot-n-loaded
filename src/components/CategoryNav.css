@@ -1,0 +1,47 @@
+/* Fájl: src/components/CategoryNav.css */
+
+.category-nav-container {
+  width: 100%;
+  /* JAVÍTVA: A fehér háttér helyett átlátszó lesz, hogy a szülő elem animációja látszódjon */
+  background-color: transparent;
+  z-index: 900;
+  padding: 10px 0;
+  /* A box-shadow és a border már a szülő elemen van az EtlapPage-en, itt nem kell */
+}
+
+.category-nav {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.category-nav::-webkit-scrollbar { 
+  display: none; 
+}
+
+.category-nav-button {
+  white-space: nowrap;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.category-nav-button:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.category-nav-button:last-child {
+  margin-right: 0;
+}

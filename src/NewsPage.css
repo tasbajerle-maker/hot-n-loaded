@@ -1,0 +1,29 @@
+/* Fájl: src/NewsPage.css */
+
+.news-article-summary { 
+  background: white; 
+  padding: 25px; 
+  border-radius: 12px; 
+  margin-bottom: 25px; 
+  box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  border: 1px solid #e7e7e7;
+}
+
+.news-date { 
+  font-size: 0.9em; 
+  color: #718096; 
+  margin-bottom: 10px; 
+}
+
+.news-read-more { 
+  color: var(--burger-theme-color, #ffc107); 
+  text-decoration: none; 
+  font-weight: bold; 
+  display: inline-block;
+  margin-top: 15px;
+  transition: transform 0.2s ease;
+}
+
+.news-read-more:hover {
+  transform: translateX(5px);
+}

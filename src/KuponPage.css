@@ -1,0 +1,122 @@
+/* Fájl: src/KuponPage.css */
+
+.kupon-page-container {
+  padding-top: 60px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.kupon-header {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #2d3748;
+  color: white;
+}
+
+.kupon-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.kupon-content {
+  max-width: 700px;
+  margin: -50px auto 50px auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.kupon-card {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.kupon-card-main {
+  /* MÓDOSÍTVA: Átlátszóság növelve (0.95 -> 0.8) */
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  padding: 30px;
+  gap: 20px;
+  border-bottom: 2px dashed #e2e8f0;
+}
+
+.kupon-card-details {
+  flex-grow: 1;
+}
+
+.kupon-card-discount {
+  background-color: var(--burger-theme-color, #ffc107);
+  color: #1a202c;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.kupon-card-details h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.kupon-card-details p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #4a5568;
+}
+
+.kupon-card-qr {
+  flex-shrink: 0;
+  width: 120px;
+  text-align: center;
+}
+
+.kupon-card-qr img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.kupon-card-qr span {
+  font-size: 0.8rem;
+  color: #718096;
+  margin-top: 10px;
+  display: block;
+}
+
+.kupon-card-footer {
+  /* MÓDOSÍTVA: Átlátszóság növelve (0.9 -> 0.7) */
+  background-color: rgba(247, 250, 252, 0.7);
+  padding: 20px 30px;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.kupon-card-pricing {
+  margin-top: 25px;
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.original-price {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #a0aec0;
+  text-decoration: line-through;
+}
+
+.new-price {
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: var(--burger-theme-color, #ffc107);
+  line-height: 1;
+}

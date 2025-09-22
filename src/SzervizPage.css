@@ -1,0 +1,338 @@
+/* Fájl: src/SzervizPage.css */
+
+.szerviz-page-container {
+  padding-top: 60px; /* Hely a fix fenti Header-nek */
+  background-color: #f8f9fa;
+}
+
+/* Hero Szekció (Fejléc kép) */
+.szerviz-hero {
+  position: relative;
+  height: 40vh;
+  background-image: url('https://images.pexels.com/photos/8357224/pexels-photo-8357224.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.szerviz-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.szerviz-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.szerviz-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  margin-bottom: 10px;
+}
+
+.szerviz-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Tartalmi rész */
+.szerviz-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+/* Szolgáltatások szekció */
+.szolgaltatasok-section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.szolgaltatasok-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.szolgaltatas-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  border: 1px solid #e7e7e7;
+}
+
+.szolgaltatas-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px auto;
+  color: var(--burger-theme-color, #ffc107);
+}
+.szolgaltatas-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.szolgaltatas-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+
+.szolgaltatas-card p {
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+/* "Miért minket" szekció */
+.miert-minket-section {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  border: 1px solid #e7e7e7;
+}
+
+.miert-minket-content h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.miert-minket-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.miert-minket-content li {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.miert-minket-content li::before {
+  content: '✔';
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* CTA Szekció */
+.cta-section {
+  margin-top: 60px;
+  padding: 40px;
+  background-color: #2d3748;
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.cta-section h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.cta-section p {
+  margin-bottom: 30px;
+  opacity: 0.8;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cta-button.primary {
+  background-color: var(--burger-theme-color, #ffc107);
+  color: #2d3748;
+}
+.cta-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+.cta-button.secondary:hover {
+  background-color: white;
+  color: #2d3748;
+}
+
+/* --- ÚJ SZEKCIÓK STÍLUSAI --- */
+
+/* Javítás menete */
+.folyamat-section {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.folyamat-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.folyamat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  text-align: left;
+}
+
+.folyamat-step {
+  background-color: #e9ecef;
+  padding: 30px;
+  border-radius: 12px;
+  border-left: 5px solid var(--burger-theme-color, #ffc107);
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background-color: var(--burger-theme-color, #ffc107);
+  color: #1a202c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.folyamat-step h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.folyamat-step p {
+  line-height: 1.6;
+  color: #495057;
+}
+
+/* Kétoszlopos rács a "Miért minket" és GYIK szekcióknak */
+.szerviz-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-top: 60px;
+}
+@media (min-width: 992px) {
+  .szerviz-grid-2col {
+    grid-template-columns: 1fr 1fr;
+    /* Eltávolítjuk a felesleges felső margót a gyermek elemektől */
+    & > .miert-minket-section {
+      margin-top: 0;
+    }
+  }
+}
+
+/* GYIK */
+.gyik-section h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.gyik-item {
+  margin-bottom: 20px;
+}
+
+.gyik-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.gyik-item p {
+  line-height: 1.6;
+  color: #495057;
+}
+
+/* Használt gépek szekció */
+.hasznalt-gepek-section {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 60px;
+  border: 1px solid #e7e7e7;
+}
+
+.hasznalt-gepek-section h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.hasznalt-gepek-section p {
+  line-height: 1.7;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #495057;
+}
+
+/* Márkák */
+.markak-section {
+  text-align: center;
+  margin-top: 60px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #e7e7e7;
+}
+
+.markak-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.markak-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.markak-logos span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.markak-megjegyzes {
+  margin-top: 20px;
+  font-style: italic;
+  color: #6c757d;
+  font-size: 0.9rem;
+}

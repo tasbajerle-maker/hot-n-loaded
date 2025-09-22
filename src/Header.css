@@ -1,0 +1,269 @@
+/* Fájl: src/Header.css (VÉGLEGES, RESTAURÁLT VERZIÓ) */
+
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+.header-right::-webkit-scrollbar { display: none; }
+.header-right { -ms-overflow-style: none; scrollbar-width: none; }
+
+.header-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.main-header.page-molo {
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background-size: 400% 400%;
+  background-image: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  animation: gradient-animation 15s ease-in-out infinite; 
+}
+
+.main-header.page-molo .header-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-header:not(.page-molo) {
+  color: #4a5568;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+.main-header:not(.page-molo) .header-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.header-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon svg, .header-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.live-text-icon {
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0 4px;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.dropdown-container { 
+  position: relative; 
+  flex-shrink: 0; 
+}
+
+@keyframes dropdown-fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- AZ "ÉLŐ" LEGÖRDÜLŐ MENÜ EGYSÉGESÍTETT STÍLUSAI --- */
+
+.dropdown-menu.live-kinalat {
+  position: fixed; 
+  top: 65px;
+  right: 20px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 0;
+  width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 1px solid #f0f0f0;
+  z-index: 1001;
+  animation: dropdown-fade-in 0.2s ease-out;
+}
+
+.kinalat-status {
+  padding: 25px;
+  font-weight: 500;
+  color: #6c757d;
+  text-align: center;
+  font-style: italic;
+}
+.kinalat-status.error {
+  color: #e53e3e;
+}
+
+.kinalat-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  padding: 10px 15px 10px 20px;
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.kinalat-title h3 {
+  margin: 0;
+  font-size: inherit;
+}
+
+.kinalat-refresh-button {
+  background: none;
+  border: 1px solid transparent;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  transition: all 0.2s ease;
+}
+.kinalat-refresh-button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+  transform: rotate(90deg);
+}
+
+.kinalat-store-selector {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kinalat-store-selector button {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 12px 15px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.kinalat-store-selector button:hover {
+  border-color: var(--burger-theme-color, #ffc107);
+  background-color: #fffaf0;
+  transform: translateX(4px);
+}
+
+.store-button-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.store-button-address {
+  font-size: 0.85rem;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.kinalat-bolt {
+  padding: 15px 20px;
+}
+
+.kinalat-back-button {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0 0 15px 0;
+  font-weight: 600;
+  display: inline-block;
+}
+.kinalat-back-button:hover {
+  text-decoration: underline;
+}
+
+.kinalat-bolt-header {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.kinalat-bolt-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+.kinalat-bolt-header p {
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.kinalat-bolt ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.kinalat-bolt li {
+  font-size: 1rem;
+  color: #444;
+  padding: 8px 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f8f8f8;
+}
+.kinalat-bolt li:last-child {
+  border-bottom: none;
+}

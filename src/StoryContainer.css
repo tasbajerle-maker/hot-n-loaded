@@ -1,0 +1,12 @@
+.story-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto; /* By default, vertical scrolling is allowed */
+  scroll-snap-type: y mandatory; /* Snapping is vertical */
+}
+
+/* This new rule disables scrolling when needed */
+.story-container.scrolling-disabled {
+  overflow-y: hidden;
+}
+

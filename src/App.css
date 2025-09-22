@@ -1,0 +1,26 @@
+/* Fájl: src/App.css */
+
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  /* Fontos: Itt ne legyen overflow: hidden */
+}
+
+/* Ez a konténer már nem szükséges a routeres verzióban,
+   de ha megmaradt, ne legyen zavaró hatása. */
+.content-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Ez a konténer már nem szükséges a routeres verzióban,
+   de ha megmaradt, ne legyen zavaró hatása. */
+.molo-background-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

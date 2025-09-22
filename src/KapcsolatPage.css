@@ -1,0 +1,139 @@
+/* Fájl: src/KapcsolatPage.css */
+
+.kapcsolat-page-container {
+  padding-top: 60px;
+  background-color: #f8f9fa;
+}
+
+.kapcsolat-header {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #2d3748;
+  color: white;
+}
+
+.kapcsolat-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.kapcsolat-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.kapcsolat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.kapcsolat-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  border: 1px solid #e7e7e7;
+}
+
+.kapcsolat-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--burger-theme-color, #ffc107);
+  display: inline-block;
+}
+
+.kapcsolat-card .card-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.kapcsolat-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.kapcsolat-card li {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+
+.kapcsolat-card li strong {
+  font-weight: 600;
+}
+
+.phone-number {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.social-links {
+  display: flex;
+  gap: 20px;
+}
+
+.social-links a {
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.social-links a:hover {
+  color: var(--burger-theme-color, #ffc107);
+  transform: scale(1.1);
+}
+
+.social-links svg {
+  width: 32px;
+  height: 32px;
+}
+
+.map-section h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.map-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 arány */
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+.map-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Ezt a részt add hozzá a KapcsolatPage.css végéhez */
+
+.address-list li {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  border-left: 4px solid transparent; /* Alap állapotban átlátszó a keret */
+}
+
+.address-list li:hover {
+  background-color: #f7fafc;
+}
+
+/* Az aktív cím stílusa */
+.address-list li.active {
+  background-color: #fffaf0; /* Enyhe narancsos háttér */
+  border-left: 4px solid var(--burger-theme-color, #ffc107); /* Kiemelő keret */
+}
