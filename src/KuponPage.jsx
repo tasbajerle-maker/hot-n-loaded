@@ -1,12 +1,11 @@
 // Fájl: src/KuponPage.jsx
 
 import React from 'react';
-import useDocumentTitle from './hooks/useDocumentTitle'; // HOZZÁADVA
+import useDocumentTitle from './hooks/useDocumentTitle';
 import './KuponPage.css';
-import kuponHatter from './assets/kupon-hatter.png';
+// A kép importálása ELTÁVOLÍTVA
 
 function KuponPage() {
-  // HOZZÁADVA: Beállítja az oldal címét és leírását
   useDocumentTitle(
     'Akciós Kuponok - Hot & Loaded',
     'Ne maradj le aktuális akcióinkról! Itt találod a legfrissebb Hot & Loaded kuponokat, amikkel spórolhatsz.'
@@ -19,7 +18,7 @@ function KuponPage() {
     originalPrice: '3000 Ft',
     newPrice: '2100 Ft',
     note: 'A kedvezmény a kupon felmutatásával érvényesíthető. Más akciókkal nem vonható össze.',
-    qrCode: '/src/assets/qr-code-placeholder.png'
+    qrCode: '/images/qr-code-placeholder.png' // MÓDOSÍTVA a public mappára
   };
 
   return (
@@ -30,7 +29,8 @@ function KuponPage() {
       </header>
 
       <main className="kupon-content">
-        <div className="kupon-card" style={{ backgroundImage: `url(${kuponHatter})` }}>
+        {/* MÓDOSÍTVA: A háttérképet a public mappából töltjük be */}
+        <div className="kupon-card" style={{ backgroundImage: `url(/images/kupon-hatter.png)` }}>
           <div className="kupon-card-main">
             <div className="kupon-card-details">
               <span className="kupon-card-discount">{kupon.discount}</span>

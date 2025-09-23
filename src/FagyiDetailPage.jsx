@@ -1,54 +1,45 @@
-// Fájl: src/FagyiPage.jsx
+// Fájl: src/FagyiDetailPage.jsx
 
 import React from 'react';
-import ElosztoPage from './ElosztoPage';
-import fagyiIntroKep from './assets/fagyi-intro.png'; // JAVÍTVA: Visszaírtam .png-re
-import { useSwipeable } from 'react-swipeable';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fagyiData } from './FagyiPage'; // A kép útvonalát innen, a központi adatforrásból kapja
+import './FagyiDetailPage.css';
 
-export const fagyiData = [
-  // Ide jöhetnek vissza a fagyik
-];
-
-const introCard = {
-  id: 'bemutatkozas',
-  image: fagyiIntroKep,
-  title: 'A Mi Fagyink: Minőség Mindenkinek',
-  description: 'Hiszünk benne, hogy a jó fagyi nem kiváltság. Több, mint 15 éves tapasztalattal, saját receptjeink alapján készítjük főzött tejfagylaltjainkat, kizárólag tejjel és állati tejszínnel. Célunk, hogy a legkiválóbb minőséget tegyük elérhetővé mindenki számára.',
-  price: 'Tudj meg többet!',
-  tags: ['Filozófiánk'],
-  expandable: true, 
-  linkTo: '/rolunk' 
-};
-
-const fagyiPromoDataRaw = fagyiData.map(fagyi => ({
-  id: fagyi.id,
-  image: fagyi.image,
-  title: fagyi.title,
-  description: fagyi.description_short,
-  price: fagyi.price,
-  tags: fagyi.tags,
-  linkTo: `/fagyi/${fagyi.id}`
-}));
-
-const finalPromoData = [introCard, ...fagyiPromoDataRaw];
-
-function FagyiPage() {
+function FagyiDetailPage() {
+  const { fagyiId } = useParams();
   const navigate = useNavigate();
-  const handlers = useSwipeable({
-    onSwipedLeft: () => navigate('/'),
-    trackMouse: true
-  });
+
+  const fagyi = fagyiData.find(f => f.id === fagyiId);
+
+  // SEO hook a dinamikus címhez
+  useDocumentTitle(
+    fagyi ? `${fagyi.title} - Nyaloda` : 'Fagylalt nem található',
+    fagyi ? fagyi.description_full : 'Ez a fagylalt sajnos nem található a kínálatunkban.'
+  );
+
+  if (!fagyi) {
+    return (
+      <div className="fagyi-detail-container">
+        <div className="fagyi-detail-content">
+          <h1>Hoppá!</h1>
+          <p>Ez a fagylalt sajnos nem található.</p>
+          <button onClick={() => navigate('/fagyi')} className="vissza-gomb">Vissza a fagyikhoz</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div {...handlers}>
-      <ElosztoPage 
-        pageType="fagyi" 
-        title="Nyaloda"
-        promoData={finalPromoData}
-      />
+    <div className="fagyi-detail-container">
+      <div className="fagyi-detail-content">
+        <img src={fagyi.image} alt={fagyi.title} className="fagyi-detail-image" />
+        <h1>{fagyi.title}</h1>
+        <p className="fagyi-detail-price">{fagyi.price}</p>
+        <p className="fagyi-detail-description">{fagyi.description_full}</p>
+        <button onClick={() => navigate('/fagyi')} className="vissza-gomb">‹ Vissza a többi fagyihoz</button>
+      </div>
     </div>
   );
 }
 
-export default FagyiPage;
+export default FagyiDetailPage;

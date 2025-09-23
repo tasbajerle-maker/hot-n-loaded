@@ -6,8 +6,8 @@ import { useSwipeable } from 'react-swipeable';
 import useDocumentTitle from './hooks/useDocumentTitle';
 import './Molo.css';
 import B2BDrawer from './B2BDrawer';
-import Modal from './components/Modal'; // HOZZÁADVA
-import moloPanorama from './images/molo.png';
+import Modal from './components/Modal';
+// A 'moloPanorama' IMPORT ELTÁVOLÍTVA
 
 const LeftArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>;
 const RightArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>;
@@ -31,7 +31,7 @@ function Molo() {
 
   const [bgPosition, setBgPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [isB2bModalOpen, setIsB2bModalOpen] = useState(false); // HOZZÁADVA
+  const [isB2bModalOpen, setIsB2bModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handlers = useSwipeable({
@@ -61,7 +61,8 @@ function Molo() {
 
   return (
     <>
-      <div {...handlers} className={containerClass} style={{backgroundImage: `url(${moloPanorama})`, backgroundPosition: `${bgPosition}% center`}}>
+      {/* JAVÍTVA: A háttérképet a public mappából töltjük be */}
+      <div {...handlers} className={containerClass} style={{backgroundImage: `url(/images/molo.png)`, backgroundPosition: `${bgPosition}% center`}}>
         <div className="drag-indicator">
           <div className="arrow left"><LeftArrowIcon /></div>
           <span className="drag-text">HÚZD OLDALRA</span>

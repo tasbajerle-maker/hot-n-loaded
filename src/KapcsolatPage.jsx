@@ -12,21 +12,6 @@ const InstagramIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" h
 const TikTokIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V6a5 5 0 0 0-5-5H3v11a5 5 0 0 0 5 5h4Z"></path><path d="M12 19a5 5 0 0 1 5-5h4V3h-4a5 5 0 0 0-5 5v11Z"></path></svg>;
 
 function KapcsolatPage() {
-  const contactInfo = {
-    addresses: [
-      { name: "Király utca", address: "1077 Budapest, Király u. 50.", mapSrc: "http://googleusercontent.com/maps/embed.html/0" },
-      { name: "Káposztásmegyer", address: "1048 Budapest, Lóverseny tér 1.", mapSrc: "http://googleusercontent.com/maps/embed.html/1" },
-      { name: "Nyírpalota út", address: "1157 Budapest, Nyírpalota út 2.", mapSrc: "http://googleusercontent.com/maps/embed.html/2" },
-    ],
-    phone: "+36 30 123 4567",
-    socials: {
-      facebook: "https://facebook.com/yourpage",
-      instagram: "https://instagram.com/yourpage",
-      tiktok: "https://tiktok.com/@yourpage",
-    }
-  };
-
-  // HOZZÁADVA: A harmadik paraméter a strukturált adat
   useDocumentTitle(
     'Elérhetőségeink és Üzleteink Térképpel - Hot & Loaded',
     'Keress meg minket! Üzleteink címei, telefonszám, közösségi média elérhetőségek és interaktív térkép.',
@@ -34,21 +19,41 @@ function KapcsolatPage() {
       '@context': 'https://schema.org',
       '@type': 'Restaurant',
       'name': 'Hot & Loaded',
-      'telephone': contactInfo.phone,
+      'telephone': '+36 30 123 4567',
       'servesCuisine': ['Burger', 'Ice Cream'],
-      'location': contactInfo.addresses.map(addr => ({
-        '@type': 'FoodEstablishment',
-        'name': `Hot & Loaded - ${addr.name}`,
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': addr.address.split(',')[1].trim(),
-          'addressLocality': 'Budapest',
-          'postalCode': addr.address.split(',')[0],
-          'addressCountry': 'HU'
-        }
-      }))
+      'location': [
+          {
+            '@type': 'FoodEstablishment',
+            'name': 'Hot & Loaded - Király utca',
+            'address': { '@type': 'PostalAddress', 'streetAddress': 'Király u. 50.', 'addressLocality': 'Budapest', 'postalCode': '1077', 'addressCountry': 'HU' }
+          },
+          {
+            '@type': 'FoodEstablishment',
+            'name': 'Hot & Loaded - Káposztásmegyer',
+            'address': { '@type': 'PostalAddress', 'streetAddress': 'Lóverseny tér 1.', 'addressLocality': 'Budapest', 'postalCode': '1048', 'addressCountry': 'HU' }
+          },
+          {
+            '@type': 'FoodEstablishment',
+            'name': 'Hot & Loaded - Nyírpalota út',
+            'address': { '@type': 'PostalAddress', 'streetAddress': 'Nyírpalota út 2.', 'addressLocality': 'Budapest', 'postalCode': '1157', 'addressCountry': 'HU' }
+          }
+      ]
     }
   );
+
+  const contactInfo = {
+    addresses: [
+      { name: "Király utca", address: "1077 Budapest, Király u. 50.", mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.341398273633!2d19.06233331562688!3d47.50198097917789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dc695a0a3a7d%3A0x8d73b02a1e7e4879!2sBudapest%2C%20Kir%C3%A1ly%20u.%2050%2C%201077!5e0!3m2!1shu!2shu!4v1620826434757!5m2!1shu!2shu" },
+      { name: "Káposztásmegyer", address: "1048 Budapest, Lóverseny tér 1.", mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.385311211105!2d19.1172223156281!3d47.54013097918029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c50a04297c7b%3A0x3344b5006b026b2b!2sBudapest%2C%20L%C3%B3verseny%20t%C3%A9r%201%2C%201048!5e0!3m2!1shu!2shu!4v1620826501438!5m2!1shu!2shu" },
+      { name: "Nyírpalota út", address: "1157 Budapest, Nyírpalota út 2.", mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2693.385311211105!2d19.1172223156281!3d47.54013097918029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c4f0b0b0b0b1%3A0x1b1b1b1b1b1b1b1b!2sBudapest%2C%20Ny%C3%ADrpalota%20%C3%BAt%202%2C%201157!5e0!3m2!1shu!2shu!4v1620826561327!5m2!1shu!2shu" },
+    ],
+    phone: "+36 30 123 4567",
+    socials: {
+      facebook: "https://www.facebook.com/profile.php?id=100050442016096",
+      instagram: "https://www.instagram.com/nyalodafagyi/",
+      tiktok: "https://www.tiktok.com/@nyaloda",
+    }
+  };
 
   const [activeMapSrc, setActiveMapSrc] = useState(contactInfo.addresses[0].mapSrc);
 
