@@ -13,7 +13,8 @@ import KinalatPage from './KinalatPage';
 import KuponPage from './KuponPage';
 import RolunkPage from './RolunkPage';
 import KapcsolatPage from './KapcsolatPage';
-import FagyiDetailPage from './FagyiDetailPage'; // HOZZÁADVA
+import FagyiDetailPage from './FagyiDetailPage';
+import Footer from './components/Footer'; // HOZZÁADVA
 import './App.css';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
           <Route path="/" element={<Molo />} />
           <Route path="/burger" element={<BurgerPage />} />
           <Route path="/fagyi" element={<FagyiPage />} />
-          <Route path="/fagyi/:fagyiId" element={<FagyiDetailPage />} /> {/* HOZZÁADVA */}
+          <Route path="/fagyi/:fagyiId" element={<FagyiDetailPage />} />
           <Route path="/etlap" element={<EtlapPage />} />
           <Route path="/hirek" element={<NewsPage />} />
           <Route path="/szerviz" element={<SzervizPage />} />
@@ -34,6 +35,7 @@ function App() {
           <Route path="/rolunk" element={<RolunkPage />} />
           <Route path="/kapcsolat" element={<KapcsolatPage />} />
         </Routes>
+        <Footer /> {/* HOZZÁADVA */}
       </BrowserRouter>
     </div>
   );

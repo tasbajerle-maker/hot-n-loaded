@@ -58,3 +58,30 @@
   stroke: #333;
 }
 
+/* Ezt a részt add hozzá a Molo.css végéhez */
+
+.b2b-drawer-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 30;
+}
+
+.b2b-drawer-button {
+  background-color: rgba(45, 55, 72, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.b2b-drawer-button:hover {
+  background-color: rgba(45, 55, 72, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}

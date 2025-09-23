@@ -6,13 +6,13 @@ import { useSwipeable } from 'react-swipeable';
 import useDocumentTitle from './hooks/useDocumentTitle';
 import './Molo.css';
 import B2BDrawer from './B2BDrawer';
+import Modal from './components/Modal'; // HOZZÁADVA
 import moloPanorama from './images/molo.png';
 
 const LeftArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>;
 const RightArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>;
 
 function Molo() {
-  // MÓDOSÍTVA: Hozzáadtuk a harmadik paramétert, a strukturált adatot
   useDocumentTitle(
     'Hot & Loaded - Smash Burgerek és Kézműves Fagylalt',
     'Budapest legújabb smash burger és fagylaltozója. Fedezd fel kínálatunkat egy egyedi, interaktív főoldalon keresztül!',
@@ -20,7 +20,7 @@ function Molo() {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       'name': 'Hot & Loaded',
-      'url': 'https://www.hotandloaded.hu', // Cseréld le a végleges domainedre
+      'url': 'https://www.hotandloaded.hu',
       'description': 'Interaktív weboldal smash burgerek, kézműves fagylalt és ipari hűtő szerviz szolgáltatásokkal.',
       'publisher': {
         '@type': 'Organization',
@@ -31,6 +31,7 @@ function Molo() {
 
   const [bgPosition, setBgPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  const [isB2bModalOpen, setIsB2bModalOpen] = useState(false); // HOZZÁADVA
   const navigate = useNavigate();
 
   const handlers = useSwipeable({
@@ -43,10 +44,10 @@ function Molo() {
       setIsDragging(false);
       const threshold = 40; 
 
-      if (eventData.deltaX > threshold) { // Ujj balról jobbra -> FAGYI
+      if (eventData.deltaX > threshold) {
         navigate('/fagyi');
       } 
-      else if (eventData.deltaX < -threshold) { // Ujj jobbról balra -> BURGER
+      else if (eventData.deltaX < -threshold) {
         navigate('/burger');
       }
       else {
@@ -59,14 +60,36 @@ function Molo() {
   const containerClass = `molo-container ${isDragging ? 'is-dragging' : ''}`;
 
   return (
-    <div {...handlers} className={containerClass} style={{backgroundImage: `url(${moloPanorama})`, backgroundPosition: `${bgPosition}% center`}}>
-      <div className="drag-indicator">
-        <div className="arrow left"><LeftArrowIcon /></div>
-        <span className="drag-text">HÚZD OLDALRA</span>
-        <div className="arrow right"><RightArrowIcon /></div>
+    <>
+      <div {...handlers} className={containerClass} style={{backgroundImage: `url(${moloPanorama})`, backgroundPosition: `${bgPosition}% center`}}>
+        <div className="drag-indicator">
+          <div className="arrow left"><LeftArrowIcon /></div>
+          <span className="drag-text">HÚZD OLDALRA</span>
+          <div className="arrow right"><RightArrowIcon /></div>
+        </div>
+        <B2BDrawer onOpen={() => setIsB2bModalOpen(true)} />
       </div>
-      <B2BDrawer />
-    </div>
+
+      {isB2bModalOpen && (
+        <Modal onClose={() => setIsB2bModalOpen(false)}>
+          <div className="b2b-modal-content">
+            <h2>Céges és B2B Ajánlatok</h2>
+            <p>
+              Tervezzen rendezvényt, vagy lepje meg kollégáit egyedi fagylaltkiszállítással! Viszonteladó partnereket is keresünk kávézók, éttermek számára.
+            </p>
+            <ul>
+              <li>Fagylaltkiszállítás rendezvényekre</li>
+              <li>Viszonteladói partnerség</li>
+              <li>Fagylaltpultok kihelyezése (7-től 24 tégelyes méretig)</li>
+            </ul>
+            <p>
+              Szállítási területünk Budapest és Pest megye egyes részei. Vegye fel velünk a kapcsolatot egyedi ajánlatért!
+            </p>
+            <a href="mailto:nyaloda@gmail.com" className="b2b-email-link">nyaloda@gmail.com</a>
+          </div>
+        </Modal>
+      )}
+    </>
   );
 }
 
