@@ -1,0 +1,74 @@
+/* Fájl: src/RolunkPage.css */
+
+.rolunk-page-container {
+  padding-top: 60px;
+  background-color: white;
+}
+
+.rolunk-hero {
+  position: relative;
+  height: 45vh;
+  min-height: 300px;
+  background-image: url('https://images.pexels.com/photos/1018483/pexels-photo-1018483.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+  background-size: cover;
+  background-position: center 70%;
+  background-attachment: fixed; /* Parallax hatás */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.rolunk-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.rolunk-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 0 20px;
+}
+
+.rolunk-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-style: italic;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  line-height: 1.4;
+}
+
+.rolunk-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.rolunk-section {
+  margin-bottom: 50px;
+}
+
+.rolunk-section:last-child {
+  margin-bottom: 0;
+}
+
+.rolunk-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--burger-theme-color, #ffc107);
+  display: inline-block;
+}
+
+.rolunk-section p {
+  margin-bottom: 20px;
+}

@@ -8,9 +8,27 @@ import './KirakatPage.css';
 import { useSwipeable } from 'react-swipeable';
 import { useNavigate } from 'react-router-dom';
 
-// Nincs több kép importálás
-
 const burgerPromoData = [
+  // HOZZÁADVA: A két új limitált burger
+  { 
+    id: 'rantott-sajtos-szilvas-burger',
+    image: '/images/rantott-sajtos-szilvas-burger.jpg',
+    title: 'Rántott Sajtos Szilvás Burger', 
+    description: 'Egy igazi ízbomba! Ropogósra sütött rántott sajt találkozása az édes szilvalekvárral, egy szaftos húspogácsával megkoronázva.',
+    price: '2000 Ft',
+    tags: ['Limitált', 'Különlegesség'],
+    linkTo: '/etlap#limitalt'
+  },
+  { 
+    id: 'mangos-csibeburger',
+    image: '/images/mangos-csibeburger.jpg',
+    title: 'Mangós Csibeburger Tojáspogácsával', 
+    description: 'Egzotikus kaland a tányérodon! Szaftos csibeburger, édes mangó chutney és egy lágy tojáspogácsa.',
+    price: '2000 Ft',
+    tags: ['Limitált', 'Újdonság'],
+    linkTo: '/etlap#limitalt'
+  },
+  // A korábbi kártyák
   { 
     id: 'sultkrumpli-info',
     image: '/images/sultkrumpli.png', 
@@ -30,16 +48,16 @@ const burgerPromoData = [
   },
   { 
     id: 'b2',
-    image: '/images/csibe-burger.png', // FELTÉTELEZVE, HOGY EZT IS LEMENTETTED A public/images-be
-    title: 'Csibe Burger', // MÓDOSÍTVA
-    description: '100% csirkemell, jégsaláta, majonéz.', // MÓDOSÍTVA
-    price: '1250 Ft', // MÓDOSÍTVA
-    tags: ['Csirke', 'Klasszikus'], // MÓDOSÍTVA
-    linkTo: '/etlap#burgerek' // Link a burgerekhez
+    image: '/images/csibe-burger.png',
+    title: 'Csibe Burger',
+    description: '100% csirkemell, jégsaláta, majonéz.',
+    price: '1250 Ft',
+    tags: ['Csirke', 'Klasszikus'],
+    linkTo: '/etlap#burgerek'
   },
   { 
     id: 'b3',
-    image: '/images/oklahoma-burger.png', // MÓDOSÍTVA: Az új, generált kép
+    image: '/images/oklahoma-burger.png',
     title: 'Oklahoma Burger', 
     description: 'A klasszikus, hagymával együtt lepirított smash burger, uborkával és cheddar sajttal.',
     price: '1500 Ft',
