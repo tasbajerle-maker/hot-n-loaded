@@ -1,5 +1,5 @@
 const newsData = [
-     // 1. CIKK: AZ ÚJ TÉLI NYITVATARTÁS BEJELENTÉSE
+  // 1. CIKK: AZ ÚJ TÉLI NYITVATARTÁS BEJELENTÉSE
   {
     slug: 'telen-is-nyitva-ujpest',
     title: 'A Fagyinak Nincs Szezonja. A Forradalomnak Sem.',
@@ -51,7 +51,7 @@ const newsData = [
     ]
   }, 
  
-    // 1. CIKK: A VÉGLEGES FAGYI KREÁTOR BEJELENTÉS
+  // 2. CIKK: A VÉGLEGES FAGYI KREÁTOR (HELYES MESSENGER LINKKEL)
   {
     slug: 'fagyi-kreator-teljes-szabadsag',
     title: 'A Világ Szeme Ránk Szegeződik. A Tiéd is?',
@@ -77,38 +77,22 @@ const newsData = [
       { type: 'subheading', content: 'Legyél Te az Alkotóink Belső Köre' },
       { type: 'paragraph', content: 'Mielőtt elindítjuk a gépezetet, a Nyaloda közösségét hívjuk egy zárt belső tesztre. Elsőként TI próbálhatjátok ki, és a ti véleményetek alapján végelegesítjük az applikációt.' },
       { type: 'invertedBox', title: 'Az Első 50 Alkotó Jutalma:', content: 'Az első <strong>10 jelentkezőnek AJÁNDÉKBA</strong> visszük az alkotását. A következő <strong>40 tesztelőnek pedig 50% kedvezménnyel</strong> szállítjuk házhoz. Cserébe csak a véleményedet kérjük.' },
-      { type: 'callToAction', content: '<a href="/fagyi-kreator-beta-jelentkezes">Kérem a Helyem az Alkotók Között &rarr;</a>' }
+      { type: 'callToAction', content: '<a href="https://m.me/nyalodafagyizo?ref=fagyi-kreator-beta" target="_blank" rel="noopener noreferrer">Jelentkezem Messengeren &rarr;</a>' }
     ]
   },
 
-  // 2. CIKK: AZ ÚJRAGONDOLT DRIVE! CIKK
+  // 3. CIKK: AZ ÚJRAGONDOLT DRIVE! CIKK (HELYES MESSENGER LINKKEL)
   {
     slug: 'drive-beta-teszt-az-elit-alakulat',
     title: 'Elloptuk a Jövőt a Multiktól. Neked Adjuk.',
     summary: 'A kényelem eddig a nagyok kiváltsága volt. Eddig. A DRIVE! funkcióval a minőségi kaja talál meg téged a kocsidban. Legyél az elit tesztcsapat tagja, és segíts tökéletesíteni a fegyverünket.',
     date: '2025. október 8.',
     contentBlocks: [
-      {
-        type: 'heading',
-        content: 'A Kényelem Eddig a Multik Kiváltsága Volt.'
-      },
-      {
-        type: 'paragraph',
-        content: 'Választhattál a lélektelen óriások gyors, de kompromisszumos drive-thru ablaka, és a minőség között, amiért ki kellett szállnod, sorban állnod, várnod. Azt mondták, a kettő együtt nem megy. Mi azt mondjuk: dehogynem.'
-      },
-      {
-        type: 'quote',
-        content: 'A Forradalom Házhoz Jön. Vagyis... az Autódhoz.'
-      },
-      {
-        type: 'featureBox',
-        title: 'Bemutatkozik a DRIVE! - A VIP Sávod a Minőséghez',
-        content: 'Ez nem egy futószalag. Ez egy személyes szolgáltatás. Rendelj az appban, parkolj le a közelben, és mi kivisszük neked a rendelésed. Pont. Nincs több dilemma a minőség és a sebesség között.'
-      },
-      {
-        type: 'subheading',
-        content: 'Nincs Sor. Nincs Várakozás. Nincs Kompromisszum.'
-      },
+      { type: 'heading', content: 'A Kényelem Eddig a Multik Kiváltsága Volt.' },
+      { type: 'paragraph', content: 'Választhattál a lélektelen óriások gyors, de kompromisszumos drive-thru ablaka, és a minőség között, amiért ki kellett szállnod, sorban állnod, várnod. Azt mondták, a kettő együtt nem megy. Mi azt mondjuk: dehogynem.' },
+      { type: 'quote', content: 'A Forradalom Házhoz Jön. Vagyis... az Autódhoz.' },
+      { type: 'featureBox', title: 'Bemutatkozik a DRIVE! - A VIP Sávod a Minőséghez', content: 'Ez nem egy futószalag. Ez egy személyes szolgáltatás. Rendelj az appban, parkolj le a közelben, és mi kivisszük neked a rendelésed. Pont. Nincs több dilemma a minőség és a sebesség között.' },
+      { type: 'subheading', content: 'Nincs Sor. Nincs Várakozás. Nincs Kompromisszum.' },
       {
         type: 'highlightedList',
         title: 'A Haditerv 3 Lépésben:',
@@ -118,42 +102,11 @@ const newsData = [
           '👆 <strong>HÍVJ:</strong> Egy gombnyomás az appban, és a csapatunk már tudja, hol vagy. Indulunk.'
         ]
       },
-      {
-        type: 'subheading',
-        content: 'Tökéletesítsük Együtt a Fegyverünket!'
-      },
-      {
-        type: 'paragraph',
-        content: 'Mielőtt csatába indulunk a nagyok ellen, a mi közösségünkre van szükségünk. Olyan tesztpilótákra, akik segítenek finomhangolni a rendszert, hogy az ne csak működjön, de verhetetlen legyen.'
-      },
-      {
-        type: 'invertedBox',
-        title: 'A Hadművelet Jutalma:',
-        content: 'Minden tesztpilóta, aki csatlakozik a küldetéshez, <strong>50% kedvezményt kap</strong> a teljes tesztrendeléséből. A te tapasztalatod a mi lőszerünk.'
-      },
-      {
-        type: 'callToAction',
-        content: '<a href="/drive-beta-jelentkezes">Jelentkezem Tesztpilótának &rarr;</a>'
-      }
+      { type: 'subheading', content: 'Tökéletesítsük Együtt a Fegyverünket!' },
+      { type: 'paragraph', content: 'Mielőtt csatába indulunk a nagyok ellen, a mi közösségünkre van szükségünk. Olyan tesztpilótákra, akik segítenek finomhangolni a rendszert, hogy az ne csak működjön, de verhetetlen legyen.' },
+      { type: 'invertedBox', title: 'A Hadművelet Jutalma:', content: 'Minden tesztpilóta, aki csatlakozik a küldetéshez, <strong>50% kedvezményt kap</strong> a teljes tesztrendeléséből. A te tapasztalatod a mi lőszerünk.' },
+      { type: 'callToAction', content: '<a href="https://m.me/nyalodafagyizo?ref=drive-beta" target="_blank" rel="noopener noreferrer">Jelentkezem Tesztpilótának &rarr;</a>' }
     ]
-  },
-
-  // 3. CIKK: A RÉGI SMASH BURGER HÍR
-  {
-    slug: 'uj-smash-burger-hetfo',
-    title: 'Új Smash Burger Hétfőtől!',
-    summary: 'Végre megérkezett a legújabb büszkeségünk, a tripla sajtos, baconös Smasher. Kóstold meg elsőként!',
-    date: '2025. október 8.',
-    content: '<h2>A Smasher Titka</h2><p>Hónapokig tartó kísérletezés után büszkén mutatjuk be a Smasher burgert...</p>',
-  },
-
-  // 4. CIKK: A RÉGI FAGYI HÉTVÉGE HÍR
-  {
-    slug: 'fagylalt-hetvege',
-    title: 'Fagylalt Hétvége az Astoriánál',
-    summary: 'Ezen a hétvégén minden pisztácia és belga csoki fagyinkhoz ajándék öntet jár. Ne hagyd ki!',
-    date: '2025. október 5.',
-    content: '<p>A hétvége sztárjai a kézműves fagylaltjaink!...</p>',
   },
 ];
 
