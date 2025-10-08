@@ -1,4 +1,4 @@
-// Fájl: src/SideMenu.jsx
+// Fájl: src/SideMenu.jsx (A VÉGLEGES, KIEGÉSZÍTETT VERZIÓ)
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -12,6 +12,9 @@ const KuponIcon = () => <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.1
 const SzervizIcon = () => <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>;
 const InfoIcon = () => <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
 const MailIcon = () => <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
+
+// --- HOZZÁADVA: A HÍREK IKON DEFINÍCIÓJA ---
+const NewsIcon = () => <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>;
 
 function SideMenu({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -34,6 +37,9 @@ function SideMenu({ isOpen, onClose }) {
           <li><button onClick={() => handleNavigate('/etlap')}><div className="sidemenu-icon"><EtlapIcon /></div>Étlap</button></li>
           <li><button onClick={() => handleNavigate('/kuponok')}><div className="sidemenu-icon"><KuponIcon /></div>Kuponok</button></li>
           <li><button onClick={() => handleNavigate('/szerviz')}><div className="sidemenu-icon"><SzervizIcon /></div>Szerviz</button></li>
+          
+          {/* --- HOZZÁADVA: A HÍREK MENÜPONT --- */}
+          <li><button onClick={() => handleNavigate('/hirek')}><div className="sidemenu-icon"><NewsIcon /></div>Hírek</button></li>
           
           <li className="sidemenu-divider"><hr /></li>
 
