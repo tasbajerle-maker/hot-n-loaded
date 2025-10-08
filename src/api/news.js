@@ -1,0 +1,161 @@
+const newsData = [
+     // 1. CIKK: AZ ÚJ TÉLI NYITVATARTÁS BEJELENTÉSE
+  {
+    slug: 'telen-is-nyitva-ujpest',
+    title: 'A Fagyinak Nincs Szezonja. A Forradalomnak Sem.',
+    summary: 'A tél idén nem akadály. Az újpesti, Király utcai üzletünk egész télen nyitva marad a teljes étlapunkkal és a legnépszerűbb fagyikkal.',
+    date: '2025. október 8.',
+    contentBlocks: [
+      {
+        type: 'heading',
+        content: 'Télen is lesz fagyi?'
+      },
+      {
+        type: 'paragraph',
+        content: 'Ez a kérdés, amit a legtöbbször hallunk, ahogy közeledik a hideg. A válasz eddig egyértelmű volt. Eddig.'
+      },
+      {
+        type: 'quote',
+        content: 'Idén a Fagyinak Nincs Téli Szünet.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Idén az <strong>újpesti, Király utcai üzletünk egész télen nyitva tart!</strong> De ez a hír valójában sokkal többről szól, mint a fagyiról.'
+      },
+      {
+        type: 'subheading',
+        content: 'Szintet Léptünk. A Szezonálisból Egész Éves Hadtest Lett.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Az étel divíziónk az elmúlt időszakban kőkeményen dolgozott, és felnőtt a feladathoz. A burgereink, tálaink és a folyamatosan bővülő étlapunk mára olyan minőséget képvisel – a nagy étteremláncok árszintjén –, ami bárhol, bármikor megállja a helyét. Ez a minőség pedig nem szezonális.'
+      },
+      {
+        type: 'featureBox',
+        title: 'Mit jelent ez Rád nézve?',
+        content: 'A döntésünk egyenes következménye, hogy mostantól egy helyen, de egész évben élvezheted azt, amit szeretsz. Nem kell kompromisszumot kötnöd.'
+      },
+      {
+        type: 'highlightedList',
+        title: 'A téli felállás Újpesten:',
+        items: [
+          '🍔 <strong>TELJES ÉTLAP:</strong> Az összes burger, tál és ételkülönlegesség elérhető marad, ahogy eddig is.',
+          '🍦 <strong>FAGYI SAROK:</strong> Igaz, szűkített választékkal, de a legnagyobb kedvenceitek a téli szezonban is kaphatók lesznek.'
+        ]
+      },
+      {
+        type: 'invertedBox',
+        title: 'Hadüzenet a Télnek! Várjuk a havat !! Ha mégse jönne beszerzünk egy hóágyút !',
+        content: 'Várunk Újpesten a Király utcában a teljes arzenálunkkal. Bizonyítsuk be együtt, hogy a jó ízeknek nincs szezonja!'
+      }
+    ]
+  }, 
+ 
+    // 1. CIKK: A VÉGLEGES FAGYI KREÁTOR BEJELENTÉS
+  {
+    slug: 'fagyi-kreator-teljes-szabadsag',
+    title: 'A Világ Szeme Ránk Szegeződik. A Tiéd is?',
+    summary: 'Európában (és talán a világon is) elsőként bemutatjuk a Fagyi Kreátort. Ahol nincsenek szabályok, csak a te alkotásod. Tervezd meg a saját fagyidat, a címkével együtt. Tesztelőket keresünk.',
+    date: '2025. október 8.',
+    contentBlocks: [
+      { type: 'heading', content: 'Európában Elsőként. (És talán a bolygón is.)' },
+      { type: 'paragraph', content: 'Bemutatjuk a Fagyi Kreátort, ahol te rakod össze a saját, egyedi fagyidat. Kiválasztod az alapot, majd az ízt. De itt nem álltunk meg. Egy alapba akár több ízt is pakolhatsz. Nincsenek határok.' },
+      { type: 'paragraph', content: 'Ha te pisztáciát, vaníliát, kókuszt és puncsot akarsz egyszerre... őszintén? Nem tanácsoljuk. de nem is korlátozunk...' },
+      { type: 'quote', content: 'DE EZ A TE FAGYID, A TE ALKOTÁSOD!' },
+      { type: 'featureBox', title: 'A Te Kezedben a Teljes Arzenál', content: 'Variegátok, roppanós textúrák, gyümölcsök, szóratok, magok – mindent te válogatsz össze. Lehet, hogy a te ízed lesz a következő év fagyija? Rajtad múlik.' },
+      { type: 'subheading', content: 'Több Mint Fagyi. A Te Üzeneted.' },
+      { type: 'paragraph', content: 'A szabadság a címkénél ér a csúcsára. Te írod rá a szöveget. A fagyid nevét? Egy üzenet valakinek? Sőt, feltölthetsz egy képet is, amit elhelyezünk a dobozon. Mi pedig elkészítjük, és házhoz visszük neked.' },
+      {
+        type: 'highlightedList',
+        title: 'Miért Vagyunk Mások?',
+        items: [
+          '<strong>Több íz, egy alapban:</strong> Nem korlátozunk egyetlen ízesítésre egy fagyiban.',
+          '<strong>Valódi szabadság:</strong> Azt a szintű testreszabhatóságot, amit mi adunk, Amerikában is csak irigykedve nézik.',
+          '<strong>Személyes címke:</strong> A te szavaid, a te képed. A fagyi tényleg a te alkotásod lesz, tetőtől talpig.'
+        ]
+      },
+      { type: 'subheading', content: 'Legyél Te az Alkotóink Belső Köre' },
+      { type: 'paragraph', content: 'Mielőtt elindítjuk a gépezetet, a Nyaloda közösségét hívjuk egy zárt belső tesztre. Elsőként TI próbálhatjátok ki, és a ti véleményetek alapján végelegesítjük az applikációt.' },
+      { type: 'invertedBox', title: 'Az Első 50 Alkotó Jutalma:', content: 'Az első <strong>10 jelentkezőnek AJÁNDÉKBA</strong> visszük az alkotását. A következő <strong>40 tesztelőnek pedig 50% kedvezménnyel</strong> szállítjuk házhoz. Cserébe csak a véleményedet kérjük.' },
+      { type: 'callToAction', content: '<a href="/fagyi-kreator-beta-jelentkezes">Kérem a Helyem az Alkotók Között &rarr;</a>' }
+    ]
+  },
+
+  // 2. CIKK: AZ ÚJRAGONDOLT DRIVE! CIKK
+  {
+    slug: 'drive-beta-teszt-az-elit-alakulat',
+    title: 'Elloptuk a Jövőt a Multiktól. Neked Adjuk.',
+    summary: 'A kényelem eddig a nagyok kiváltsága volt. Eddig. A DRIVE! funkcióval a minőségi kaja talál meg téged a kocsidban. Legyél az elit tesztcsapat tagja, és segíts tökéletesíteni a fegyverünket.',
+    date: '2025. október 8.',
+    contentBlocks: [
+      {
+        type: 'heading',
+        content: 'A Kényelem Eddig a Multik Kiváltsága Volt.'
+      },
+      {
+        type: 'paragraph',
+        content: 'Választhattál a lélektelen óriások gyors, de kompromisszumos drive-thru ablaka, és a minőség között, amiért ki kellett szállnod, sorban állnod, várnod. Azt mondták, a kettő együtt nem megy. Mi azt mondjuk: dehogynem.'
+      },
+      {
+        type: 'quote',
+        content: 'A Forradalom Házhoz Jön. Vagyis... az Autódhoz.'
+      },
+      {
+        type: 'featureBox',
+        title: 'Bemutatkozik a DRIVE! - A VIP Sávod a Minőséghez',
+        content: 'Ez nem egy futószalag. Ez egy személyes szolgáltatás. Rendelj az appban, parkolj le a közelben, és mi kivisszük neked a rendelésed. Pont. Nincs több dilemma a minőség és a sebesség között.'
+      },
+      {
+        type: 'subheading',
+        content: 'Nincs Sor. Nincs Várakozás. Nincs Kompromisszum.'
+      },
+      {
+        type: 'highlightedList',
+        title: 'A Haditerv 3 Lépésben:',
+        items: [
+          '📱 <strong>RENDELJ:</strong> Pötyögd be az appban, amit kívánsz. A szokásos minőség.',
+          '🚗 <strong>PARKOLJ:</strong> Állj meg, ahol neked kényelmes a 150 méteres zónánkon belül.',
+          '👆 <strong>HÍVJ:</strong> Egy gombnyomás az appban, és a csapatunk már tudja, hol vagy. Indulunk.'
+        ]
+      },
+      {
+        type: 'subheading',
+        content: 'Tökéletesítsük Együtt a Fegyverünket!'
+      },
+      {
+        type: 'paragraph',
+        content: 'Mielőtt csatába indulunk a nagyok ellen, a mi közösségünkre van szükségünk. Olyan tesztpilótákra, akik segítenek finomhangolni a rendszert, hogy az ne csak működjön, de verhetetlen legyen.'
+      },
+      {
+        type: 'invertedBox',
+        title: 'A Hadművelet Jutalma:',
+        content: 'Minden tesztpilóta, aki csatlakozik a küldetéshez, <strong>50% kedvezményt kap</strong> a teljes tesztrendeléséből. A te tapasztalatod a mi lőszerünk.'
+      },
+      {
+        type: 'callToAction',
+        content: '<a href="/drive-beta-jelentkezes">Jelentkezem Tesztpilótának &rarr;</a>'
+      }
+    ]
+  },
+
+  // 3. CIKK: A RÉGI SMASH BURGER HÍR
+  {
+    slug: 'uj-smash-burger-hetfo',
+    title: 'Új Smash Burger Hétfőtől!',
+    summary: 'Végre megérkezett a legújabb büszkeségünk, a tripla sajtos, baconös Smasher. Kóstold meg elsőként!',
+    date: '2025. október 8.',
+    content: '<h2>A Smasher Titka</h2><p>Hónapokig tartó kísérletezés után büszkén mutatjuk be a Smasher burgert...</p>',
+  },
+
+  // 4. CIKK: A RÉGI FAGYI HÉTVÉGE HÍR
+  {
+    slug: 'fagylalt-hetvege',
+    title: 'Fagylalt Hétvége az Astoriánál',
+    summary: 'Ezen a hétvégén minden pisztácia és belga csoki fagyinkhoz ajándék öntet jár. Ne hagyd ki!',
+    date: '2025. október 5.',
+    content: '<p>A hétvége sztárjai a kézműves fagylaltjaink!...</p>',
+  },
+];
+
+export const getAllNews = () => new Promise(resolve => setTimeout(() => resolve(newsData), 200));
+export const getNewsBySlug = slug => new Promise(resolve => setTimeout(() => resolve(newsData.find(a => a.slug === slug)), 200));

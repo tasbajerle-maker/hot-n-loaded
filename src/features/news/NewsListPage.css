@@ -1,0 +1,72 @@
+/* Fájl: src/features/news/NewsListPage.css (MODERN, CARD-DESIGN VERZIÓ) */
+
+/* A konténer, ami körbeveszi az összes hírt */
+.news-list {
+  display: grid;
+  /* Reszponzív rács: Automatikusan annyi oszlopot hoz létre, amennyi elfér,
+     de egy kártya minimum 350px széles. */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem; /* Térköz a kártyák között */
+  padding: 2rem 0; /* Térköz a lista felett és alatt */
+  max-width: 1200px; /* Maximális szélesség, hogy ne folyjon szét */
+  margin: 0 auto; /* Középre igazítás */
+}
+
+/* Egy darab hírkártya stílusa */
+.news-article-summary {
+  background-color: #ffffff;
+  border-radius: 12px; /* Kicsit nagyobb, modernebb lekerekítés */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07); /* Lágyabb, hangsúlyosabb árnyék */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column; /* A kártyán belüli elemeket függőlegesen rendezi */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Animáció */
+  border: 1px solid #eee;
+}
+
+/* Hover effektus: a kártya megemelkedik */
+.news-article-summary:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* A hír címe a kártyán */
+.news-article-summary h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+/* A dátum */
+.news-article-summary .news-date {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+/* A rövid összefoglaló szövege */
+.news-article-summary p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #495057;
+  flex-grow: 1; /* Ez a trükk: a szöveg kitölti a rendelkezésre álló helyet,
+                   így a "Tovább olvasom" linkek egy magasságba kerülnek */
+}
+
+/* A "Tovább olvasom" link */
+.news-read-more {
+  font-weight: bold;
+  color: #0d6efd;
+  text-decoration: none;
+  margin-top: 1.5rem; /* Térköz a szöveg és a link között */
+  align-self: flex-start; /* A link a kártya bal alsó sarkához igazodik */
+  transition: color 0.2s;
+}
+
+.news-read-more:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

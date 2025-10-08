@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+:root {
+  --primary-color: #ff4757;
+  --dark-color: #1e272e;
+  --light-gray-bg: #f7f1e3;
+  --text-color: #3d3d3d;
+  --font-body: 'Poppins', sans-serif;
+}
+
+.eloszto-page.theme-burger { background-color: var(--light-gray-bg); padding: 1rem 0; }
+.news-article-full { max-width: 700px; margin: 1rem auto; background-color: #ffffff; padding: 1.5rem; }
+.news-article-full h1 { font-family: var(--font-body); font-size: 2.2rem; font-weight: 900; text-align: center; color: var(--dark-color); margin-bottom: 0.5rem; line-height: 1.1; }
+.news-article-full .news-date { display: block; text-align: center; font-size: 0.8rem; color: #777; margin-bottom: 4rem; font-family: var(--font-body); }
+
+/* --- A LÉNYEG: A BLOKKOK STÍLUSAI --- */
+.content-block { margin: 0 auto 2.5rem auto; max-width: 620px; }
+.text-align--center { text-align: center; }
+
+.content-block--heading, .content-block--subheading { 
+  font-family: var(--font-body); 
+  text-align: center;
+  line-height: 1.3;
+}
+.content-block--heading { font-size: 1.8rem; font-weight: 700; color: var(--dark-color); }
+.content-block--subheading { font-size: 1.4rem; color: var(--primary-color); }
+
+.content-block--paragraph {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-color);
+}
+.content-block--paragraph strong { color: var(--primary-color); }
+
+/* AZ ORDÍTÓ IDÉZET BLOKK */
+.content-block--quote {
+  font-family: var(--font-body);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  text-align: center;
+  border: none;
+  padding: 2rem 0;
+  margin: 3rem auto;
+  line-height: 1.2;
+  max-width: 500px;
+}
+
+/* A BEMUTATÓ DOBOZ */
+.content-block--feature-box {
+  background-color: #fff8f8;
+  border-left: 5px solid var(--primary-color);
+  padding: 2rem;
+  margin: 3rem auto;
+  border-radius: 8px;
+}
+.content-block--feature-box h4 {
+  margin-top: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--dark-color);
+}
+.content-block--feature-box div {
+  font-family: var(--font-body);
+  line-height: 1.7;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+/* A SÖTÉT LISTA DOBOZ */
+.content-block--highlighted-list {
+  background-color: var(--dark-color);
+  color: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  margin: 3rem auto;
+}
+.content-block--highlighted-list h4 { font-family: var(--font-body); margin-top: 0; font-size: 1.2rem; opacity: 0.8; }
+.content-block--highlighted-list ul { list-style: none; padding-left: 0; margin: 0; }
+.content-block--highlighted-list li { font-size: 1.1rem; line-height: 1.6; }
+.content-block--highlighted-list li:not(:last-child) { margin-bottom: 1rem; }
+
+/* A CALL TO ACTION GOMB */
+.content-block--cta { text-align: center; margin: 4rem 0; }
+.content-block--cta a { display: inline-block; background-color: var(--primary-color); color: #fff; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: bold; font-family: var(--font-body); font-size: 1.2rem; transition: transform 0.2s ease-out; }
+.content-block--cta a:hover { transform: scale(1.05); }
+
+.news-back-link { display: block; text-align: center; margin-top: 4rem; font-weight: bold; font-family: var(--font-body); text-decoration: none; color: var(--dark-color); }
+
+@media (min-width: 768px) {
+  .news-article-full { padding: 3rem 4rem; margin: 3rem auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+  .news-article-full h1 { font-size: 3.5rem; }
+  .content-block--quote { font-size: 3.5rem; }
+}

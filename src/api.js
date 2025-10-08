@@ -1,4 +1,11 @@
-// Fájl: hot-n-loaded/src/api.js (DINAMIKUS, HÁLÓZATBARÁT VERZIÓ)
+// Fájl: hot-n-loaded/src/api.js (TELJES, JAVÍTOTT VERZIÓ)
+
+// --- JAVÍTÁS ITT ---
+// A bonyolult if/else logikát lecseréljük egyetlen sorra,
+// ami fejlesztés közben is az éles, működő backendet használja.
+const API_BASE_URL = 'https://nyaloda.onrender.com';
+
+/* A RÉGI, PROBLÉMÁS LOGIKA (ideiglenesen kikommentelve)
 
 let API_BASE_URL;
 
@@ -11,6 +18,9 @@ if (process.env.NODE_ENV === 'development') {
     // Élesben a Render.com címet használjuk.
     API_BASE_URL = 'https://nyaloda.onrender.com';
 }
+*/
+// --- JAVÍTÁS VÉGE ---
+
 
 console.log(`API hívások a következő címre mennek: ${API_BASE_URL}`);
 
@@ -27,7 +37,9 @@ async function request(endpoint, method = 'GET', body = null) {
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
   
-  const data = await response.json();
+  // Fontos: a .json() hívás hibát dobhat, ha a válasz üres vagy nem json
+  // Ezt érdemes lekezelni a jövőben
+  const data = await response.json(); 
   if (!response.ok) {
     throw new Error(data.message || `Hiba a(z) ${endpoint} hívásakor.`);
   }

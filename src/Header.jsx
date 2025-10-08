@@ -1,6 +1,4 @@
-// Fájl: src/Header.jsx (VÉGLEGES, TELJES VERZIÓ)
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
 import SideMenu from './SideMenu';
@@ -52,6 +50,8 @@ function Header() {
   const [selectedStoreId, setSelectedStoreId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const pultRef = useRef(null);
 
   const { data: kinalatData, loading, error, refresh } = useLiveKinalat();
   
@@ -66,6 +66,19 @@ function Header() {
     setSelectedStoreId(null); 
   };
   
+  // --- A LETISZTÍTOTT LOGIKA ---
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (pultRef.current && !pultRef.current.contains(event.target)) {
+        setPultOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [pultRef]);
+
   const selectedStoreData = kinalatData && selectedStoreId 
     ? kinalatData.find(bolt => bolt.id === selectedStoreId) 
     : null;
@@ -84,7 +97,7 @@ function Header() {
           )}
         </div>
         <div className="header-right">
-          <div className="dropdown-container">
+          <div className="dropdown-container" ref={pultRef}>
             <button className="header-button" onClick={handlePultToggle}>
               <span className="live-text-icon">ÉLŐ</span> 
             </button>
