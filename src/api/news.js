@@ -54,7 +54,7 @@ const newsData = [
   // 2. CIKK: A VÉGLEGES FAGYI KREÁTOR (HELYES MESSENGER LINKKEL)
   {
     slug: 'fagyi-kreator-teljes-szabadsag',
-    title: 'A Világ Szeme Ránk Szegeződik. A Tiéd is?',
+    title: 'A Világ Szeme Ránk Szegeződik ?',
     summary: 'Európában (és talán a világon is) elsőként bemutatjuk a Fagyi Kreátort. Ahol nincsenek szabályok, csak a te alkotásod. Tervezd meg a saját fagyidat, a címkével együtt. Tesztelőket keresünk.',
     date: '2025. október 8.',
     contentBlocks: [
@@ -89,7 +89,7 @@ const newsData = [
     date: '2025. október 8.',
     contentBlocks: [
       { type: 'heading', content: 'A Kényelem Eddig a Multik Kiváltsága Volt.' },
-      { type: 'paragraph', content: 'Választhattál a lélektelen óriások gyors, de kompromisszumos drive-thru ablaka, és a minőség között, amiért ki kellett szállnod, sorban állnod, várnod. Azt mondták, a kettő együtt nem megy. Mi azt mondjuk: dehogynem.' },
+      { type: 'paragraph', content: 'Választhattál a lélektelen óriások gyors, de kompromisszumos drive-thru ablaka, és a minőség között, amiért ki kell szállnod a kocsiból, sorban állnod, várnod. Azt mondták, a kettő együtt nem megy. Mi azt mondjuk: dehogynem.' },
       { type: 'quote', content: 'A Forradalom Házhoz Jön. Vagyis... az Autódhoz.' },
       { type: 'featureBox', title: 'Bemutatkozik a DRIVE! - A VIP Sávod a Minőséghez', content: 'Ez nem egy futószalag. Ez egy személyes szolgáltatás. Rendelj az appban, parkolj le a közelben, és mi kivisszük neked a rendelésed. Pont. Nincs több dilemma a minőség és a sebesség között.' },
       { type: 'subheading', content: 'Nincs Sor. Nincs Várakozás. Nincs Kompromisszum.' },
