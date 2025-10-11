@@ -108,6 +108,53 @@ const newsData = [
       { type: 'callToAction', content: '<a href="https://m.me/nyalodafagyizo?ref=drive-beta" target="_blank" rel="noopener noreferrer">Jelentkezem Tesztpilótának &rarr;</a>' }
     ]
   },
+  // 5. CIKK: ŐSZI TÖKFARAGÓ VARÁZSLAT (CSALÁDI VERZIÓ)
+{
+  slug: 'oszi-tokfarago-varazslat',
+  title: 'TökJó Családi Program: Hozzuk Létre Együtt a Fény Ünnepét!',
+  summary: 'Az ősz egyik legjobb része a közös alkotás. Csatlakozzatok az őszi tökfaragó programunkhoz! Hozzátok el otthon faragott töklámpásotokat, vagy készítsétek el nálunk, és teremtsünk együtt egy varázslatos, világító kiállítást!',
+  date: '2025. október 11.',
+  contentBlocks: [
+    {
+      type: 'heading',
+      content: 'Fényt Gyújtunk az Őszi Estéken!'
+    },
+    {
+      type: 'paragraph',
+      content: 'A hűvös, ropogós levegő, a színes falevelek... és persze a tökfaragás! Az ősz tele van varázslattal, mi pedig szeretnénk ezt veletek együtt megélni. Ezért egy nagy, közös tökfaragásra és kiállításra invitálunk minden családot, baráti társaságot, kicsiket és nagyokat egyaránt.'
+    },
+    {
+      type: 'quote',
+      content: 'Együtt Minden Fényesebb: Minden Lámpás Számít!'
+    },
+    {
+      type: 'subheading',
+      content: 'Hogyan Lehetsz Részese a Varázslatnak?'
+    },
+    {
+      type: 'paragraph',
+      content: 'A célunk, hogy közösen létrehozzuk a környék legszebb és leghangulatosabb töklámpás kiállítását. Kétféleképpen is beszállhattok a mókába:'
+    },
+    {
+      type: 'highlightedList',
+      title: 'Két Lehetőség a Közös Alkotásra:',
+      items: [
+        '🏠 <strong>KÉSZÍTSD EL OTTHON:</strong> Engedd szabadjára a fantáziád, és faragd meg otthon a tökéletes töklámpást! Ha elkészültél, hozd be hozzánk, hogy a mi kiállításunkat díszítse!',
+        '🎨 <strong>ALKOSS NÁLUNK:</strong> Nincs otthon tök, vagy csak a hangulat kedvéért jönnétek? Készülünk nektek is faragnivaló tökökkel. Gyertek el, és alkossunk együtt, itt a helyszínen!'
+      ]
+    },
+    {
+      type: 'featureBox',
+      title: 'Mi Lesz a Tökök Sorsa?',
+      content: 'Minden behozott vagy helyben készített töklámpásnak helyet keresünk, és ahogy leszáll az este, meggyújtjuk bennük a mécseseket. A terv az, hogy október végére egy csodás, világító tök-kiállítás fogadjon mindenkit.'
+    },
+    {
+      type: 'invertedBox',
+      title: 'Ünnepeljünk Együtt: Díjátadó Október 31-én!',
+      content: 'A közös munkát megünnepeljük! A nagy napon, <strong>október 31-én, pénteken</strong>, díjazzuk a három legkreatívabb, legötletesebb vagy legviccesebb alkotás készítőjét. A fődíj egy felejthetetlen családi burger- és fagylaltvacsora lesz nálunk!'
+    }
+  ]
+}
 ];
 
 export const getAllNews = () => new Promise(resolve => setTimeout(() => resolve(newsData), 200));
