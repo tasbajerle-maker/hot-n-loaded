@@ -84,8 +84,8 @@ const newsData = [
   // 3. CIKK: AZ ÚJRAGONDOLT DRIVE! CIKK (HELYES MESSENGER LINKKEL)
   {
     slug: 'drive-beta-teszt-az-elit-alakulat',
-    title: 'Elloptuk a Jövőt a Multiktól. Neked Adjuk.',
-    summary: 'A kényelem eddig a nagyok kiváltsága volt. Eddig. A DRIVE! funkcióval a minőségi kaja talál meg téged a kocsidban. Legyél az elit tesztcsapat tagja, és segíts tökéletesíteni a fegyverünket.',
+    title: 'Egy innovácó, amit mi alkottunk meg !.',
+    summary: 'A kényelem eddig a nagyok kiváltsága volt. Eddig. A DRIVE! funkcióval a minőségi kaja talál meg téged a kocsidban. Legyél a tesztcsapat tagja, és segíts tökéletesíteni a fegyverünket.',
     date: '2025. október 8.',
     contentBlocks: [
       { type: 'heading', content: 'A Kényelem Eddig a Multik Kiváltsága Volt.' },
