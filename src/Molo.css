@@ -8,7 +8,11 @@
   height: 100%;
   overflow: hidden;
   user-select: none;
-  background-size: cover;
+  /* -- JAVÍTVA --
+  'cover' helyett 'auto 100%'-ot használunk, hogy a kép mindig
+  a magasságot töltse ki, és a szélessége túlnyúljon.
+  */
+  background-size: auto 100%;
   background-position: center center;
   transition: background-position 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: grab;
@@ -38,7 +42,6 @@
   pointer-events: none;
   border: 1px solid rgba(255, 255, 255, 0.3);
   animation: slide-hint 3s infinite ease-in-out;
-  /* -- MODOSÍTVA/HOZZÁADVA -- */
   position: relative; /* z-index működéséhez kell */
   z-index: 2;         /* A hó (z-index: 1) fölé kerül */
 }
