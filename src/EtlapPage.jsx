@@ -1,11 +1,15 @@
-// Fájl: src/EtlapPage.jsx (Scrollspy logikával felturbózva)
+// Fájl: src/EtlapPage.jsx (Scrollspy logikával és FAB-bal)
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+// --- MÓDOSÍTVA: Link importálva ---
+import { useLocation, Link } from 'react-router-dom';
 import useDocumentTitle from './hooks/useDocumentTitle';
 import './EtlapPage.css';
 import CategoryNav from './components/CategoryNav';
 import { categories, menuData } from './data/menuData';
+
+// --- ÚJ: Ikon a buborékhoz ---
+const CartIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
 
 function EtlapPage() {
   useDocumentTitle(
@@ -16,14 +20,14 @@ function EtlapPage() {
   const sectionRefs = useRef({});
   const location = useLocation();
   
-  // --- ÚJ RÉSZ KEZDETE ---
+  // --- Scrollspy logika (Változatlan) ---
   const [activeCategory, setActiveCategory] = useState('');
-  const navRef = useRef(null); // Ref a nav sáv magasságához
+  const navRef = useRef(null); 
 
   useEffect(() => {
     const handleScroll = () => {
       const navHeight = navRef.current ? navRef.current.offsetHeight : 0;
-      const scrollPosition = window.scrollY + navHeight + 80; // Offset a jobb érzékelésért
+      const scrollPosition = window.scrollY + navHeight + 80; 
 
       let currentCategory = '';
       categories.forEach(category => {
@@ -37,15 +41,13 @@ function EtlapPage() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Lefuttatjuk egyszer a betöltéskor is
     handleScroll();
 
-    // Takarítás: az event listener eltávolítása, amikor a komponens elhagyja a DOM-ot
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []); // Az üres tömb biztosítja, hogy ez csak egyszer fusson le (fel- és leszereléskor)
-  // --- ÚJ RÉSZ VÉGE ---
+  }, []); 
+  // --- Scrollspy logika vége ---
 
   useEffect(() => {
     const hash = location.hash.substring(1);
@@ -71,15 +73,16 @@ function EtlapPage() {
       <div className="etlap-header-image">
         <h2>Teljes Kínálatunk</h2>
       </div>
-      {/* MÓDOSÍTVA: Ref és az új prop átadása */}
+      
       <div className="etlap-nav-container-sticky" ref={navRef}>
         <CategoryNav 
           categories={categories}
           mode="scroll"
           onCategorySelect={scrollToSection}
-          activeCategory={activeCategory} // Átadjuk az aktív kategóriát
+          activeCategory={activeCategory}
         />
       </div>
+      
       <main className="etlap-content">
         {categories.map(category => (
           menuData[category.id] && menuData[category.id].length > 0 && (
@@ -107,6 +110,15 @@ function EtlapPage() {
           )
         ))}
       </main>
+
+      {/* --- ÚJ "BUBORÉK" HOZZÁADVA --- */}
+      {/* Ez a gomb fixen a képernyőn marad és a fő rendelési oldalra (pl. /drive) visz */}
+      <Link to="/drive" className="etlap-order-fab">
+        <CartIcon />
+        <span className="fab-text">Rendelés</span>
+      </Link>
+      {/* --- ÚJ RÉSZ VÉGE --- */}
+
     </div>
   );
 }

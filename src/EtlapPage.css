@@ -115,3 +115,78 @@
   color: #6c757d;
   line-height: 1.5;
 }
+/* Fájl: src/EtlapPage.css (Kiegészítés) */
+
+/* ... (a meglévő CSS kódod) ... */
+
+.item-ingredients {
+  font-size: 0.9rem;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+/* === ÚJ: "RENDELÉS" BUBORÉK (FAB) === */
+
+.etlap-order-fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 12px 20px;
+  border-radius: 50px; /* Buborék forma */
+  
+  /* Ugyanaz a háttér, mint a nav-sávon */
+  background-size: 400% 400%;
+  background-image: linear-gradient(
+    -45deg, 
+    #ee7752, 
+    #e73c7e, 
+    #23a6d5, 
+    #23d5ab
+  );
+  animation: gradient-animation 15s ease-in-out infinite;
+  
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.etlap-order-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.etlap-order-fab svg {
+  width: 20px;
+  height: 20px;
+}
+
+.etlap-order-fab .fab-text {
+  margin-left: 10px;
+}
+
+/* Mobilon elrejtjük a szöveget, hogy csak a buborék maradjon */
+@media (max-width: 600px) {
+  .etlap-order-fab {
+    padding: 14px;
+    width: 56px; /* Fix méret */
+    height: 56px;
+  }
+  .etlap-order-fab .fab-text {
+    display: none; /* Szöveg elrejtése */
+  }
+  .etlap-order-fab svg {
+     width: 24px;
+     height: 24px;
+  }
+}
