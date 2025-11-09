@@ -2,9 +2,9 @@
 import React, { useRef, useEffect } from 'react';
 import './SnowfallCanvas.css';
 
-const SnowfallCanvas = ({ numberOfFlakes = 100, zIndex = 1 }) => {
+const SnowfallCanvas = ({ numberOfFlakes = 150, zIndex = 1 }) => {
   const canvasRef = useRef(null);
-  const flakesRef = useRef([]); // A hópelyhek adatai (nem DOM elemek!)
+  const flakesRef = useRef([]); 
   const animationFrameId = useRef(null);
 
   useEffect(() => {
@@ -19,14 +19,15 @@ const SnowfallCanvas = ({ numberOfFlakes = 100, zIndex = 1 }) => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       
-      // Újrageneráljuk a hópelyheket, ha átméreteződik
       flakesRef.current = [];
       for (let i = 0; i < numberOfFlakes; i++) {
         flakesRef.current.push({
           x: random(0, canvas.width),
           y: random(0, canvas.height),
           radius: random(1, 3.5), // Méret
-          density: random(1, numberOfFlakes), // Sebességfakt
+          // --- JAVÍTVA ---
+          // A sebesség (density) most már egy kis, fix tartományból jön
+          density: random(0.5, 2.5), 
           opacity: random(0.3, 1),
         });
       }
@@ -42,8 +43,10 @@ const SnowfallCanvas = ({ numberOfFlakes = 100, zIndex = 1 }) => {
       for (let i = 0; i < numberOfFlakes; i++) {
         const flake = flakesRef.current[i];
         
-        // Esés logika
-        flake.y += Math.pow(flake.density, 2) * 0.001; // Lassabb esés
+        // --- JAVÍTVA: ESÉS LOGIKA ---
+        // Egy sokkal egyszerűbb és lassabb képlet.
+        // Ha még lassabbat akarsz, a '0.3'-at csökkentsd (pl. 0.2).
+        flake.y += flake.density * 0.3; 
         flake.x += Math.sin(flake.y * 0.05) * 0.5; // Enyhe szitálás
 
         // Ha a hópehely alulra ért, visszatesszük felülre

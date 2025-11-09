@@ -8,12 +8,12 @@
   height: 100%;
   overflow: hidden;
   user-select: none;
-  /* -- JAVÍTVA --
-  'cover' helyett 'auto 100%'-ot használunk, hogy a kép mindig
-  a magasságot töltse ki, és a szélessége túlnyúljon.
-  */
-  background-size: auto 100%;
-  background-position: center center;
+  
+  /* Garantálja a kitöltést, nincs ismétlődés, alulra igazítva */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center bottom; 
+
   transition: background-position 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: grab;
 }
@@ -41,15 +41,8 @@
   padding: 10px 20px;
   pointer-events: none;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  animation: slide-hint 3s infinite ease-in-out;
-  position: relative; /* z-index működéséhez kell */
-  z-index: 2;         /* A hó (z-index: 1) fölé kerül */
-}
-
-@keyframes slide-hint {
-  0%, 100% { transform: translate(-50%, -50%) translateX(0px); }
-  25% { transform: translate(-50%, -50%) translateX(-15px); }
-  75% { transform: translate(-50%, -50%) translateX(15px); }
+  position: relative; 
+  z-index: 2;         
 }
 
 .drag-text {
@@ -63,8 +56,6 @@
 .drag-indicator .arrow svg {
   stroke: #333;
 }
-
-/* Ezt a részt add hozzá a Molo.css végéhez */
 
 .b2b-drawer-container {
   position: absolute;
@@ -88,64 +79,7 @@
 
 .b2b-drawer-button:hover {
   background-color: rgba(45, 55, 72, 1);
+  /* ITT VOLT A HIBA, JAVÍTVA -2px-re */
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* --- PEHELYSÚLYÚ HAVAZÁS ANIMÁCIÓ (HOZZÁADVA) --- */
-
-@keyframes snowfall {
-  from {
-    /* Enyhe oldalazó mozgással együtt esik */
-    background-position: 0 0;
-  }
-  to {
-    /* 100vh-t esik (pont egy képernyőt) és 50px-et oldalaz */
-    background-position: 50px 100vh;
-  }
-}
-
-@keyframes snowfall-fast {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    /* Gyorsabb esés (dupla) és gyorsabb oldalazás */
-    background-position: 150px 200vh;
-  }
-}
-
-/* A trükk: A .molo-container ::before és ::after pseudo-elemeit
-  használjuk a havazás rétegeinek, így nem kell új DOM elem.
-*/
-.molo-container::before,
-.molo-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* Ne lehessen ráklikkelni */
-  z-index: 1;         /* A háttérkép (container) fölé, de a tartalom (z-index: 2) mögé */
-}
-
-/* Hátsó, lassabb, apróbb réteg */
-.molo-container::before {
-  /* Hópelyhek létrehozása radial-gradienttel */
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.6) 1px, transparent 1px);
-  /* Sűrűség */
-  background-size: 150px 150px;
-  /* Animáció */
-  animation: snowfall 30s linear infinite;
-}
-
-/* Első, gyorsabb, nagyobb réteg */
-.molo-container::after {
-  background-image: radial-gradient(circle, white 2px, transparent 2px);
-  background-size: 100px 100px;
-  /* Eltolt kezdőpozíció, hogy ne egyszerre mozogjanak */
-  background-position: 50px 50px; 
-  /* Gyorsabb animáció */
-  animation: snowfall-fast 12s linear infinite;
 }

@@ -7,9 +7,7 @@ import useDocumentTitle from './hooks/useDocumentTitle';
 import './Molo.css';
 import B2BDrawer from './B2BDrawer';
 import Modal from './components/Modal';
-import SnowfallCanvas from './components/SnowfallCanvas'; // <-- HOZZÁADVA A CANVAS HAVAZÁS
-
-// A 'moloPanorama' IMPORT ELTÁVOLÍTVA
+import SnowfallCanvas from './components/SnowfallCanvas'; 
 
 const LeftArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>;
 const RightArrowIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>;
@@ -64,9 +62,10 @@ function Molo() {
   return (
     <>
       {/* JAVÍTVA: A háttérképet a public mappából töltjük be */}
-      <div {...handlers} className={containerClass} style={{backgroundImage: `url(/images/molo.png)`, backgroundPosition: `${bgPosition}% center`}}>
+      {/* --- JAVÍTVA: A backgroundPosition 'center' helyett 'bottom' --- */}
+      <div {...handlers} className={containerClass} style={{backgroundImage: `url(/images/molo.png)`, backgroundPosition: `${bgPosition}% bottom`}}>
         
-        {/* --- HOZZÁADVA A PROFI HAVAZÁS --- */}
+        {/* --- PROFI HAVAZÁS --- */}
         <SnowfallCanvas numberOfFlakes={150} zIndex={1} /> 
         
         <div className="drag-indicator">
