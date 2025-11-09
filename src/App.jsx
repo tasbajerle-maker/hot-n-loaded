@@ -1,6 +1,3 @@
-// Fájl: src/App.jsx
-// JAVÍTOTT VERZIÓ
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -13,17 +10,18 @@ import EtlapPage from './EtlapPage';
 // TÖRÖLVE: import NewsPage from './NewsPage';
 import SzervizPage from './SzervizPage';
 import KinalatPage from './KinalatPage';
-import KuponPage from './KuponPage';
+// TÖRÖLVE: import KuponPage from './KuponPage'; // Erre már nincs szükség
 import RolunkPage from './RolunkPage';
 import KapcsolatPage from './KapcsolatPage';
 import FagyiDetailPage from './FagyiDetailPage';
 import Footer from './components/Footer';
 
-// --- HOZZÁADVA: AZ ÚJ, ÉRTELMES HÍR KOMPONENSEK IMPORTJA ---
-// Feltételezem, hogy a javasolt struktúrában hoztad létre őket.
-// Ha máshova tetted, javítsd az elérési utat!
+// --- HOZZÁADVA: A HÍR KOMPONENSEK ---
 import NewsListPage from './features/news/NewsListPage';
 import NewsDetailPage from './features/news/NewsDetailPage';
+
+// --- HOZZÁADVA: AZ ÚJ ÁTIRÁNYÍTÓ ---
+import ExternalRedirect from './components/ExternalRedirect'; // Feltételezve, hogy a components mappába tetted
 
 import './App.css';
 
@@ -39,15 +37,18 @@ function App() {
           <Route path="/fagyi/:fagyiId" element={<FagyiDetailPage />} />
           <Route path="/etlap" element={<EtlapPage />} />
           
-          {/* --- JAVÍTÁS ITT: EZ A KÉT SOR KELL NEKED --- */}
-          {/* 1. Az "étlap": Megjeleníti az összes hír listáját a /hirek URL-en */}
           <Route path="/hirek" element={<NewsListPage />} />
-          {/* 2. A "kaja": Megjelenít egy konkrét hírt a /hirek/cikk-url-neve URL-en */}
           <Route path="/hirek/:slug" element={<NewsDetailPage />} />
 
           <Route path="/szerviz" element={<SzervizPage />} />
           <Route path="/kinalat/:boltId" element={<KinalatPage />} />
-          <Route path="/kuponok" element={<KuponPage />} />
+          
+          {/* --- JAVÍTÁS ITT: A KUPON OLDAL MOST MÁR KÜLSŐ LINKRE VISZ --- */}
+          <Route 
+            path="/kuponok" 
+            element={<ExternalRedirect to="https://enfagyi-app-122a0.web.app/my-coupons" />} 
+          />
+          
           <Route path="/rolunk" element={<RolunkPage />} />
           <Route path="/kapcsolat" element={<KapcsolatPage />} />
         </Routes>
