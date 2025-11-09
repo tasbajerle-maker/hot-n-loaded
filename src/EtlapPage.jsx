@@ -1,14 +1,14 @@
-// Fájl: src/EtlapPage.jsx (Scrollspy logikával és FAB-bal)
+// Fájl: src/EtlapPage.jsx (Scrollspy logikával és külső linkes FAB-bal)
 
 import React, { useState, useEffect, useRef } from 'react';
-// --- MÓDOSÍTVA: Link importálva ---
-import { useLocation, Link } from 'react-router-dom';
+// --- MÓDOSÍTVA: 'Link'-re már nincs szükség, csak 'useLocation'-re ---
+import { useLocation } from 'react-router-dom';
 import useDocumentTitle from './hooks/useDocumentTitle';
 import './EtlapPage.css';
 import CategoryNav from './components/CategoryNav';
 import { categories, menuData } from './data/menuData';
 
-// --- ÚJ: Ikon a buborékhoz ---
+// --- Ikon a buborékhoz (Változatlan) ---
 const CartIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
 
 function EtlapPage() {
@@ -111,13 +111,17 @@ function EtlapPage() {
         ))}
       </main>
 
-      {/* --- ÚJ "BUBORÉK" HOZZÁADVA --- */}
-      {/* Ez a gomb fixen a képernyőn marad és a fő rendelési oldalra (pl. /drive) visz */}
-      <Link to="/drive" className="etlap-order-fab">
+      {/* --- JAVÍTVA: <a> tag a <Link> helyett, a külső URL-lel --- */}
+      <a 
+        href="https://enfagyi-app-122a0.web.app/drive" 
+        className="etlap-order-fab"
+        target="_blank" /* Új lapon nyitja meg */
+        rel="noopener noreferrer" /* Biztonsági beállítás külső linkekhez */
+      >
         <CartIcon />
         <span className="fab-text">Rendelés</span>
-      </Link>
-      {/* --- ÚJ RÉSZ VÉGE --- */}
+      </a>
+      {/* --- JAVÍTÁS VÉGE --- */}
 
     </div>
   );
