@@ -68,7 +68,7 @@ function Molo() {
         
         {/* --- ÚJ, KÖZÉPSŐ GOMB HOZZÁADVA --- */}
         <a 
-          href="https://enfagyi-app-122a0.web.app/drive" 
+          href="https://enfagyi-app-122a0.web.app" 
           className="molo-app-button"
           target="_blank" 
           rel="noopener noreferrer"

@@ -83,15 +83,11 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
-/* Fájl: src/Molo.css (Kiegészítés) */
 
-/* ... (a meglévő .molo-container, .drag-indicator stb. stílusai) ... */
-
-
-/* === ÚJ KÖZÉPSŐ "APP" GOMB === */
+/* === ÚJ KÖZÉPSŐ "APP" GOMB (HOZZÁADVA) === */
 .molo-app-button {
   position: absolute;
-  /* Középre igazítva, de a "HÚZD" felirat fölé pozícionálva */
+  /* Középre igazítva, de a "HÚZD" felirat fölé pozícionálva (85% top) */
   left: 50%;
   top: 45%; 
   transform: translate(-50%, -50%);
