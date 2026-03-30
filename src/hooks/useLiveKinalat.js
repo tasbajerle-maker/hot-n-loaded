@@ -1,32 +1,21 @@
-// Fájl: src/hooks/useLiveKinalat.js (A VÉGLEGES, HELYES VERZIÓ)
+// Fájl: src/hooks/useLiveKinalat.js (ÁTMENETI, BIZTONSÁGOS VERZIÓ)
 
-import { useState, useEffect, useCallback } from 'react';
-// EZ A HELYES SOR:
-import { getLiveKinalat } from '../api.js'; 
+import { useState } from 'react';
+// KIKOMMENTELVE: Mivel nincs backend, ne is próbáljuk behívni az api.js-ből.
+// import { getLiveKinalat } from '../api.js'; 
 
 function useLiveKinalat() {
-  const [kinalat, setKinalat] = useState({
+  // Fix, statikus állapotot adunk vissza. Nem töltünk, nem várunk.
+  const [kinalat] = useState({
     data: null,
-    loading: true,
-    error: null,
+    loading: false, // Azonnal false, hogy ne pörögjön a töltés ikon a vendég arcába
+    // Ez a szöveg fog megjelenni az oldalon a hibaágon. 
+    // Pont elég ahhoz, hogy tudják: a webappba kell menniük.
+    error: 'Az élő fagyipult jelenleg frissítés alatt áll. A teljes kínálatot a Webappban találod!',
   });
 
-  const fetchData = useCallback(async () => {
-    setKinalat(prev => ({ ...prev, loading: true }));
-    try {
-      const data = await getLiveKinalat();
-      setKinalat({ data, loading: false, error: null });
-    } catch (error) {
-      console.error("Hiba a kínálat lekérése közben:", error);
-      setKinalat({ data: null, loading: false, error: error.message || 'Hiba a betöltés során.' });
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-    const intervalId = setInterval(fetchData, 120000); 
-    return () => clearInterval(intervalId);
-  }, [fetchData]);
+  // A fetchData-t és a setInterval-t teljesen kivettük, 
+  // hogy ne terheljük a klienst és ne dobáljunk felesleges konzol hibákat.
 
   return kinalat;
 }
