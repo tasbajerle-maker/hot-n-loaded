@@ -229,8 +229,11 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
                 </AnimatePresence>
               </div>
 
+              {/* ITT VAN AZ ÚJ LINKED BEÁLLÍTVA */}
               <motion.a
-                href="https://webappod.hu"
+                href="https://enfagyi-app-122a0.web.app/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="im-cta-btn"
                 style={{ backgroundColor: theme.btnBg, color: theme.btnText, textDecoration: 'none' }}
                 whileTap={{ scale: 0.95 }}
@@ -310,7 +313,7 @@ const styles = `
   .im-cta-btn { width: 100%; border: none; padding: 14px; border-radius: 14px; font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.15); transition: transform 0.2s, background-color 0.3s; }
   .im-rail-area { position: relative; width: 100%; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); }
   .im-rail-area::after { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 30px; background: linear-gradient(to right, transparent, rgba(244,239,233,1)); pointer-events: none; z-index: 5; }
-  .im-rail-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 12px 30px 12px 16px; }
+  .im-rail-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 12px 30px 24px 16px; margin-bottom: env(safe-area-inset-bottom, 0px); }
   .im-rail-track::-webkit-scrollbar { display: none; }
   .im-rail-item { scroll-snap-align: center; flex: 0 0 100px; position: relative; background: #fff; border: 2px solid transparent; border-radius: 16px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); outline: none; -webkit-tap-highlight-color: transparent; }
   .im-rail-icon { font-size: 28px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); position: relative; z-index: 2; }

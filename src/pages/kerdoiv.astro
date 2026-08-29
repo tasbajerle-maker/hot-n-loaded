@@ -3,66 +3,103 @@ import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
 ---
 
-<Layout title="Mit Kívánsz? Kérdőív | Nyaloda">
+<Layout title="Mondd el a tutit! Kérdőív | Nyaloda">
   <div class="app-wrapper">
     <TopBar cartCount={0} />
     
     <main class="page">
       <header class="page-header">
         <a href="/" class="minimal-back">← Vissza</a>
-        <h1>"Mit Kívánsz?" Kérdőív</h1>
+        <h1>Mondd el a tutit!</h1>
         <p>Ne fogd vissza magad, mondd el, mi a szitu! A véleményedből építkezünk.</p>
       </header>
 
       <section class="survey-section">
         <div class="survey-card">
-          <form name="Nyaloda-Teli-Kivansag" method="POST" data-netlify="true" class="survey-form">
-            <input type="hidden" name="form-name" value="Nyaloda-Teli-Kivansag" />
+          <!-- A data-netlify="true" biztosítja, hogy a válaszok beessenek a Netlify-ba -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" class="survey-form">
+            <input type="hidden" name="form-name" value="Nyaloda-Velemeny" />
             
             <!-- 1. KÉRDÉS -->
             <div class="form-group">
-              <label>1. Mi volt ma a legnagyobb durranás?</label>
+              <label>1. A környezet és a felújítások</label>
+              <p class="hint">Az elmúlt időben elég sok energiát és pénzt tettünk a hely szépítésébe.</p>
               <div class="radio-group">
-                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Fagyi" required /> A fagyi, mint mindig. 🍦</label>
-                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Minifánk" /> Az új minifánk! (Végre valami új) 🍩</label>
-                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Programok" /> A programok / ugrálóvár. 🎈</label>
-                <label class="radio-label">
-                  <input type="radio" name="legjobb_dolog" value="Egyéb" id="egyeb-radio" /> Egyéb:
-                  <input type="text" name="legjobb_egyeb" class="inline-text" placeholder="Írd ide..." />
-                </label>
+                <label class="radio-label"><input type="radio" name="kornyezet" value="A_Eszrevettem" required /> 😎 A: Persze, egyből feltűnt! Sokat dob a hely hangulatán.</label>
+                <label class="radio-label"><input type="radio" name="kornyezet" value="B_Nem_figyeltem" /> 🤔 B: Őszintén szólva nem is figyeltem, de most, hogy mondjátok...</label>
+                <label class="radio-label"><input type="radio" name="kornyezet" value="C_Csak_kaja" /> 🍔 C: Ne haragudjatok, de engem csak a kaja érdekel.</label>
               </div>
             </div>
 
             <!-- 2. KÉRDÉS -->
             <div class="form-group">
-              <label>2. Jön a hideg, a fagyinak lassan annyi. Mi venné rá a fenekedet, hogy télen is rendelj tőlünk vagy beugorj?</label>
+              <label>2. Receptúrák és fejlesztések</label>
+              <p class="hint">Folyamatosan finomítjuk a fagyi- és a burger-recepteket.</p>
               <div class="radio-group">
-                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Forró desszert" required /> Durva forró desszertek (gofri, még több fánk). 🥞</label>
-                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Burgerek" /> Brutál szaftos burgerek a Hot & Loaded-ből (a frissen vágott marha télen is kell). 🍔</label>
-                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Forró ital" /> Különleges téli forró italok. ☕</label>
-                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Hibernálódok" /> Engem télen hagyjatok, hibernálódom. 🐻</label>
+                <label class="radio-label"><input type="radio" name="receptura" value="A_Szintlepes" required /> 🔥 A: Érzem a törődést, szerintem határozottan szintet léptetek!</label>
+                <label class="radio-label"><input type="radio" name="receptura" value="B_Jo_ez_igy" /> ✋ B: Eddig is nagyon bejött, légyszi, ne változtassátok meg túlságosan!</label>
+                <label class="radio-label"><input type="radio" name="receptura" value="C_Mindegy" /> 🧊 C: Nekem az a lényeg, hogy a fagyi hűsítsen, a burger meg laktasson.</label>
               </div>
             </div>
 
             <!-- 3. KÉRDÉS -->
             <div class="form-group">
-              <label>3. Őszintén: tudtad, hogy van saját webappunk, ahol pofonegyszerű a házhozszállítás?</label>
+              <label>3. A "Nyaloda Élmény"</label>
+              <p class="hint">Célunk, hogy igazi közösségi tér is legyünk, ne csak egy sima falatozó.</p>
               <div class="radio-group">
-                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Naná" required /> Naná, már a kezdőképernyőmön van! 📱</label>
-                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Tudtam de nem rendeltem" /> Tudtam, de még sosem rendeltem.</label>
-                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Nem tudtam" id="no-webapp" /> Most hallok róla először, de érdekel.</label>
+                <label class="radio-label"><input type="radio" name="elmeny" value="A_Johetnek_programok" required /> 🎉 A: Maximálisan! Nagyon adnám, ha lennének jó programok.</label>
+                <label class="radio-label"><input type="radio" name="elmeny" value="B_Enni_jovok" /> 🤷‍♂️ B: Nem rossz ötlet, de én elsősorban tényleg csak enni jövök.</label>
+                <label class="radio-label"><input type="radio" name="elmeny" value="C_Csak_gyorsan" /> 🏃‍♂️ C: Engem nem vonzanak a programok, csak kapjam meg a rendelést gyorsan.</label>
+              </div>
+            </div>
+
+            <!-- 4. KÉRDÉS (Több is választható - Checkbox) -->
+            <div class="form-group">
+              <label>4. Jövőkép: Mit látnál szívesen?</label>
+              <p class="hint">Szerinted mi hiányzik nálunk a legjobban? (Többet is bejelölhetsz!)</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Extrem_izek" /> 🤯 Még bátrabb, különlegesebb ízkombinációk.</label>
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Mentes_opciok" /> 🌱 Több mentes és alternatív opció.</label>
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Programok" /> 🎸 Élőzene, DJ, vagy más helyszíni programok.</label>
+                <label class="radio-label" style="flex-wrap: wrap;">
+                  <input type="checkbox" name="jovokep" value="Mas_otlet" /> ✍️ Más ötletem van:
+                  <input type="text" name="jovokep_mas" class="inline-text" placeholder="Ide írhatod..." />
+                </label>
+              </div>
+            </div>
+
+            <!-- 5. KÉRDÉS (Rejtett promóval a C válasznál) -->
+            <div class="form-group">
+              <label>5. A téli nyitvatartás kérdése</label>
+              <p class="hint">Tudtad egyáltalán, hogy a Király utcai bázisunk télen sem zár be?</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="A_Alap" required /> 💪 A: Alap! Télen is ott melegszem fel a kedvenceimmel.</label>
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="B_Azt_hittem_bezartok" /> 🤦‍♂️ B: Tényleg? Azt hittem, ti is bezártok télen.</label>
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="C_Hazhozszallitas" id="delivery-radio" /> 🏠 C: Jó tudni, de télen ki se mozdulok. Jöhet a házhozszállítás!</label>
               </div>
               
-              <!-- EZ ugrik fel, ha azt jelöli, hogy még nem ismeri -->
+              <!-- EZ ugrik fel, ha a házhozszállítást jelöli be -->
               <div id="webapp-promo" class="hidden-promo">
-                <p><strong>Akkor ezt csekkold le azonnal! 👇</strong></p>
+                <p><strong>Akkor a rendelős appunkat egyenesen neked találtuk ki! 👇</strong></p>
                 <a href="https://enfagyi-app-122a0.web.app" target="_blank" class="promo-btn">Megnézem a Webappot 🚀</a>
               </div>
             </div>
 
-            <!-- 4. KÉRDÉS -->
+            <!-- 6. KÉRDÉS -->
             <div class="form-group">
-              <label for="feketeleves">4. Na és most jöhet a feketeleves. Mi az, ami hiányzik nálunk, vagy amin feltétlenül változtatnunk kéne?</label>
+              <label>6. Kira és Brúnó története (Nem csak gyerekeknek!)</label>
+              <p class="hint">Milyen formában látnátok a kabaláinkat a legszívesebben?</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="kabalak" value="A_Rajzfilm" required /> 📺 A: Jöhet egy rövid rajzfilmsorozat!</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="B_Mesekonyv" /> 📖 B: Én a kézzelfogható dolgokat szeretem: mesekönyv, színező.</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="C_Mindketto" /> 🚀 C: Mindkettő szuper ötlet! Jöhet minden.</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="D_Hidegen_hagy" /> 🥱 D: Minket ez kevésbé köt le, fókuszáljatok az ételekre.</label>
+              </div>
+            </div>
+
+            <!-- FEKETELEVES / SZABAD SZÖVEGES RÉSZ -->
+            <div class="form-group">
+              <label for="feketeleves">7. Na és most jöhet a feketeleves. Mi az, ami hiányzik nálunk, vagy amin feltétlenül változtatnunk kéne?</label>
               <p class="hint">Bírjuk a kritikát, adjátok ki magatokból!</p>
               <textarea id="feketeleves" name="feketeleves" rows="4" placeholder="Szerintem az a baj, hogy..."></textarea>
             </div>
@@ -83,15 +120,15 @@ import TopBar from '../components/TopBar.astro';
 </Layout>
 
 <script>
-  // Varázslat a 3. kérdéshez: ha a "Nem tudtam" opciót választja, megjelenik a gomb!
+  // Varázslat az 5. kérdéshez: ha a házhozszállítást kéri, megjelenik a gomb!
   document.addEventListener('DOMContentLoaded', () => {
-    const radioBtns = document.querySelectorAll('input[name="webapp_ismertseg"]');
+    const radioBtns = document.querySelectorAll('input[name="teli_nyitva"]');
     const promoDiv = document.getElementById('webapp-promo');
-    const noWebappRadio = document.getElementById('no-webapp');
+    const deliveryRadio = document.getElementById('delivery-radio');
 
     radioBtns.forEach(btn => {
       btn.addEventListener('change', () => {
-        if (noWebappRadio && noWebappRadio.checked) {
+        if (deliveryRadio && deliveryRadio.checked) {
           promoDiv.style.display = 'block';
         } else {
           promoDiv.style.display = 'none';
@@ -122,11 +159,11 @@ import TopBar from '../components/TopBar.astro';
 
   .form-group { display: flex; flex-direction: column; gap: 12px; }
   .form-group label { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); font-weight: 400; line-height: 1.2;}
-  .form-group .hint { font-size: 12px; color: #666; margin: -8px 0 0 0; font-style: italic; }
+  .form-group .hint { font-size: 13px; color: #666; margin: -8px 0 0 0; font-style: italic; }
   
   .radio-group { display: flex; flex-direction: column; gap: 12px; background: var(--paper); padding: 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); }
   .radio-label { display: flex; align-items: flex-start; gap: 12px; font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-transform: none !important; line-height: 1.4;}
-  .radio-label input[type="radio"] { margin-top: 3px; accent-color: var(--ember); width: 16px; height: 16px;}
+  .radio-label input[type="radio"], .radio-label input[type="checkbox"] { margin-top: 3px; accent-color: var(--ember); width: 18px; height: 18px;}
   
   .inline-text { margin-top: 8px; width: 100%; font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); outline: none; }
   .inline-text:focus { border-color: var(--ember); }

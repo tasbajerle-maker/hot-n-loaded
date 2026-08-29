@@ -13,7 +13,7 @@ const fagyiData: MenuItem[] = [
     nutrition: { calories: 467, protein: 11.9, carbs: 72.5, fat: 14.3 },
     allergens: ['Glutén', 'Tojás', 'Tej', 'Nyomokban mogyoró/diófélék'], emoji: '🍩', imageUrl: '/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg'
   },
-  
+
   // --- PRÉMIUM FAGYIK (750 / 1300) ---
   {
     id: 'f-pisztacia', name: 'Pisztácia Mennyország', category: 'Fagyik', 
@@ -202,7 +202,7 @@ const fagyiData: MenuItem[] = [
 <Layout title="Kézműves Fagyik | Fagyi és Burger Mennyország">
   <div class="app-wrapper fixed-app">
     <TopBar cartCount={2} />
-    
+
     <main class="page fixed-page">
       <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -224,7 +224,8 @@ const fagyiData: MenuItem[] = [
   }
 
   .fixed-app {
-    height: 100vh;
+    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
+    height: 100dvh; 
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -238,7 +239,8 @@ const fagyiData: MenuItem[] = [
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding-bottom: 0px; 
+    /* Apple iPhone "Safe Area" támogatása alul */
+    padding-bottom: env(safe-area-inset-bottom, 0px); 
     overflow: hidden; 
   }
 
@@ -270,12 +272,13 @@ const fagyiData: MenuItem[] = [
     transform: scale(0.9); 
     background: rgba(255, 255, 255, 0.85); 
   }
-  
+
   .menu-section { 
     flex: 1; 
     display: flex; 
     flex-direction: column; 
-    padding: 0 8px 8px;
+    /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
+    padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
     overflow: hidden; 
   }
 </style>
