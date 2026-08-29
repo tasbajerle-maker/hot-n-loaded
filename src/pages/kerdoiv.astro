@@ -1,0 +1,165 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Mit Kívánsz? Kérdőív | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={0} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>"Mit Kívánsz?" Kérdőív</h1>
+        <p>Ne fogd vissza magad, mondd el, mi a szitu! A véleményedből építkezünk.</p>
+      </header>
+
+      <section class="survey-section">
+        <div class="survey-card">
+          <form name="Nyaloda-Teli-Kivansag" method="POST" data-netlify="true" class="survey-form">
+            <input type="hidden" name="form-name" value="Nyaloda-Teli-Kivansag" />
+            
+            <!-- 1. KÉRDÉS -->
+            <div class="form-group">
+              <label>1. Mi volt ma a legnagyobb durranás?</label>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Fagyi" required /> A fagyi, mint mindig. 🍦</label>
+                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Minifánk" /> Az új minifánk! (Végre valami új) 🍩</label>
+                <label class="radio-label"><input type="radio" name="legjobb_dolog" value="Programok" /> A programok / ugrálóvár. 🎈</label>
+                <label class="radio-label">
+                  <input type="radio" name="legjobb_dolog" value="Egyéb" id="egyeb-radio" /> Egyéb:
+                  <input type="text" name="legjobb_egyeb" class="inline-text" placeholder="Írd ide..." />
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. KÉRDÉS -->
+            <div class="form-group">
+              <label>2. Jön a hideg, a fagyinak lassan annyi. Mi venné rá a fenekedet, hogy télen is rendelj tőlünk vagy beugorj?</label>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Forró desszert" required /> Durva forró desszertek (gofri, még több fánk). 🥞</label>
+                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Burgerek" /> Brutál szaftos burgerek a Hot & Loaded-ből (a frissen vágott marha télen is kell). 🍔</label>
+                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Forró ital" /> Különleges téli forró italok. ☕</label>
+                <label class="radio-label"><input type="radio" name="teli_kivansag" value="Hibernálódok" /> Engem télen hagyjatok, hibernálódom. 🐻</label>
+              </div>
+            </div>
+
+            <!-- 3. KÉRDÉS -->
+            <div class="form-group">
+              <label>3. Őszintén: tudtad, hogy van saját webappunk, ahol pofonegyszerű a házhozszállítás?</label>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Naná" required /> Naná, már a kezdőképernyőmön van! 📱</label>
+                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Tudtam de nem rendeltem" /> Tudtam, de még sosem rendeltem.</label>
+                <label class="radio-label"><input type="radio" name="webapp_ismertseg" value="Nem tudtam" id="no-webapp" /> Most hallok róla először, de érdekel.</label>
+              </div>
+              
+              <!-- EZ ugrik fel, ha azt jelöli, hogy még nem ismeri -->
+              <div id="webapp-promo" class="hidden-promo">
+                <p><strong>Akkor ezt csekkold le azonnal! 👇</strong></p>
+                <a href="https://enfagyi-app-122a0.web.app" target="_blank" class="promo-btn">Megnézem a Webappot 🚀</a>
+              </div>
+            </div>
+
+            <!-- 4. KÉRDÉS -->
+            <div class="form-group">
+              <label for="feketeleves">4. Na és most jöhet a feketeleves. Mi az, ami hiányzik nálunk, vagy amin feltétlenül változtatnunk kéne?</label>
+              <p class="hint">Bírjuk a kritikát, adjátok ki magatokból!</p>
+              <textarea id="feketeleves" name="feketeleves" rows="4" placeholder="Szerintem az a baj, hogy..."></textarea>
+            </div>
+
+            <!-- TÉLI NYITVATARTÁS INFO BLOKK -->
+            <div class="winter-alert">
+              <h3>❄️ Téli Haditerv ❄️</h3>
+              <p>Mielőtt elküldöd, vésd az eszedbe: hiába jön a hideg, a <strong>Hot & Loaded burgerek</strong> pörögnek tovább!</p>
+              <p class="hours"><strong>Téli Nyitvatartás: MINDEN NAP 11:00 - 21:00</strong></p>
+            </div>
+
+            <button type="submit" class="submit-btn">Mehet a válasz! 🚀</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  // Varázslat a 3. kérdéshez: ha a "Nem tudtam" opciót választja, megjelenik a gomb!
+  document.addEventListener('DOMContentLoaded', () => {
+    const radioBtns = document.querySelectorAll('input[name="webapp_ismertseg"]');
+    const promoDiv = document.getElementById('webapp-promo');
+    const noWebappRadio = document.getElementById('no-webapp');
+
+    radioBtns.forEach(btn => {
+      btn.addEventListener('change', () => {
+        if (noWebappRadio && noWebappRadio.checked) {
+          promoDiv.style.display = 'block';
+        } else {
+          promoDiv.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.8; margin: 0; line-height: 1.4; font-weight: 500;}
+
+  .survey-section { padding: 16px; margin-bottom: 40px; }
+  
+  .survey-card {
+      background: #fff; padding: 24px; border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+  }
+
+  .survey-form { display: flex; flex-direction: column; gap: 32px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 12px; }
+  .form-group label { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); font-weight: 400; line-height: 1.2;}
+  .form-group .hint { font-size: 12px; color: #666; margin: -8px 0 0 0; font-style: italic; }
+  
+  .radio-group { display: flex; flex-direction: column; gap: 12px; background: var(--paper); padding: 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); }
+  .radio-label { display: flex; align-items: flex-start; gap: 12px; font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-transform: none !important; line-height: 1.4;}
+  .radio-label input[type="radio"] { margin-top: 3px; accent-color: var(--ember); width: 16px; height: 16px;}
+  
+  .inline-text { margin-top: 8px; width: 100%; font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); outline: none; }
+  .inline-text:focus { border-color: var(--ember); }
+
+  textarea {
+      font-family: 'Work Sans', sans-serif; font-size: 14px;
+      padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1);
+      background: var(--paper); outline: none; transition: border-color 0.2s; resize: vertical;
+  }
+  textarea:focus { border-color: var(--ember); }
+
+  /* Dinamikusan felugró webapp gomb */
+  .hidden-promo { display: none; background: var(--cheese); padding: 16px; border-radius: 12px; border: 2px dashed var(--char-900); margin-top: 8px; text-align: center; animation: popIn 0.3s ease-out;}
+  .hidden-promo p { margin: 0 0 12px 0; font-size: 14px; color: var(--char-900); }
+  .promo-btn { display: inline-block; background: var(--char-900); color: var(--cream); text-decoration: none; font-family: 'Anton', sans-serif; text-transform: uppercase; padding: 10px 20px; border-radius: 8px; letter-spacing: 0.05em; transition: transform 0.2s; }
+  .promo-btn:active { transform: scale(0.95); }
+
+  /* Téli infó blokk */
+  .winter-alert { background: linear-gradient(135deg, rgba(255, 90, 31, 0.1), transparent); border-left: 4px solid var(--ember); padding: 16px; border-radius: 0 12px 12px 0; }
+  .winter-alert h3 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; margin: 0 0 8px 0; color: var(--char-900); }
+  .winter-alert p { font-size: 13px; margin: 0 0 8px 0; line-height: 1.5; color: var(--ink); }
+  .winter-alert .hours { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ember); margin-bottom: 0; }
+
+  .submit-btn {
+      background: var(--ember); color: var(--cream);
+      font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 16px; border-radius: 12px; border: none; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 90, 31, 0.2); transition: transform 0.2s, background-color 0.2s; margin-top: 8px;
+  }
+  .submit-btn:active { transform: scale(0.98); background: var(--ember-dim); }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

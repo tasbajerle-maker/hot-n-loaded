@@ -1,0 +1,28 @@
+---
+export interface Props {
+	title: string;
+	address: string;
+	hours: string;
+	tags: string[];
+}
+const { title, address, hours, tags } = Astro.props;
+---
+
+<address class="location-card" itemscope itemtype="https://schema.org/Store">
+	<h3 class="loc-header" itemprop="name">{title}</h3>
+	<p itemprop="address">{address}</p>
+	<p><strong>Nyitva:</strong> <span itemprop="openingHours">{hours}</span></p>
+	<div class="tags" aria-label="Elérhető kínálat">
+		{tags.map((tag) => (
+			<span class="tag">{tag}</span>
+		))}
+	</div>
+</address>
+
+<style>
+	.location-card { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); font-style: normal; }
+	.loc-header { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); margin: 0 0 8px 0; font-weight: 400; }
+	.location-card p { font-size: 13px; margin: 0 0 4px 0; }
+	.tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+	.tag { background: var(--cream-2); font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; }
+</style>

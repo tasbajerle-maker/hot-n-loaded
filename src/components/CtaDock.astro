@@ -1,0 +1,43 @@
+---
+export interface Props {
+	title: string;
+	subtitle: string;
+	actionUrl: string;
+	actionText: string;
+}
+const { title, subtitle, actionUrl, actionText } = Astro.props;
+---
+<div class="cta-dock-wrapper">
+	<div class="cta-dock">
+		<div class="cta-text">
+			{title}
+			<small>{subtitle}</small>
+		</div>
+		<a href={actionUrl} class="cta-btn" aria-label={`${title} - Tovább a Webappra`}>
+			{actionText}
+			<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+		</a>
+	</div>
+</div>
+
+<style>
+	.cta-dock-wrapper { position: relative; z-index: 10; margin-top: -24px; padding: 0 16px; }
+	.cta-dock {
+		background: var(--cheese); border-radius: 20px; padding: 14px 18px;
+		display: flex; align-items: center; justify-content: space-between; gap: 12px;
+		box-shadow: 0 12px 24px -6px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.4);
+		border: 1px solid rgba(0,0,0,0.05);
+	}
+	.cta-text { font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; color: var(--char-900); line-height: 1.1; }
+	.cta-text small { display: block; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 11px; opacity: 0.7; margin-top: 2px; text-transform: none; }
+	
+	.cta-btn {
+		background: var(--char-900); color: var(--cream);
+		font-family: 'Anton', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em;
+		padding: 12px 18px; border-radius: 12px; border: none;
+		display: flex; align-items: center; gap: 8px; text-decoration: none;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.cta-btn:active { transform: scale(0.95); }
+	.cta-btn svg { width: 14px; height: 14px; stroke: var(--cream); }
+</style>

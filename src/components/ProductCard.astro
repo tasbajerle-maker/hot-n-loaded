@@ -1,0 +1,113 @@
+---
+export interface Props {
+	isPromo?: boolean;
+	isNew?: boolean;
+	badgeText?: string;
+	category: string;
+	emoji?: string;
+	imageUrl?: string;
+	name: string;
+	price: string;
+	actionUrl?: string;
+	actionText?: string;
+}
+
+const {
+	isPromo = false,
+	isNew = false,
+	badgeText,
+	category,
+	emoji = "🍩",
+	imageUrl,
+	name,
+	price,
+	actionUrl,
+	actionText = "+"
+} = Astro.props;
+---
+
+<article class:list={['product-card', { 'new-item': isNew, 'coupon-card': isPromo }]} itemscope itemtype="https://schema.org/Product">
+	<meta itemprop="category" content={category} />
+
+	{actionUrl && <a href={actionUrl} class="card-link-overlay" aria-label={`${name} megtekintése`}></a>}
+
+	{badgeText && <div class="badge">{badgeText}</div>}
+	
+	<div class="cat">{category}</div>
+	
+	<!-- Itt a varázslat: Ha van kép, a 'full-bleed' osztály CSS-ből a kártya tetejére rántja! -->
+	<div class:list={['visual-container', { 'full-bleed': imageUrl }]}>
+		{imageUrl ? (
+			<img src={imageUrl} alt={name} class="product-image" loading="lazy" />
+		) : (
+			<div class="emoji" aria-hidden="true">{emoji}</div>
+		)}
+	</div>
+	
+	<h3 class="name" itemprop="name">{name}</h3>
+
+	<div class="price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+		<span class="price" itemprop="price">{price}</span>
+		<meta itemprop="priceCurrency" content="HUF" />
+		{actionUrl ? (
+			<a href={actionUrl} class:list={['add', { 'promo-add': isPromo }]} aria-label="Tovább">{actionText}</a>
+		) : (
+			<button class="add" aria-label={`${name} kosárba`}>{actionText}</button>
+		)}
+	</div>
+</article>
+
+<style>
+	.product-card {
+		scroll-snap-align: start; flex: 0 0 150px; 
+		background: #ffffff; border-radius: 20px; padding: 14px;
+		position: relative; color: var(--ink); 
+		box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
+		border: 1px solid rgba(0,0,0,0.04);
+		display: flex; flex-direction: column;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.product-card:active { transform: scale(0.96); } 
+	
+	.card-link-overlay { position: absolute; inset: 0; z-index: 5; border-radius: 20px; }
+	
+	.new-item { border: 1.5px solid var(--ember); }
+	.coupon-card { background: var(--cheese); border: 2px dashed var(--char-900); }
+	
+	.badge { position: absolute; top: -8px; right: -8px; background: var(--ember); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 10px; box-shadow: 0 4px 8px rgba(255, 90, 31, 0.3); z-index: 6; }
+	
+	.cat { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px; }
+	
+	/* ALAP (EMOJI) KINÉZET */
+	.visual-container {
+		width: 100%; height: 60px; margin-bottom: 12px;
+		display: flex; align-items: center; justify-content: center;
+	}
+	
+	/* ÚJ: FALTÓL-FALIG (FULL BLEED) KÉPES KINÉZET */
+	.visual-container.full-bleed {
+		order: -1; /* Flexbox mágia: felugrik a kártya legtetejére! */
+		width: calc(100% + 28px); /* Ellensúlyozza a kártya 14px paddingját */
+		margin: -14px -14px 12px -14px; /* Húzza ki a szélekig és a tetejéig */
+		height: 110px; /* Legyen szép nagy a kép */
+		border-radius: 19px 19px 0 0; /* Illeszkedjen a kártya lekerekítéséhez */
+		overflow: hidden;
+	}
+	
+	.emoji { font-size: 42px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.1)); transition: transform 0.3s; }
+	.product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+	
+	.product-card:hover .emoji, .product-card:hover .product-image { transform: translateY(-4px) scale(1.05); }
+	
+	.name { font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; line-height: 1.15; margin-bottom: 16px; min-height: 36px; margin-top: 0;}
+	.price-row { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px; margin-top: auto; position: relative; z-index: 10; }
+	.price { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14px; }
+	
+	.add {
+		width: 30px; height: 30px; border-radius: 10px; background: var(--ember); color: var(--cream);
+		display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; border: none; cursor: pointer;
+		box-shadow: 0 4px 10px rgba(255, 90, 31, 0.3); transition: transform 0.1s; text-decoration: none;
+	}
+	.add:active { transform: scale(0.85); background: var(--ember-dim); }
+	.promo-add { background: var(--char-900); color: var(--cheese); box-shadow: none; font-size: 14px; padding: 0 8px; width: auto; }
+</style>

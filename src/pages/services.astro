@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+---
+
+<Layout title="Gépszerviz | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={2} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>Gépszerviz</h1>
+        <p>Ipari pultok és vezérlők professzionális karbantartása.</p>
+      </header>
+
+      <section class="content-section">
+        <div class="service-list">
+          <ServiceCard 
+            href="/contact" emoji="🔧" 
+            title="Gépjavítás & Karbantartás" 
+            description="CAREL vezérlők és ipari pultok professzionális javítása és karbantartása." 
+          />
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+  
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+
+  .content-section { padding: 16px; }
+  .service-list { display: flex; flex-direction: column; gap: 12px; }
+</style>

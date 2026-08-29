@@ -1,0 +1,39 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" itemscope itemtype="https://schema.org/Organization">
+	<meta itemprop="name" content="Hókuszpókusz Ice Kft." />
+	
+	<div class="contact-info">
+		<a href="mailto:hokuszpokuszicekft@gmail.com" itemprop="email" class="email">hokuszpokuszicekft@gmail.com</a>
+		<div class="socials" aria-label="Közösségi Média">
+			<a href="https://instagram.com/nyalodafagyi" target="_blank" rel="noopener noreferrer" itemprop="sameAs">Instagram (@nyalodafagyi)</a>
+			<a href="https://www.tiktok.com/@nyaloda" target="_blank" rel="noopener noreferrer" itemprop="sameAs">TikTok (@nyaloda)</a>
+			<a href="https://www.facebook.com/nyalodafagyizo" target="_blank" rel="noopener noreferrer" itemprop="sameAs">Facebook</a>
+		</div>
+	</div>
+
+	<nav class="footer-links" aria-label="Jogi és információs menü">
+		<a href="/aszf">ÁSZF</a>
+		<a href="/gdpr">Adatkezelés (GDPR)</a>
+		<a href="/impresszum">Impresszum</a>
+		<a href="/contact">Kapcsolat</a>
+	</nav>
+	<p class="copyright">&copy; {currentYear} Hókuszpókusz Ice Kft. | Hot & Loaded | Nyaloda.</p>
+</footer>
+
+<style>
+	.footer { background: var(--char-900); color: var(--cream); padding: 40px 16px 80px; text-align: center; border-radius: 32px 32px 0 0; }
+	
+	.contact-info { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+	.email { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--cheese); text-decoration: none; display: block; margin-bottom: 16px; }
+	.socials { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+	.socials a { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; color: var(--cream); text-decoration: none; letter-spacing: 0.05em; }
+	.socials a:hover { color: var(--ember); }
+
+	.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 24px; }
+	.footer-links a { color: var(--cream); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.6; }
+	.footer-links a:hover { opacity: 1; }
+	.copyright { font-family: 'IBM Plex Mono', monospace; font-size: 10px; opacity: 0.4; margin: 0; }
+</style>

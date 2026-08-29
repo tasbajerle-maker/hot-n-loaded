@@ -1,0 +1,29 @@
+---
+export interface Props {
+	href: string;
+	emoji: string;
+	title: string;
+	description: string;
+}
+const { href, emoji, title, description } = Astro.props;
+---
+
+<a href={href} class="service-card">
+	<span class="emoji-box" aria-hidden="true">{emoji}</span>
+	<div class="info">
+		<h3>{title}</h3>
+		<p>{description}</p>
+	</div>
+</a>
+
+<style>
+	.service-card {
+		display: flex; align-items: center; gap: 16px; background: #fff; padding: 16px; border-radius: 20px;
+		text-decoration: none; color: var(--ink); border: 1px solid rgba(0,0,0,0.04);
+		box-shadow: 0 6px 16px rgba(0,0,0,0.03); transition: transform 0.2s;
+	}
+	.service-card:active { transform: scale(0.97); }
+	.emoji-box { font-size: 28px; background: var(--cream-2); width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+	h3 { font-family: 'Anton', sans-serif; font-size: 15px; text-transform: uppercase; margin: 0 0 4px 0; font-weight: 400;}
+	p { font-size: 12px; font-weight: 500; opacity: 0.7; margin: 0; }
+</style>

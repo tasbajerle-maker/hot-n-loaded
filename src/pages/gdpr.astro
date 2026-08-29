@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Adatkezelési Tájékoztató | Nyaloda" noindex={true}>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza</a>
+				<h1>Adatkezelés</h1>
+			</header>
+
+			<section class="legal-content">
+				<div class="legal-card legal-text-heavy">
+					<p class="last-updated">Utolsó frissítés: 2026. augusztus 22.</p>
+					
+					<h2>1. Az Adatkezelő azonosítása</h2>
+					<p>Név: Hókuszpókusz Ice Kft.<br>
+					Székhely: 1157 Budapest, Zsókavár utca 62.<br>
+					Adószám: 23314287-2-42<br>
+					E-mail: hokuszpokuszicekft@gmail.com</p>
+
+					<h2>2. A kezelt adatok köre és célja</h2>
+					<p>Rendelés leadásakor az alábbi adatokat kezeljük a szerződés teljesítése (kiszállítás) érdekében:<br>
+					- <strong>Név:</strong> A vásárló beazonosításához.<br>
+					- <strong>Szállítási cím:</strong> A rendelés pontos célba juttatásához.<br>
+					- <strong>Telefonszám:</strong> Kapcsolattartáshoz a futár részéről.<br>
+					- <strong>E-mail cím:</strong> A rendelés visszaigazolásához és a digitális nyugta megküldéséhez.</p>
+					
+					<h2>3. Az adatkezelés jogalapja és időtartama</h2>
+					<p>Az adatkezelés jogalapja a szerződés teljesítése (GDPR 6. cikk (1) bek. b) pont). A számlázási adatokat a számviteli törvény előírásainak megfelelően, a kiállítástól számított 8 évig megőrizzük.</p>
+
+					<h2>4. Adatfeldolgozók</h2>
+					<p>A weboldal üzemeltetéséhez a Netlify, Inc. (San Francisco, USA) tárhelyszolgáltatását vesszük igénybe. Az adatok harmadik fél (pl. marketing ügynökség, adatbróker) számára értékesítésre nem kerülnek.</p>
+
+					<h2>5. Az Érintettek jogai</h2>
+					<p>Ön jogosult kérelmezni az adatkezelőtől a rá vonatkozó személyes adatokhoz való hozzáférést, azok helyesbítését, törlését, valamint tiltakozhat a személyes adatok kezelése ellen. Ezen kéréseket az adatkezelő e-mail címén fogadjuk.</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+	.minimal-back { 
+		text-decoration: none; color: var(--char-900); font-weight: 600; 
+		font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+		background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+	}
+	.minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+	
+	.legal-content { padding: 0 16px 40px; }
+	.legal-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); color: var(--ink); }
+	
+	.last-updated { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ember); text-transform: uppercase; margin-bottom: 24px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 12px;}
+	.legal-text-heavy h2 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--char-900); margin: 24px 0 8px; }
+	.legal-text-heavy h2:first-of-type { margin-top: 0; }
+	.legal-text-heavy p { font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; opacity: 0.85; }
+</style>

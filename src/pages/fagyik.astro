@@ -1,0 +1,281 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+const fagyiData: MenuItem[] = [
+  // --- MINIFÁNK AZ ÚJ KÉPPEL ---
+  {
+    id: 'f-minifank', name: 'Nyaloda Minifánk', category: 'Fagyik', 
+    priceNormal: 700, priceLarge: 1100,
+    description: 'Fémlapon sült, forró minifánkok választható prémium öntettel (csokoládé, fehércsokoládé, erdei gyümölcs, mogyoró, pisztácia).',
+    nutrition: { calories: 467, protein: 11.9, carbs: 72.5, fat: 14.3 },
+    allergens: ['Glutén', 'Tojás', 'Tej', 'Nyomokban mogyoró/diófélék'], emoji: '🍩', imageUrl: '/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg'
+  },
+  
+  // --- PRÉMIUM FAGYIK (750 / 1300) ---
+  {
+    id: 'f-pisztacia', name: 'Pisztácia Mennyország', category: 'Fagyik', 
+    priceNormal: 750, priceLarge: 1300,
+    description: '100% brontei pisztáciából készült, ipari sokkolóval hűtött prémium textúra.',
+    nutrition: { calories: 310, protein: 8, carbs: 32, fat: 18 },
+    allergens: ['Tej', 'Diófélék'], emoji: '🍨'
+  },
+  {
+    id: 'f-brazil', name: 'Brazil Álom', category: 'Fagyik', 
+    priceNormal: 750, priceLarge: 1300,
+    description: 'Egzotikus prémium ízélmény a legfinomabb trópusi alapanyagokból.',
+    nutrition: { calories: 290, protein: 5, carbs: 34, fat: 14 },
+    allergens: ['Tej', 'Nyomokban diófélék'], emoji: '🥥'
+  },
+
+  // --- CUKORMENTES (495 / 795) ---
+  {
+    id: 'f-cukormentes-eper', name: 'Cukormentes Eper', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 795,
+    description: 'Valódi eperből készült, hozzáadott cukor nélkül. Vegán, laktózmentes.',
+    nutrition: { calories: 65, protein: 0.2, carbs: 12.4, fat: 0.1 },
+    allergens: ['Mentes'], emoji: '🍓'
+  },
+
+  // --- SIMA FAGYIK (495 / 695) ---
+  {
+    id: 'f-citrom', name: 'Citrom Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '40% valódi citromléből készült frissítő sorbet. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 105, protein: 0.1, carbs: 24.3, fat: 0.2 },
+    allergens: ['Szulfitok'], emoji: '🍋'
+  },
+  {
+    id: 'f-zoldalma', name: 'Zöldalma Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Intenzív, roppanós zöldalma ízvilág. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍏'
+  },
+  {
+    id: 'f-kekszolo', name: 'Kékszőlő Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Édes és zamatos kékszőlő íz. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍇'
+  },
+  {
+    id: 'f-dinnye', name: 'Dinnye Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A nyár slágere! Hűsítő, édes görögdinnye íz. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍉'
+  },
+  {
+    id: 'f-ananasz', name: 'Ananász Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Trópusi, egzotikus ananász íz. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍍'
+  },
+  {
+    id: 'f-gumi', name: 'Gumibogyó Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A gyerekek kedvence, vidám gumibogyó ízvilág. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍬'
+  },
+  {
+    id: 'f-eper', name: 'Valódi Eper Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi eperből készült, prémium sorbet. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 93, protein: 0.2, carbs: 22.4, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🍓'
+  },
+  {
+    id: 'f-szeder', name: 'Valódi Szeder Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi szederből, intenzív erdei ízzel. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 96, protein: 0.4, carbs: 23.0, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🫐'
+  },
+  {
+    id: 'f-ribizli', name: 'Valódi Ribizli Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi, pikáns ribizliből. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 94, protein: 0.3, carbs: 22.3, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍒'
+  },
+  {
+    id: 'f-malna', name: 'Valódi Málna Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi málnából. Krémesen gyümölcsös. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 96, protein: 0.3, carbs: 21.2, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🍧'
+  },
+  {
+    id: 'f-afonya', name: 'Valódi Áfonya Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi áfonyából. Szuperélelmiszer fagyasztva! Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.1, carbs: 23.5, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🫐'
+  },
+  {
+    id: 'f-szilva', name: 'Fahéjas Szilva Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi szilva és egy csipet fahéj. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.2, carbs: 23.5, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍑'
+  },
+  {
+    id: 'f-banan', name: 'Valódi Banán Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '15% valódi banánnal. Selymes és édes. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.1, carbs: 23.4, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍌'
+  },
+  {
+    id: 'f-barack-eper', name: 'Barackos-Eper Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Eper és őszibarack találkozása egy csipet vaníliával és feketeborssal. Különlegesség!',
+    nutrition: { calories: 93, protein: 0.1, carbs: 22.4, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍑'
+  },
+
+  // --- TEJALAPÚ FAGYLALTOK ---
+  {
+    id: 'f-kinder', name: 'Kinder Ízvilág', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Lágy tejfagylalt gazdag kakaós-csokoládés öntettel. Gluténmentes.',
+    nutrition: { calories: 167, protein: 3.0, carbs: 27.1, fat: 5.1 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-mogyoro', name: 'Tejszínes Mogyoró', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Tejszínes alap, prémium mogyorós-kakaós krémmel rétegezve. Gluténmentes.',
+    nutrition: { calories: 179, protein: 3.2, carbs: 26.8, fat: 6.5 },
+    allergens: ['Tej', 'Törökmogyoró', 'Szója'], emoji: '🌰'
+  },
+  {
+    id: 'f-vanilia', name: 'Vanília Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A legklasszikusabb, selymesen lágy vanília tejfagylalt. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🍦'
+  },
+  {
+    id: 'f-madartej', name: 'Madártej Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A nagyi kedvenc desszertje hűsítő fagyiként. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🍨'
+  },
+  {
+    id: 'f-puncs', name: 'Puncs Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Hamisítatlan puncs íz, krémes tejes alapon. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🧁'
+  },
+  {
+    id: 'f-tejcsoki', name: 'Tejcsokoládé', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Selymes és édes tejcsokoládé fagylalt. Gluténmentes.',
+    nutrition: { calories: 146, protein: 3.7, carbs: 24.9, fat: 3.3 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-etcsoki', name: 'Étcsokoládé', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Intenzív, 5.6% kakaótartalmú étcsokoládé tejfagylalt. Gluténmentes.',
+    nutrition: { calories: 151, protein: 4.2, carbs: 24.5, fat: 3.6 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-sport', name: 'Sportszelet Ízvilág', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A klasszikus csokis-rumos ízvilág hűsítő formában. Gluténmentes.',
+    nutrition: { calories: 146, protein: 3.7, carbs: 24.9, fat: 3.3 },
+    allergens: ['Tej'], emoji: '🏋️'
+  }
+];
+---
+
+<Layout title="Kézműves Fagyik | Fagyi és Burger Mennyország">
+  <div class="app-wrapper fixed-app">
+    <TopBar cartCount={2} />
+    
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={fagyiData} />
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .fixed-app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .fixed-app { height: 92vh; }
+  }
+
+  .fixed-page {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0px; 
+    overflow: hidden; 
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px; 
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active { 
+    transform: scale(0.9); 
+    background: rgba(255, 255, 255, 0.85); 
+  }
+  
+  .menu-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 0 8px 8px;
+    overflow: hidden; 
+  }
+</style>

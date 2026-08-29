@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import Hero from '../components/Hero.astro';
+import CtaDock from '../components/CtaDock.astro';
+import ProductCard from '../components/ProductCard.astro';
+import BentoTile from '../components/BentoTile.astro';
+import SeoText from '../components/SeoText.astro';
+import Footer from '../components/Footer.astro';
+import DynamicIsland from '../components/DynamicIsland.astro';
+
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Nyaloda | Hot & Loaded",
+  "servesCuisine": ["Burgers", "Ice Cream"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Példa utca 1.",
+    "addressLocality": "Budapest",
+    "postalCode": "1051",
+    "addressCountry": "HU"
+  }
+};
+---
+
+<Layout title="Nyaloda | Hot & Loaded Kínálat">
+	<script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+	<link rel="preconnect" href="https://fonts.googleapis.com" slot="head" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin slot="head" />
+	<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" slot="head" />
+
+	<div class="app-wrapper">
+		<TopBar cartCount={2} />
+
+		<main class="page">
+			<Hero />
+
+			<CtaDock 
+				title="Rendelj most" 
+				subtitle="Kiszállítás 30 percen belül 🚀" 
+				actionText="Webapp" 
+				actionUrl="https://enfagyi-app-122a0.web.app" 
+			/>
+
+			<section class="section compact-top" aria-labelledby="featured-heading">
+				<header class="section-head">
+					<h2 id="featured-heading">Kiemelt ajánlataink</h2>
+					<nav class="nav-arrows" aria-label="Görgetés vezérlő">
+						<button id="btn-prev" aria-label="Előző termékek">‹</button>
+						<button id="btn-next" aria-label="Következő termékek">›</button>
+					</nav>
+				</header>
+
+				<div class="rail-container">
+					<div class="rail" id="featured-rail" role="list">
+						<!-- MINIFÁNK AZ ÚJ KÉPPEL -->
+						<ProductCard 
+							isNew={true} badgeText="AUG. 30!" category="Édesség" 
+							imageUrl="/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg" 
+							name="Minifánk" price="700 Ft-tól" 
+							actionUrl="/fagyik?item=f-minifank" actionText="➔"
+						/>
+
+						<!-- KÉRDŐÍV KÁRTYA -->
+						<ProductCard 
+							isPromo={true} badgeText="FONTOS!" category="Visszajelzés" emoji="💬" 
+							name="Kérdőív" price="Mondd el nekünk!" 
+							actionUrl="/kerdoiv" actionText="Kitöltöm"
+						/>
+						
+						<!-- 10% KUPON -->
+						<ProductCard 
+							isPromo={true} badgeText="PROMO" category="Kedvezmény" emoji="🔥" 
+							name="NYAR2026 Kupon" price="-10% a Webappban" 
+							actionUrl="https://enfagyi-app-122a0.web.app" actionText="Beváltom"
+						/>
+
+						
+					</div>
+				</div>
+			</section>
+
+			<section class="section bento-section" aria-labelledby="categories-heading">
+				<header class="section-head">
+					<h2 id="categories-heading" class="light">Kategóriák</h2>
+				</header>
+				<nav class="bento-grid" aria-label="Kategória választó">
+					<BentoTile href="/burgerek" emoji="🍔" label="Burgerek" subLabel="100% Marhahús" isLarge={true} theme="burger" />
+					<BentoTile href="/fagyik" emoji="🍦" label="Fagyik" subLabel="Kézműves" isLarge={true} theme="fagyi" />
+					
+					<!-- B2B ÉS GÉPSZERVIZ BOXOK -->
+					<BentoTile href="/b2b" emoji="🚚" label="B2B Nagyker" />
+					<BentoTile href="/services" emoji="🔧" label="Gépszerviz" />
+
+					<!-- EZEKET KIKOMMENTELTÜK, AMÍG NINCSENEK KÉSZ AZ OLDALAK -->
+					<!-- <BentoTile href="/csirkek" emoji="🍗" label="Csirkék" /> -->
+					<!-- <BentoTile href="/menuk" emoji="🍟" label="Menük" /> -->
+					<!-- <BentoTile href="/italok" emoji="🥤" label="Italok" /> -->
+					<!-- <BentoTile href="/koretek" emoji="🥗" label="Köretek" /> -->
+				</nav>
+			</section>
+
+			<SeoText />
+		</main>
+
+		<Footer />
+		<DynamicIsland />
+	</div>
+</Layout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const rail = document.getElementById('featured-rail');
+		const btnPrev = document.getElementById('btn-prev');
+		const btnNext = document.getElementById('btn-next');
+
+		if (rail && btnPrev && btnNext) {
+			const scrollAmount = 164; 
+
+			btnPrev.addEventListener('click', () => {
+				rail.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+			});
+
+			btnNext.addEventListener('click', () => {
+				rail.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+			});
+		}
+	});
+</script>
+
+<style is:global>
+	:root {
+		--char-900: #1c1410; --ember: #ff5a1f; --ember-dim: #c2410c; --cheese: #ffc94a;
+		--cream: #fff6e9; --cream-2: #fce9d8; --ink: #241812; --paper: #f4efe9;
+	}
+
+	body { background-color: #e5dfd6; margin: 0; display: flex; justify-content: center; font-family: 'Work Sans', sans-serif; color: var(--ink); }
+
+	.app-wrapper {
+		width: 100%; max-width: 480px; background: var(--paper); min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 0 transparent;
+	}
+
+	@media (min-width: 540px) {
+		.app-wrapper {
+			margin: 4vh 0; min-height: 92vh; border-radius: 40px; border: 4px solid #332822; overflow: hidden;
+			box-shadow: 0 32px 64px -12px rgba(0,0,0,0.2), 0 0 0 10px var(--char-900), inset 0 0 0 4px rgba(255,255,255,0.2);
+		}
+	}
+</style>
+
+<style>
+	.page { padding-bottom: 100px; }
+	.section { padding: 24px 16px; }
+	.compact-top { padding-top: 12px; }
+	.section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 16px; }
+	.section-head h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; color: var(--char-900); margin: 0; font-weight: 400;}
+	.section-head h2.light { color: var(--cream); }
+	
+	.nav-arrows { display: flex; gap: 8px; }
+	.nav-arrows button { width: 32px; height: 32px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.08); background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 16px; cursor: pointer; color: var(--ink); transition: transform 0.2s, background 0.2s; }
+	.nav-arrows button:active { transform: scale(0.9); background: var(--paper); }
+
+	.rail-container { position: relative; margin-right: -16px; }
+	.rail-container::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, rgba(244,239,233,0), var(--paper)); pointer-events: none; z-index: 10; }
+	.rail { display: flex; gap: 14px; overflow-x: auto; padding: 4px 40px 24px 4px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+	.rail::-webkit-scrollbar { display: none; }
+
+	.bento-section { background: var(--char-900); color: var(--cream); border-radius: 32px; padding: 24px 16px 32px; margin: 0 8px; }
+	.bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+</style>

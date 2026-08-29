@@ -1,0 +1,132 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+const burgerData: MenuItem[] = [
+  {
+    id: 'b-sajt', name: 'Sajtburger', category: 'Burgerek', price: 1800,
+    description: 'Marhahús, sajt, hagyma, házi burger szósz, uborka.',
+    nutrition: { calories: 510, protein: 28, carbs: 38, fat: 26 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
+  },
+  {
+    id: 'b-oklahoma', name: 'Oklahomai Burger', category: 'Burgerek', price: 1900,
+    description: 'Hagymával sült marhahús, uborka, cheddar.',
+    nutrition: { calories: 530, protein: 29, carbs: 39, fat: 28 },
+    allergens: ['Glutén', 'Tej', 'Mustár'], emoji: '🧅'
+  },
+  {
+    id: 'b-tavaszi', name: 'Tavaszi Burger', category: 'Burgerek', price: 2000,
+    description: 'Marhahús, jégsaláta, burger szósz, cheddar, paradicsom.',
+    nutrition: { calories: 520, protein: 28, carbs: 40, fat: 26 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🥬'
+  },
+  {
+    id: 'b-rio', name: 'Rio Burger', category: 'Burgerek', price: 2000,
+    description: 'Marhahúspogácsa, sajt, jalapeno, pirított hagyma, házi burgerszósz.',
+    nutrition: { calories: 580, protein: 31, carbs: 42, fat: 32 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🌶️'
+  },
+  {
+    id: 'b-dupla', name: 'Dupla Burger', category: 'Burgerek', price: 2900,
+    description: 'Dupla marhahús, dupla cheddar sajt, házi burgerszósz, paradicsom, jégsaláta.',
+    nutrition: { calories: 820, protein: 52, carbs: 42, fat: 48 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
+  },
+  {
+    id: 't-sajt', name: 'Sajtos Toast', category: 'Burgerek', price: 700,
+    description: 'Klasszikus toast, sok sajttal.',
+    nutrition: { calories: 320, protein: 14, carbs: 30, fat: 16 },
+    allergens: ['Glutén', 'Tej'], emoji: '🥪'
+  },
+  {
+    id: 't-bacon', name: 'Sajtos Baconös Toast', category: 'Burgerek', price: 950,
+    description: 'Sajt és ropogós bacon egy finom toastban.',
+    nutrition: { calories: 410, protein: 18, carbs: 30, fat: 24 },
+    allergens: ['Glutén', 'Tej'], emoji: '🥓'
+  }
+];
+---
+
+<Layout title="Kézműves Burgereink | Fagyi és Burger Mennyország">
+  <div class="app-wrapper fixed-app">
+    <TopBar cartCount={2} />
+    
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={burgerData} />
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .fixed-app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .fixed-app { height: 92vh; }
+  }
+
+  .fixed-page {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0px; 
+    overflow: hidden; 
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px; 
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active { 
+    transform: scale(0.9); 
+    background: rgba(255, 255, 255, 0.85); 
+  }
+  
+  .menu-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 0 8px 8px;
+    overflow: hidden; 
+  }
+</style>

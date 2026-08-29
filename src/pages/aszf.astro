@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Általános Szerződési Feltételek | Nyaloda" noindex={true}>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza</a>
+				<h1>ÁSZF</h1>
+			</header>
+
+			<section class="legal-content">
+				<div class="legal-card legal-text-heavy">
+					<p class="last-updated">Utolsó frissítés: 2026. augusztus 22.</p>
+					
+					<h2>1. Bevezető rendelkezések</h2>
+					<p>A jelen Általános Szerződési Feltételek (ÁSZF) a Hókuszpókusz Ice Kft. (1157 Budapest, Zsókavár utca 62., Adószám: 23314287-2-42, a továbbiakban: Szolgáltató) által üzemeltetett weboldal és rendelési rendszer felhasználási feltételeit tartalmazza.</p>
+					<p>A rendelés leadásával a Vásárló kijelenti, hogy a jelen ÁSZF-et megismerte, és azt magára nézve kötelezőnek ismeri el.</p>
+
+					<h2>2. Megrendelés és Teljesítés</h2>
+					<p>A weboldalon található termékkínálat (kézműves hamburgerek, fagylaltok, köretek és italok) online megrendelhetőek. A rendelés leadása elektronikus úton megkötött szerződésnek minősül.</p>
+					<p>A Szolgáltató fenntartja a jogot a megrendelés visszautasítására (pl. alapanyaghiány, vagy a szállítási körzeten kívül eső cím esetén).</p>
+
+					<h2>3. Árak és Fizetés</h2>
+					<p>A feltüntetett árak magyar forintban értendőek és tartalmazzák a törvényben előírt ÁFÁ-t. A fizetés történhet online bankkártyával, vagy a futárnál készpénzzel/kártyával. A csomagolási és szállítási díjakat a rendszer a rendelés véglegesítése előtt egyértelműen jelzi.</p>
+					
+					<h2>4. Elállási jog (KIVÉTEL!)</h2>
+					<p>A fogyasztó és a vállalkozás közötti szerződések részletes szabályairól szóló 45/2014. (II. 26.) Korm. rendelet 29. § (1) bekezdés d) pontja alapján a Vásárlót <strong>nem illeti meg az indokolás nélküli elállási jog</strong> romlandó vagy minőségét rövid ideig megőrző termékek (frissen készült ételek, hamburgerek, fagylaltok) tekintetében.</p>
+
+					<h2>5. Panaszkezelés</h2>
+					<p>Amennyiben a minőséggel, vagy a kiszállítással kapcsolatban probléma merülne fel, kérjük, haladéktalanul, de legkésőbb a rendelés átvételétől számított 1 órán belül jelezze azt a <strong>hokuszpokuszicekft@gmail.com</strong> címen, vagy az üzlet telefonszámán. Utólagos, napokkal későbbi minőségi reklamációt élelmiszer lévén nem áll módunkban elfogadni.</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+	.minimal-back { 
+		text-decoration: none; color: var(--char-900); font-weight: 600; 
+		font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+		background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+	}
+	.minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+	
+	.legal-content { padding: 0 16px 40px; }
+	.legal-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); color: var(--ink); }
+	
+	.last-updated { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ember); text-transform: uppercase; margin-bottom: 24px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 12px;}
+	.legal-text-heavy h2 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--char-900); margin: 24px 0 8px; }
+	.legal-text-heavy h2:first-of-type { margin-top: 0; }
+	.legal-text-heavy p { font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; opacity: 0.85; }
+</style>

@@ -1,0 +1,45 @@
+---
+export interface Props {
+	href: string;
+	emoji: string;
+	label: string;
+	subLabel?: string;
+	isLarge?: boolean;
+	theme?: 'default' | 'burger' | 'fagyi';
+}
+const { href, emoji, label, subLabel, isLarge = false, theme = 'default' } = Astro.props;
+---
+
+<a href={href} class:list={['bento-tile', { 'bento-large': isLarge, 'burger-theme': theme === 'burger', 'fagyi-theme': theme === 'fagyi' }]} aria-label={`${label} kategória megtekintése`}>
+	<div class="emoji" aria-hidden="true">{emoji}</div>
+	{isLarge ? (
+		<div class="label-wrap">
+			<span class="label">{label}</span>
+			{subLabel && <span class="sub">{subLabel}</span>}
+		</div>
+	) : (
+		<span class="label">{label}</span>
+	)}
+</a>
+
+<style>
+	.bento-tile {
+		background: rgba(255,255,255,0.05); border-radius: 20px; padding: 16px 12px;
+		display: flex; flex-direction: column; align-items: center; justify-content: center;
+		text-align: center; text-decoration: none; border: 1px solid rgba(255,255,255,0.05);
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.bento-tile:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+	
+	.bento-large { grid-column: span 2; flex-direction: row; gap: 20px; justify-content: flex-start; padding: 20px 24px; }
+	.burger-theme { background: linear-gradient(135deg, rgba(255, 90, 31, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 90, 31, 0.3); }
+	.fagyi-theme { background: linear-gradient(135deg, rgba(255, 201, 74, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 201, 74, 0.3); }
+	
+	.bento-large .emoji { font-size: 44px; margin-bottom: 0; }
+	.bento-large .label-wrap { text-align: left; display: flex; flex-direction: column; }
+	.label { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cream); }
+	.bento-large .label { font-size: 20px; }
+	.bento-large .sub { font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; opacity: 0.7; margin-top: 2px; color: var(--cream); }
+	
+	.bento-tile .emoji { font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
+</style>

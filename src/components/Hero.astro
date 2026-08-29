@@ -1,0 +1,101 @@
+---
+---
+<section class="hero" aria-labelledby="hero-heading">
+	<h1 id="hero-heading" class="sr-only">Hot & Loaded és Nyaloda Kínálat</h1>
+	
+	<!-- Hot & Loaded - Sós vonal -->
+	<a href="/burgerek" class="hero-half hero-burger">
+		<div class="hero-glow"></div>
+		<div class="hero-content">
+			<p class="hero-eyebrow">Hot & Loaded</p>
+			<div class="hero-emoji" aria-hidden="true">🍔</div>
+			<h2 class="hero-title">Füstös,<br><em>ropogós</em></h2>
+		</div>
+	</a>
+
+	<!-- Nyaloda - Édes vonal -->
+	<a href="/fagyik" class="hero-half hero-fagyi">
+		<div class="hero-glow"></div>
+		<div class="hero-content">
+			<p class="hero-eyebrow">Nyaloda</p>
+			<div class="hero-emoji" aria-hidden="true">🍦</div>
+			<h2 class="hero-title">Kézműves,<br><em>hűsítő</em></h2>
+		</div>
+	</a>
+</section>
+
+<style>
+	.sr-only {
+		position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+		overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+	}
+	.hero { display: flex; min-height: 230px; }
+	.hero-half {
+		position: relative; flex: 1; overflow: hidden;
+		display: flex; flex-direction: column; justify-content: flex-end;
+		padding: 24px 16px; transition: flex 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer;
+		text-decoration: none; 
+		-webkit-tap-highlight-color: transparent; 
+	}
+	
+	/* ASZTALI NÉZET MANUÁLIS: Amikor fölé viszed az egeret */
+	@media (hover: hover) {
+		.hero-half:hover { flex: 1.3 !important; }
+		.hero-half:hover .hero-emoji { transform: scale(1.15) rotate(5deg) !important; }
+	}
+
+	/* MOBIL NÉZET MANUÁLIS: Amikor ráböksz a képernyőre */
+	.hero-half:active { flex: 1.3 !important; }
+	.hero-half:active .hero-emoji { transform: scale(1.15) rotate(5deg) !important; }
+
+	/* === ÚJ: AUTOMATIKUS "LÉGZŐ" ANIMÁCIÓ === */
+	/* A burgeres rész elkezdi a 10 mp-es ciklust... */
+	.hero-burger { animation: autoPulseFlex 10s infinite ease-in-out; }
+	.hero-burger .hero-emoji { animation: autoPulseEmoji 10s infinite ease-in-out; }
+	
+	/* ...a fagyis rész pedig egy -5 másodperces eltolással (delay) indít, 
+	   így pontosan fáziskéséssel fog felváltva animálni a burgerrel! */
+	.hero-fagyi { animation: autoPulseFlex 10s infinite ease-in-out -5s; }
+	.hero-fagyi .hero-emoji { animation: autoPulseEmoji 10s infinite ease-in-out -5s; }
+
+	/* ZSENIÁLIS TRÜKK: Ha a felhasználó a szakaszhoz ér (hover vagy aktív),
+	   azonnal kinyírjuk az automatikus animációt, hogy a gép ne harcoljon az ujjaddal/egereddel! */
+	.hero:hover .hero-half,
+	.hero:active .hero-half,
+	.hero:hover .hero-emoji,
+	.hero:active .hero-emoji {
+		animation: none !important;
+	}
+
+	@keyframes autoPulseFlex {
+		0%, 15%, 100% { flex: 1; }
+		7.5% { flex: 1.3; } /* A 10 mp-es ciklusból 0.75 mp alatt éri el a max méretet */
+	}
+	@keyframes autoPulseEmoji {
+		0%, 15%, 100% { transform: scale(1) rotate(0deg); }
+		7.5% { transform: scale(1.15) rotate(5deg); }
+	}
+	/* ========================================= */
+
+	.hero-burger {
+		background: radial-gradient(circle at top left, #3a2417, var(--char-900));
+		color: var(--cream); clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+		margin-right: -15%; z-index: 2;
+	}
+	.hero-fagyi {
+		background: radial-gradient(circle at top right, #ffffff, #f7c9d4);
+		color: var(--ink); padding-left: 20%;
+	}
+	
+	.hero-glow { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; pointer-events: none; }
+	.hero-burger .hero-glow { width: 160px; height: 160px; background: var(--ember); top: -30px; left: -30px; }
+	.hero-fagyi .hero-glow { width: 160px; height: 160px; background: #fff; bottom: -30px; right: -30px; opacity: 1; }
+	
+	.hero-content { position: relative; z-index: 5; pointer-events: none; }
+	
+	.hero-emoji { font-size: 46px; margin-bottom: 8px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3)); transition: transform 0.4s ease; }
+	.hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; margin-bottom: 4px; }
+	.hero-title { font-family: 'Anton', sans-serif; font-size: clamp(20px, 6vw, 24px); line-height: 1.1; text-transform: uppercase; margin: 0; font-weight: 400;}
+	.hero-burger .hero-title em { font-style: normal; color: var(--ember); }
+	.hero-fagyi .hero-title em { font-style: normal; color: #d6476b; }
+</style>

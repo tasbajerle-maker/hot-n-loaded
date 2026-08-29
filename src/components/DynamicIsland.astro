@@ -1,0 +1,57 @@
+---
+export interface Props {
+	statusText?: string;
+	actionUrl?: string;
+	actionText?: string;
+}
+// Itt írtam át a default időpontot 10-20-ra!
+const { statusText = "Nyitva · 10:00–20:00", actionUrl = "https://webappod.hu", actionText = "Rendelés" } = Astro.props;
+---
+
+<nav class="order-pill" aria-label="Gyors rendelési sáv">
+	<div class="left">
+		<span class="pulse-dot" aria-hidden="true"></span>
+		<span class="status-text">{statusText}</span>
+	</div>
+	<a href={actionUrl} class="cta-btn small">
+		{actionText}
+		<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+	</a>
+</nav>
+
+<style>
+	.order-pill {
+		position: absolute; 
+		bottom: 24px; left: 50%; transform: translateX(-50%); 
+		width: calc(100% - 32px); max-width: 400px; z-index: 60;
+		background: rgba(28, 20, 16, 0.85); 
+		backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%);
+		padding: 8px 8px 8px 20px; display: flex; align-items: center; justify-content: space-between;
+		box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+		border: 1px solid rgba(255,255,255,0.1);
+		border-radius: 999px;
+	}
+	
+	@media (max-width: 540px) {
+		.order-pill { position: fixed; }
+	}
+	
+	.order-pill .left { display: flex; align-items: center; gap: 12px; color: var(--cream); }
+	.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #5fe17a; animation: pulse 2s infinite; }
+	.status-text { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+	
+	.cta-btn.small { 
+		border-radius: 999px; padding: 12px 20px; font-size: 13px; background: var(--ember); 
+		color: var(--cream); font-family: 'Anton', sans-serif; text-transform: uppercase;
+		display: flex; align-items: center; gap: 6px; text-decoration: none; border: none; cursor: pointer;
+		box-shadow: 0 4px 12px rgba(255,90,31,0.3); transition: transform 0.2s;
+	}
+	.cta-btn.small:active { transform: scale(0.95); }
+	.cta-btn.small svg { width: 14px; height: 14px; stroke: var(--cream); }
+
+	@keyframes pulse {
+		0% { box-shadow: 0 0 0 0 rgba(95,225,122,0.4); }
+		70% { box-shadow: 0 0 0 6px rgba(95,225,122,0); }
+		100% { box-shadow: 0 0 0 0 rgba(95,225,122,0); }
+	}
+</style>

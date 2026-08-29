@@ -1,0 +1,108 @@
+---
+export interface Props {
+	cartCount?: number;
+}
+const { cartCount = 0 } = Astro.props;
+---
+
+<header class="top-bar">
+	<a href="/" class="brand-link" aria-label="Főoldal">
+		<div class="brand">
+			NYALODA <span class="divider">|</span> <span class="accent">HOT</span>&nbsp;&amp; LOADED
+		</div>
+	</a>
+	
+	<nav class="icons" aria-label="Felső navigáció">
+		<div class="dropdown-wrapper">
+			<button id="menu-toggle" class="icon-btn" aria-label="Menü megnyitása" aria-expanded="false">
+				<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+			</button>
+			
+			<div id="dropdown-menu" class="dropdown-menu">
+				<a href="/" class="dropdown-item">Kínálat</a>
+				<a href="/b2b" class="dropdown-item">B2B Fagylalt</a>
+				<a href="/services" class="dropdown-item">Gépszerviz</a>
+				<a href="/contact" class="dropdown-item">Kapcsolat</a>
+                <a href="/rolunk" class="dropdown-item">A mi sztorink</a>
+			</div>
+		</div>
+		
+		<a href="https://enfagyi-app-122a0.web.app" class="icon-btn" aria-label={`Kosár, ${cartCount} termék`}>
+			<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+			{cartCount > 0 && <span class="cart-badge">{cartCount}</span>}
+		</a>
+	</nav>
+</header>
+
+<script>
+	const menuBtn = document.getElementById('menu-toggle');
+	const dropdown = document.getElementById('dropdown-menu');
+
+	if (menuBtn && dropdown) {
+		menuBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			dropdown.classList.toggle('open');
+		});
+
+		document.addEventListener('click', (e) => {
+			if (!dropdown.contains(e.target as Node)) {
+				dropdown.classList.remove('open');
+			}
+		});
+	}
+</script>
+
+<style>
+	.top-bar {
+		position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+		padding: 10px 16px; background: rgba(28, 20, 16, 0.65); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
+		color: var(--cream); border-bottom: 1px solid rgba(255,255,255,0.08);
+	}
+	
+	.brand-link { text-decoration: none !important; color: inherit !important; -webkit-tap-highlight-color: transparent; transition: opacity 0.2s; }
+	.brand-link:active { opacity: 0.7; }
+
+	.brand { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+	.brand .accent { color: var(--ember); }
+	.divider { opacity: 0.4; font-family: 'IBM Plex Mono', monospace; font-weight: 300; margin: 0 2px; }
+	
+	.icons { display: flex; gap: 12px; }
+	
+	.icon-btn { 
+		position: relative; width: 36px; height: 36px; border-radius: 50%; 
+		background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); 
+		display: flex; align-items: center; justify-content: center; 
+		cursor: pointer; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+		text-decoration: none !important; color: var(--cream) !important;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.icon-btn:active { transform: scale(0.9); }
+	.icon-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+	
+	.cart-badge {
+		position: absolute; top: -2px; right: -2px; background: var(--ember); color: var(--cream);
+		font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; 
+		width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+		box-shadow: 0 0 0 3px rgba(28, 20, 16, 0.8);
+	}
+
+	.dropdown-wrapper { position: relative; }
+
+	.dropdown-menu {
+		position: absolute; top: calc(100% + 12px); right: 0;
+		background: rgba(28, 20, 16, 0.85); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+		border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+		display: flex; flex-direction: column; min-width: 200px; padding: 8px;
+		box-shadow: 0 16px 40px rgba(0,0,0,0.4); opacity: 0; transform: translateY(-10px) scale(0.95);
+		transform-origin: top right; pointer-events: none;
+		transition: opacity 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.dropdown-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+	.dropdown-item {
+		color: var(--cream); text-decoration: none; font-family: 'Anton', sans-serif; font-size: 16px;
+		letter-spacing: 0.05em; text-transform: uppercase; padding: 12px 16px; border-radius: 10px;
+		transition: background 0.2s, color 0.2s;
+	}
+	.dropdown-item:active { background: rgba(255,255,255,0.1); color: var(--ember); }
+</style>

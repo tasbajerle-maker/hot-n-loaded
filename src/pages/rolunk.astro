@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import Footer from '../components/Footer.astro';
+
+// JSON-LD strukturált adat a Rólunk oldalhoz (AboutPage)
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "mainEntity": {
+    "@type": "FoodEstablishment",
+    "name": "Nyaloda és Hot & Loaded",
+    "legalName": "Hókuszpókusz Ice Kft.",
+    "foundingDate": "2009",
+    "founders": [
+      { "@type": "Person", "name": "Szabó Beatrix" },
+      { "@type": "Person", "name": "Bajerle Tas" }
+    ],
+    "description": "15 éves múltra visszatekintő magyar családi vállalkozás, amely prémium kézműves fagylaltokat és friss vágású marhahúsból készült smash burgereket kínál. Közvetlen alapanyag-beszerzéssel, a nagykerek kihagyásával biztosítjuk az elérhető árú prémium minőséget."
+  }
+};
+---
+
+<Layout title="A mi sztorink | Nyaloda & Hot & Loaded">
+    <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
+    
+    <div class="app-wrapper">
+        <TopBar cartCount={0} />
+        
+        <main class="page">
+            <header class="page-header">
+                <a href="/" class="minimal-back">← Vissza a főoldalra</a>
+                <h1>A mi sztorink</h1>
+                <p class="subtitle">Egy fagyis triciklitől a kulináris mennyországig.</p>
+            </header>
+
+            <section class="story-content">
+                <div class="content-block">
+                    <h2>Kik vagyunk mi?</h2>
+                    <p>A Hókuszpókusz Ice Kft. egy 15 éves múltra visszatekintő, 100%-ban magyar tulajdonú családi vállalkozás. Szabó Beatrix és Bajerle Tas vezetésével egyetlen fagyis triciklivel indultunk útnak egy parkban, ma pedig már Újpest és vonzáskörzete minőségi gasztronómiájának meghatározó szereplői vagyunk a <strong>Nyaloda</strong> és a <strong>Hot & Loaded</strong> márkákkal.</p>
+                </div>
+
+                <div class="content-block highlight-block">
+                    <h2>Hogyan lehet a prémium elérhető?</h2>
+                    <p>Sokan kérdezik, mi a titkunk. Hogyan tudunk ilyen alacsony áron adni ilyen brutális minőséget? A válasz egyszerű, de sok munkát igényel: <strong>mindent mi magunk készítünk az alapoktól.</strong></p>
+                    <p>Hatalmas volumenben vásárolunk alapanyagot – közvetlenül a termelőktől, gyártóktól és az elsődleges forrásoktól. Kihagyjuk az ellátási láncból a nagykereket és a közvetítőket. Ezt a felhalmozott árelőnyt pedig nem tesszük zsebre, hanem beépítjük a végtermékbe, hogy a vásárlóink a legjobb áron juthassanak hozzá a csúcsminőséghez.</p>
+                </div>
+
+                <div class="content-block">
+                    <h2>Kompromisszummentes minőség</h2>
+                    <ul class="quality-list">
+                        <li><strong>A 7-féle pisztácia blend:</strong> A fagylaltjainkhoz nem előre kevert pasztákat, hanem 7 különböző, általunk gondosan válogatott pisztácia egyedi keverékét használjuk, garantálva a megismételhetetlen ízélményt.</li>
+                        <li><strong>Friss vágású marha & Csirkemell:</strong> A Hot & Loaded konyhájában sosem kötünk kompromisszumot. Mindig friss vágású marhahúsból (az aktuális kínálat legjavából) és általunk, házilag készített, szaftos csirkemell csíkokból dolgozunk.</li>
+                        <li><strong>Ipari technológia (Blast-chilling):</strong> A konyhánkban szigorú ipari ételbiztonsági sztenderdek uralkodnak. A termékeket a leggyorsabb és legkíméletesebb sokkolásos eljárással hűtjük le, hogy az íz, a szaftosság és a minőség 100%-ban megmaradjon.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        
+        <Footer />
+    </div>
+</Layout>
+
+<style>
+    .page { padding-bottom: 40px; }
+    
+    .page-header { 
+        padding: 32px 16px 24px; 
+        display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+        background: var(--char-900);
+        color: var(--cream);
+        border-radius: 0 0 32px 32px;
+        margin-bottom: 24px;
+    }
+    
+    .minimal-back { 
+        text-decoration: none; color: var(--cream); font-weight: 600; 
+        font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+        background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+    }
+    .minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+    
+    .page-header h1 { font-family: 'Anton', sans-serif; font-size: 40px; text-transform: uppercase; margin: 0; line-height: 1; color: var(--cheese);}
+    .subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 0; }
+
+    .story-content { padding: 0 16px; display: flex; flex-direction: column; gap: 24px; }
+    
+    .content-block {
+        background: #fff; padding: 24px; border-radius: 20px;
+        border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+    }
+    
+    .highlight-block {
+        background: var(--cheese);
+        border: 2px solid var(--char-900);
+        box-shadow: 4px 4px 0 var(--char-900);
+    }
+    
+    .content-block h2 { font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; margin: 0 0 16px 0; color: var(--char-900); font-weight: 400;}
+    .content-block p { font-size: 14px; line-height: 1.6; margin: 0 0 16px 0; color: rgba(36, 24, 18, 0.9); }
+    .content-block p:last-child { margin-bottom: 0; }
+    
+    .quality-list { margin: 0; padding-left: 16px; font-size: 14px; line-height: 1.6; color: rgba(36, 24, 18, 0.9); }
+    .quality-list li { margin-bottom: 12px; }
+    .quality-list li:last-child { margin-bottom: 0; }
+    .quality-list strong { color: var(--ember); font-family: 'Work Sans', sans-serif; font-weight: 700; }
+</style>
