@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Köszi a választ! | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={0} />
+    
+    <main class="page koszi-page">
+      <section class="success-section">
+        <div class="success-card">
+          <div class="icon-wrapper">
+            🍦🤘
+          </div>
+          <h1>Vettük az adást!</h1>
+          <p>Köszi, hogy rászántad az időt. A véleményed sikeresen landolt a rendszerünkben. Be is faljuk, mint egy jó pisztáciásat!</p>
+          
+          <div class="action-buttons">
+            <a href="/" class="primary-btn">Vissza a főoldalra</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  /* Kifejezetten ennek az oldalnak a layoutja, hogy középre húzza a kártyát */
+  .koszi-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 100px); /* Visszaszámoljuk a TopBar magasságát nagyjából */
+      padding: 16px;
+  }
+
+  .success-card {
+      background: #fff;
+      padding: 48px 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      animation: slideUp 0.4s ease-out;
+  }
+
+  .icon-wrapper {
+      font-size: 56px;
+      margin-bottom: 16px;
+      line-height: 1;
+  }
+
+  h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      text-transform: uppercase;
+      color: var(--char-900);
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+  }
+
+  p {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.5;
+      margin: 0 0 32px 0;
+  }
+
+  .primary-btn {
+      display: inline-block;
+      background: var(--ember);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(255, 90, 31, 0.2);
+      transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .primary-btn:active {
+      transform: scale(0.98);
+      background: var(--ember-dim, #e04a1a); /* Ha nincs ember-dim, adtam egy fallback narancsot */
+  }
+
+  /* Egy kis extra animáció, hogy ne legyen dögunalom a felbukkanás */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

@@ -16,8 +16,8 @@ import TopBar from '../components/TopBar.astro';
 
       <section class="survey-section">
         <div class="survey-card">
-          <!-- JAVÍTOTT FORM: data-netlify, honeypot, és action hozzáadva -->
-          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" class="survey-form">
+          <!-- JAVÍTOTT FORM: Az action most a /koszi oldalra mutat a sima / helyett -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/koszi" class="survey-form">
             
             <!-- Netlify bot-field (rejtett mező a spam botok ellen) -->
             <p class="hidden" style="display: none;">
@@ -59,7 +59,7 @@ import TopBar from '../components/TopBar.astro';
               </div>
             </div>
 
-            <!-- 4. KÉRDÉS (Több is választható - Checkbox) -->
+            <!-- 4. KÉRDÉS -->
             <div class="form-group">
               <label>4. Jövőkép: Mit látnál szívesen?</label>
               <p class="hint">Szerinted mi hiányzik nálunk a legjobban? (Többet is bejelölhetsz!)</p>
@@ -74,7 +74,7 @@ import TopBar from '../components/TopBar.astro';
               </div>
             </div>
 
-            <!-- 5. KÉRDÉS (Rejtett promóval a C válasznál) -->
+            <!-- 5. KÉRDÉS -->
             <div class="form-group">
               <label>5. A téli nyitvatartás kérdése</label>
               <p class="hint">Tudtad egyáltalán, hogy a Király utcai bázisunk télen sem zár be?</p>
@@ -84,7 +84,6 @@ import TopBar from '../components/TopBar.astro';
                 <label class="radio-label"><input type="radio" name="teli_nyitva" value="C_Hazhozszallitas" id="delivery-radio" /> 🏠 C: Jó tudni, de télen ki se mozdulok. Jöhet a házhozszállítás!</label>
               </div>
               
-              <!-- EZ ugrik fel, ha a házhozszállítást jelöli be -->
               <div id="webapp-promo" class="hidden-promo">
                 <p><strong>Akkor a rendelős appunkat egyenesen neked találtuk ki! 👇</strong></p>
                 <a href="https://enfagyi-app-122a0.web.app" target="_blank" class="promo-btn">Megnézem a Webappot 🚀</a>
@@ -103,7 +102,7 @@ import TopBar from '../components/TopBar.astro';
               </div>
             </div>
 
-            <!-- FEKETELEVES / SZABAD SZÖVEGES RÉSZ -->
+            <!-- FEKETELEVES -->
             <div class="form-group">
               <label for="feketeleves">7. Na és most jöhet a feketeleves. Mi az, ami hiányzik nálunk, vagy amin feltétlenül változtatnunk kéne?</label>
               <p class="hint">Bírjuk a kritikát, adjátok ki magatokból!</p>
@@ -126,7 +125,6 @@ import TopBar from '../components/TopBar.astro';
 </Layout>
 
 <script>
-  // Varázslat az 5. kérdéshez: ha a házhozszállítást kéri, megjelenik a gomb!
   document.addEventListener('DOMContentLoaded', () => {
     const radioBtns = document.querySelectorAll('input[name="teli_nyitva"]');
     const promoDiv = document.getElementById('webapp-promo');
@@ -181,13 +179,11 @@ import TopBar from '../components/TopBar.astro';
   }
   textarea:focus { border-color: var(--ember); }
 
-  /* Dinamikusan felugró webapp gomb */
   .hidden-promo { display: none; background: var(--cheese); padding: 16px; border-radius: 12px; border: 2px dashed var(--char-900); margin-top: 8px; text-align: center; animation: popIn 0.3s ease-out;}
   .hidden-promo p { margin: 0 0 12px 0; font-size: 14px; color: var(--char-900); }
   .promo-btn { display: inline-block; background: var(--char-900); color: var(--cream); text-decoration: none; font-family: 'Anton', sans-serif; text-transform: uppercase; padding: 10px 20px; border-radius: 8px; letter-spacing: 0.05em; transition: transform 0.2s; }
   .promo-btn:active { transform: scale(0.95); }
 
-  /* Téli infó blokk */
   .winter-alert { background: linear-gradient(135deg, rgba(255, 90, 31, 0.1), transparent); border-left: 4px solid var(--ember); padding: 16px; border-radius: 0 12px 12px 0; }
   .winter-alert h3 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; margin: 0 0 8px 0; color: var(--char-900); }
   .winter-alert p { font-size: 13px; margin: 0 0 8px 0; line-height: 1.5; color: var(--ink); }
