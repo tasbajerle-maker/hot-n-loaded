@@ -16,8 +16,14 @@ import TopBar from '../components/TopBar.astro';
 
       <section class="survey-section">
         <div class="survey-card">
-          <!-- A data-netlify="true" biztosítja, hogy a válaszok beessenek a Netlify-ba -->
-          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" class="survey-form">
+          <!-- JAVÍTOTT FORM: data-netlify, honeypot, és action hozzáadva -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" class="survey-form">
+            
+            <!-- Netlify bot-field (rejtett mező a spam botok ellen) -->
+            <p class="hidden" style="display: none;">
+              <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <!-- Netlify form neve -->
             <input type="hidden" name="form-name" value="Nyaloda-Velemeny" />
             
             <!-- 1. KÉRDÉS -->
