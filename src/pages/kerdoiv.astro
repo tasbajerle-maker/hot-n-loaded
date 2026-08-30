@@ -16,8 +16,8 @@ import TopBar from '../components/TopBar.astro';
 
       <section class="survey-section">
         <div class="survey-card">
-          <!-- JAVÍTOTT FORM: Az action most a /koszi oldalra mutat a sima / helyett -->
-          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/koszi" class="survey-form">
+          <!-- A VARÁZSLAT ITT VAN: action="/koszi/" (PERJEL A VÉGÉN!) -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/koszi/" class="survey-form">
             
             <!-- Netlify bot-field (rejtett mező a spam botok ellen) -->
             <p class="hidden" style="display: none;">
