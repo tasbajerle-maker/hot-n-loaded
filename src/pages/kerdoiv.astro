@@ -16,8 +16,8 @@ import TopBar from '../components/TopBar.astro';
 
       <section class="survey-section">
         <div class="survey-card">
-          <!-- JAVÍTOTT FORM: action="/koszi" (szigorúan perjel NÉLKÜL!) -->
-          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/koszi" class="survey-form">
+          <!-- Levettük az action-t, mert JavaScripttel küldjük be a háttérben! -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="survey-form">
             
             <!-- Netlify bot-field (rejtett mező a spam botok ellen) -->
             <p class="hidden" style="display: none;">
@@ -116,7 +116,7 @@ import TopBar from '../components/TopBar.astro';
               <p class="hours"><strong>Téli Nyitvatartás: MINDEN NAP 11:00 - 21:00</strong></p>
             </div>
 
-            <button type="submit" class="submit-btn">Mehet a válasz! 🚀</button>
+            <button type="submit" class="submit-btn" id="submit-btn">Mehet a válasz! 🚀</button>
           </form>
         </div>
       </section>
@@ -126,6 +126,7 @@ import TopBar from '../components/TopBar.astro';
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Promo doboz vezérlése
     const radioBtns = document.querySelectorAll('input[name="teli_nyitva"]');
     const promoDiv = document.getElementById('webapp-promo');
     const deliveryRadio = document.getElementById('delivery-radio');
@@ -139,6 +140,43 @@ import TopBar from '../components/TopBar.astro';
         }
       });
     });
+
+    // ÚJ: Háttérben történő (AJAX) form beküldés, ami kikerüli a 404-et
+    const form = document.querySelector('form[name="Nyaloda-Velemeny"]') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Megállítjuk a gyári újratöltést és POST-ot!
+        
+        // Gomb inaktiválása, hogy ne nyomkodják százszor
+        if (submitBtn) {
+          submitBtn.innerText = 'Küldés folyamatban... ⏳';
+          submitBtn.disabled = true;
+        }
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData as any).toString();
+        
+        // Elküldjük a főoldalnak a háttérben, így a Netlify elkapja
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: data
+        })
+        .then(() => {
+          // Ha sikeres a küldés, GOND NÉLKÜL betöltjük a koszi oldalt
+          window.location.href = '/koszi';
+        })
+        .catch((error) => {
+          console.error('Hiba a beküldésnél:', error);
+          if (submitBtn) {
+            submitBtn.innerText = 'Hiba! Próbáld újra.';
+            submitBtn.disabled = false;
+          }
+        });
+      });
+    }
   });
 </script>
 
@@ -196,6 +234,7 @@ import TopBar from '../components/TopBar.astro';
       box-shadow: 0 4px 16px rgba(255, 90, 31, 0.2); transition: transform 0.2s, background-color 0.2s; margin-top: 8px;
   }
   .submit-btn:active { transform: scale(0.98); background: var(--ember-dim); }
+  .submit-btn:disabled { background: #999; cursor: not-allowed; transform: none; box-shadow: none; }
 
   @keyframes popIn {
     from { opacity: 0; transform: translateY(-10px); }
