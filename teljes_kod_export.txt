@@ -1,3 +1,80 @@
+
+
+=================================================
+FÁJL: export.js
+=================================================
+
+// Fájl: export.js
+import fs from 'fs/promises';
+import path from 'path';
+import process from 'process';
+
+// Itt állítod be, miket hagyjon figyelmen kívül.
+const IGNORE_DIRS = ['node_modules', '.git', 'dist', '.astro', 'build', 'public'];
+const IGNORE_EXTS = ['.png', '.jpg', '.jpeg', '.svg', '.ico', '.zip', '.mp3', '.mp4', '.webp'];
+const IGNORE_FILES = ['package-lock.json', 'export.js', '.env'];
+const OUTPUT_FILE = 'kodbazis_export.txt';
+
+async function getFiles(dir, files = []) {
+    // Modern withFileTypes megoldás, így nem kell külön fs.stat hívás minden fájlra
+    const fileList = await fs.readdir(dir, { withFileTypes: true });
+    
+    for (const dirent of fileList) {
+        const name = path.join(dir, dirent.name);
+        if (dirent.isDirectory()) {
+            if (!IGNORE_DIRS.includes(dirent.name)) {
+                await getFiles(name, files);
+            }
+        } else {
+            const ext = path.extname(name).toLowerCase();
+            if (!IGNORE_EXTS.includes(ext) && !IGNORE_FILES.includes(dirent.name) && dirent.name !== OUTPUT_FILE) {
+                files.push(name);
+            }
+        }
+    }
+    return files;
+}
+
+async function generateExport() {
+    const rootDir = process.cwd();
+    console.log('Fájlok begyűjtése folyamatban...');
+    
+    try {
+        const files = await getFiles(rootDir);
+        let output = '';
+
+        for (const file of files) {
+            const relativePath = path.relative(rootDir, file);
+            output += `\n\n=========================================\n`;
+            output += `FÁJL: ${relativePath}\n`;
+            output += `=========================================\n\n`;
+            try {
+                const content = await fs.readFile(file, 'utf8');
+                output += content;
+            } catch (err) {
+                output += `// Hiba a fájl olvasásakor: ${err.message}`;
+            }
+        }
+
+        await fs.writeFile(OUTPUT_FILE, output, 'utf8');
+        const stats = await fs.stat(OUTPUT_FILE);
+        
+        console.log(`\n✅ Kész vagyunk, te nagy ESM mágus.`);
+        console.log(`Feldolgozva: ${files.length} fájl.`);
+        console.log(`Eredmény: ${OUTPUT_FILE} (${(stats.size / 1024).toFixed(2)} KB)`);
+        console.log(`Ezt a text fájlt vágd be ide, és végre elkezdhetünk normálisan dolgozni!`);
+    } catch (err) {
+        console.error('Kritikus hiba történt:', err);
+    }
+}
+
+// Futás indítása
+generateExport();
+
+=================================================
+FÁJL: package-lock.json
+=================================================
+
 {
   "name": "landing-page",
   "version": "0.0.1",
@@ -5026,5 +5103,2631 @@
         "url": "https://github.com/sponsors/wooorm"
       }
     }
+  }
+}
+
+
+=================================================
+FÁJL: package.json
+=================================================
+
+{
+  "name": "landing-page",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.4",
+    "@astrojs/sitemap": "^3.7.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "astro": "^7.2.4",
+    "framer-motion": "^13.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
+
+
+=================================================
+FÁJL: public\dummy-form.html
+=================================================
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Dummy Form</title>
+</head>
+<body>
+  <!-- Ezt senki se látja, de a Netlify ebből tudja, hogy létezik a formod -->
+  <form name="Nyaloda-Velemeny" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="bot-field" />
+    <input type="radio" name="kornyezet" />
+    <input type="radio" name="receptura" />
+    <input type="radio" name="elmeny" />
+    <input type="checkbox" name="jovokep" />
+    <input type="text" name="jovokep_mas" />
+    <input type="radio" name="teli_nyitva" />
+    <input type="radio" name="kabalak" />
+    <textarea name="feketeleves"></textarea>
+  </form>
+</body>
+</html>
+
+=================================================
+FÁJL: src\components\BentoTile.astro
+=================================================
+
+---
+export interface Props {
+	href: string;
+	emoji: string;
+	label: string;
+	subLabel?: string;
+	isLarge?: boolean;
+	theme?: 'default' | 'burger' | 'fagyi';
+}
+const { href, emoji, label, subLabel, isLarge = false, theme = 'default' } = Astro.props;
+---
+
+<a href={href} class:list={['bento-tile', { 'bento-large': isLarge, 'burger-theme': theme === 'burger', 'fagyi-theme': theme === 'fagyi' }]} aria-label={`${label} kategória megtekintése`}>
+	<div class="emoji" aria-hidden="true">{emoji}</div>
+	{isLarge ? (
+		<div class="label-wrap">
+			<span class="label">{label}</span>
+			{subLabel && <span class="sub">{subLabel}</span>}
+		</div>
+	) : (
+		<span class="label">{label}</span>
+	)}
+</a>
+
+<style>
+	.bento-tile {
+		background: rgba(255,255,255,0.05); border-radius: 20px; padding: 16px 12px;
+		display: flex; flex-direction: column; align-items: center; justify-content: center;
+		text-align: center; text-decoration: none; border: 1px solid rgba(255,255,255,0.05);
+		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.bento-tile:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+	
+	.bento-large { grid-column: span 2; flex-direction: row; gap: 20px; justify-content: flex-start; padding: 20px 24px; }
+	.burger-theme { background: linear-gradient(135deg, rgba(255, 90, 31, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 90, 31, 0.3); }
+	.fagyi-theme { background: linear-gradient(135deg, rgba(255, 201, 74, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 201, 74, 0.3); }
+	
+	.bento-large .emoji { font-size: 44px; margin-bottom: 0; }
+	.bento-large .label-wrap { text-align: left; display: flex; flex-direction: column; }
+	.label { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cream); }
+	.bento-large .label { font-size: 20px; }
+	.bento-large .sub { font-family: 'Work Sans', sans-serif; font-size: 11px; font-weight: 500; opacity: 0.7; margin-top: 2px; color: var(--cream); }
+	
+	.bento-tile .emoji { font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
+</style>
+
+=================================================
+FÁJL: src\components\CtaDock.astro
+=================================================
+
+---
+export interface Props {
+	title: string;
+	subtitle: string;
+	actionUrl: string;
+	actionText: string;
+}
+const { title, subtitle, actionUrl, actionText } = Astro.props;
+---
+<div class="cta-dock-wrapper">
+	<div class="cta-dock">
+		<div class="cta-text">
+			{title}
+			<small>{subtitle}</small>
+		</div>
+		<a href={actionUrl} class="cta-btn" aria-label={`${title} - Tovább a Webappra`}>
+			{actionText}
+			<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+		</a>
+	</div>
+</div>
+
+<style>
+	.cta-dock-wrapper { position: relative; z-index: 10; margin-top: -24px; padding: 0 16px; }
+	.cta-dock {
+		background: var(--cheese); border-radius: 20px; padding: 14px 18px;
+		display: flex; align-items: center; justify-content: space-between; gap: 12px;
+		box-shadow: 0 12px 24px -6px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.4);
+		border: 1px solid rgba(0,0,0,0.05);
+	}
+	.cta-text { font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; color: var(--char-900); line-height: 1.1; }
+	.cta-text small { display: block; font-family: 'Work Sans', sans-serif; font-weight: 600; font-size: 11px; opacity: 0.7; margin-top: 2px; text-transform: none; }
+	
+	.cta-btn {
+		background: var(--char-900); color: var(--cream);
+		font-family: 'Anton', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em;
+		padding: 12px 18px; border-radius: 12px; border: none;
+		display: flex; align-items: center; gap: 8px; text-decoration: none;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.cta-btn:active { transform: scale(0.95); }
+	.cta-btn svg { width: 14px; height: 14px; stroke: var(--cream); }
+</style>
+
+=================================================
+FÁJL: src\components\DynamicIsland.astro
+=================================================
+
+---
+export interface Props {
+	statusText?: string;
+	actionUrl?: string;
+	actionText?: string;
+}
+// Itt írtam át a default időpontot 10-20-ra!
+const { statusText = "Nyitva · 10:00–20:00", actionUrl = "https://webappod.hu", actionText = "Rendelés" } = Astro.props;
+---
+
+<nav class="order-pill" aria-label="Gyors rendelési sáv">
+	<div class="left">
+		<span class="pulse-dot" aria-hidden="true"></span>
+		<span class="status-text">{statusText}</span>
+	</div>
+	<a href={actionUrl} class="cta-btn small">
+		{actionText}
+		<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+	</a>
+</nav>
+
+<style>
+	.order-pill {
+		position: absolute; 
+		bottom: 24px; left: 50%; transform: translateX(-50%); 
+		width: calc(100% - 32px); max-width: 400px; z-index: 60;
+		background: rgba(28, 20, 16, 0.85); 
+		backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%);
+		padding: 8px 8px 8px 20px; display: flex; align-items: center; justify-content: space-between;
+		box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+		border: 1px solid rgba(255,255,255,0.1);
+		border-radius: 999px;
+	}
+	
+	@media (max-width: 540px) {
+		.order-pill { position: fixed; }
+	}
+	
+	.order-pill .left { display: flex; align-items: center; gap: 12px; color: var(--cream); }
+	.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #5fe17a; animation: pulse 2s infinite; }
+	.status-text { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+	
+	.cta-btn.small { 
+		border-radius: 999px; padding: 12px 20px; font-size: 13px; background: var(--ember); 
+		color: var(--cream); font-family: 'Anton', sans-serif; text-transform: uppercase;
+		display: flex; align-items: center; gap: 6px; text-decoration: none; border: none; cursor: pointer;
+		box-shadow: 0 4px 12px rgba(255,90,31,0.3); transition: transform 0.2s;
+	}
+	.cta-btn.small:active { transform: scale(0.95); }
+	.cta-btn.small svg { width: 14px; height: 14px; stroke: var(--cream); }
+
+	@keyframes pulse {
+		0% { box-shadow: 0 0 0 0 rgba(95,225,122,0.4); }
+		70% { box-shadow: 0 0 0 6px rgba(95,225,122,0); }
+		100% { box-shadow: 0 0 0 0 rgba(95,225,122,0); }
+	}
+</style>
+
+=================================================
+FÁJL: src\components\Footer.astro
+=================================================
+
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" itemscope itemtype="https://schema.org/Organization">
+	<meta itemprop="name" content="Hókuszpókusz Ice Kft." />
+	
+	<div class="contact-info">
+		<a href="mailto:hokuszpokuszicekft@gmail.com" itemprop="email" class="email">hokuszpokuszicekft@gmail.com</a>
+		<div class="socials" aria-label="Közösségi Média">
+			<a href="https://instagram.com/nyalodafagyi" target="_blank" rel="noopener noreferrer" itemprop="sameAs">Instagram (@nyalodafagyi)</a>
+			<a href="https://www.tiktok.com/@nyaloda" target="_blank" rel="noopener noreferrer" itemprop="sameAs">TikTok (@nyaloda)</a>
+			<a href="https://www.facebook.com/nyalodafagyizo" target="_blank" rel="noopener noreferrer" itemprop="sameAs">Facebook</a>
+		</div>
+	</div>
+
+	<nav class="footer-links" aria-label="Jogi és információs menü">
+		<!-- ÚJ WEBAPP RENDELÉS LINK (Kiemelve) -->
+		<a href="https://enfagyi-app-122a0.web.app/" target="_blank" rel="noopener noreferrer" style="color: var(--ember); opacity: 1; font-weight: 700;">Rendelés (Webapp) 🚀</a>
+		
+		<!-- Eredeti linkek -->
+		<a href="/aszf">ÁSZF</a>
+		<a href="/gdpr">Adatkezelés (GDPR)</a>
+		<a href="/impresszum">Impresszum</a>
+		<a href="/contact">Kapcsolat</a>
+	</nav>
+	<p class="copyright">&copy; {currentYear} Hókuszpókusz Ice Kft. | Hot & Loaded | Nyaloda.</p>
+</footer>
+
+<style>
+	.footer { background: var(--char-900); color: var(--cream); padding: 40px 16px 80px; text-align: center; border-radius: 32px 32px 0 0; }
+	
+	.contact-info { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+	.email { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--cheese); text-decoration: none; display: block; margin-bottom: 16px; }
+	.socials { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+	.socials a { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; color: var(--cream); text-decoration: none; letter-spacing: 0.05em; }
+	.socials a:hover { color: var(--ember); }
+
+	.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 24px; }
+	.footer-links a { color: var(--cream); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.6; }
+	.footer-links a:hover { opacity: 1; }
+	.copyright { font-family: 'IBM Plex Mono', monospace; font-size: 10px; opacity: 0.4; margin: 0; }
+</style>
+
+=================================================
+FÁJL: src\components\Hero.astro
+=================================================
+
+---
+---
+<section class="hero" aria-labelledby="hero-heading">
+	<h1 id="hero-heading" class="sr-only">Hot & Loaded és Nyaloda Kínálat</h1>
+	
+	<!-- Hot & Loaded - Sós vonal -->
+	<a href="/burgerek" class="hero-half hero-burger">
+		<div class="hero-glow"></div>
+		<div class="hero-content">
+			<p class="hero-eyebrow">Hot & Loaded</p>
+			<div class="hero-emoji" aria-hidden="true">🍔</div>
+			<h2 class="hero-title">Füstös,<br><em>ropogós</em></h2>
+		</div>
+	</a>
+
+	<!-- Nyaloda - Édes vonal -->
+	<a href="/fagyik" class="hero-half hero-fagyi">
+		<div class="hero-glow"></div>
+		<div class="hero-content">
+			<p class="hero-eyebrow">Nyaloda</p>
+			<div class="hero-emoji" aria-hidden="true">🍦</div>
+			<h2 class="hero-title">Kézműves,<br><em>hűsítő</em></h2>
+		</div>
+	</a>
+</section>
+
+<style>
+	.sr-only {
+		position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+		overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+	}
+	.hero { display: flex; min-height: 230px; }
+	.hero-half {
+		position: relative; flex: 1; overflow: hidden;
+		display: flex; flex-direction: column; justify-content: flex-end;
+		padding: 24px 16px; transition: flex 0.4s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer;
+		text-decoration: none; 
+		-webkit-tap-highlight-color: transparent; 
+	}
+	
+	/* ASZTALI NÉZET MANUÁLIS: Amikor fölé viszed az egeret */
+	@media (hover: hover) {
+		.hero-half:hover { flex: 1.3 !important; }
+		.hero-half:hover .hero-emoji { transform: scale(1.15) rotate(5deg) !important; }
+	}
+
+	/* MOBIL NÉZET MANUÁLIS: Amikor ráböksz a képernyőre */
+	.hero-half:active { flex: 1.3 !important; }
+	.hero-half:active .hero-emoji { transform: scale(1.15) rotate(5deg) !important; }
+
+	/* === ÚJ: AUTOMATIKUS "LÉGZŐ" ANIMÁCIÓ === */
+	/* A burgeres rész elkezdi a 10 mp-es ciklust... */
+	.hero-burger { animation: autoPulseFlex 10s infinite ease-in-out; }
+	.hero-burger .hero-emoji { animation: autoPulseEmoji 10s infinite ease-in-out; }
+	
+	/* ...a fagyis rész pedig egy -5 másodperces eltolással (delay) indít, 
+	   így pontosan fáziskéséssel fog felváltva animálni a burgerrel! */
+	.hero-fagyi { animation: autoPulseFlex 10s infinite ease-in-out -5s; }
+	.hero-fagyi .hero-emoji { animation: autoPulseEmoji 10s infinite ease-in-out -5s; }
+
+	/* ZSENIÁLIS TRÜKK: Ha a felhasználó a szakaszhoz ér (hover vagy aktív),
+	   azonnal kinyírjuk az automatikus animációt, hogy a gép ne harcoljon az ujjaddal/egereddel! */
+	.hero:hover .hero-half,
+	.hero:active .hero-half,
+	.hero:hover .hero-emoji,
+	.hero:active .hero-emoji {
+		animation: none !important;
+	}
+
+	@keyframes autoPulseFlex {
+		0%, 15%, 100% { flex: 1; }
+		7.5% { flex: 1.3; } /* A 10 mp-es ciklusból 0.75 mp alatt éri el a max méretet */
+	}
+	@keyframes autoPulseEmoji {
+		0%, 15%, 100% { transform: scale(1) rotate(0deg); }
+		7.5% { transform: scale(1.15) rotate(5deg); }
+	}
+	/* ========================================= */
+
+	.hero-burger {
+		background: radial-gradient(circle at top left, #3a2417, var(--char-900));
+		color: var(--cream); clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+		margin-right: -15%; z-index: 2;
+	}
+	.hero-fagyi {
+		background: radial-gradient(circle at top right, #ffffff, #f7c9d4);
+		color: var(--ink); padding-left: 20%;
+	}
+	
+	.hero-glow { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; pointer-events: none; }
+	.hero-burger .hero-glow { width: 160px; height: 160px; background: var(--ember); top: -30px; left: -30px; }
+	.hero-fagyi .hero-glow { width: 160px; height: 160px; background: #fff; bottom: -30px; right: -30px; opacity: 1; }
+	
+	.hero-content { position: relative; z-index: 5; pointer-events: none; }
+	
+	.hero-emoji { font-size: 46px; margin-bottom: 8px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3)); transition: transform 0.4s ease; }
+	.hero-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; margin-bottom: 4px; }
+	.hero-title { font-family: 'Anton', sans-serif; font-size: clamp(20px, 6vw, 24px); line-height: 1.1; text-transform: uppercase; margin: 0; font-weight: 400;}
+	.hero-burger .hero-title em { font-style: normal; color: var(--ember); }
+	.hero-fagyi .hero-title em { font-style: normal; color: #d6476b; }
+</style>
+
+=================================================
+FÁJL: src\components\InteractiveMenu.tsx
+=================================================
+
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import type { Variants } from 'framer-motion';
+
+export type Category = 'Burgerek' | 'Csirkék' | 'Fagyik';
+
+export interface NutritionInfo {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  category: Category;
+  price?: number; 
+  priceNormal?: number; 
+  priceLarge?: number; 
+  description: string;
+  nutrition: NutritionInfo;
+  allergens: string[];
+  emoji: string;
+  imageUrl?: string;
+}
+
+export interface InteractiveMenuProps {
+  items?: MenuItem[];
+}
+
+const defaultItems: MenuItem[] = [
+  {
+    id: 'b-01', name: 'Tüzes Pokol Burger', category: 'Burgerek', price: 3490,
+    description: 'Friss vágású, szaftos marhahús, dupla cheddar, jalapeño, titkos füstös szósz, kézműves buciban, nyílt lángon sütve.',
+    nutrition: { calories: 850, protein: 42, carbs: 45, fat: 55 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔',
+  }
+];
+
+const getTheme = (category: Category) => {
+  switch (category) {
+    case 'Fagyik':
+      return {
+        bg: 'radial-gradient(150% 150% at 50% 0%, #ffffff 0%, #f7c9d4 60%, #e894a8 100%)',
+        text: '#1c1410',
+        accent: '#d6476b',
+        cardBg: 'rgba(255, 255, 255, 0.55)',
+        btnBg: '#1c1410',
+        btnText: '#ffffff',
+      };
+    case 'Csirkék':
+      return {
+        bg: 'radial-gradient(150% 150% at 50% 0%, #ffc94a 0%, #7c2d12 100%)',
+        text: '#fff6e9',
+        accent: '#ffc94a',
+        cardBg: 'rgba(28, 20, 16, 0.45)',
+        btnBg: '#ffc94a',
+        btnText: '#1c1410',
+      };
+    case 'Burgerek':
+    default:
+      return {
+        bg: 'radial-gradient(150% 150% at 50% 0%, #ff5a1f 0%, #1c1410 80%)',
+        text: '#fff6e9',
+        accent: '#ff5a1f',
+        cardBg: 'rgba(28, 20, 16, 0.45)',
+        btnBg: '#ff5a1f',
+        btnText: '#ffffff',
+      };
+  }
+};
+
+const slideVariants: Variants = {
+  enter: (direction: number) => ({ x: direction > 0 ? 150 : -150, opacity: 0, scale: 0.8, rotate: direction > 0 ? 15 : -15 }),
+  center: { x: 0, opacity: 1, scale: 1, rotate: 0, transition: { type: 'spring', stiffness: 300, damping: 25 } },
+  exit: (direction: number) => ({ x: direction < 0 ? 150 : -150, opacity: 0, scale: 0.8, rotate: direction < 0 ? 15 : -15, transition: { duration: 0.2 } }),
+};
+
+export default function InteractiveMenu({ items = defaultItems }: InteractiveMenuProps) {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [direction, setDirection] = useState<number>(1);
+  const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false);
+  const railRef = useRef<HTMLDivElement>(null);
+
+  // --- ÚJ: BEOLVASSA AZ URL-T ÉS KINYITJA A RÉSZLETEKET ---
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const itemId = params.get('item');
+      if (itemId) {
+        const targetIndex = items.findIndex((i) => i.id === itemId);
+        if (targetIndex !== -1) {
+          setActiveIndex(targetIndex);
+          setIsAccordionOpen(true); // <--- Azonnal kinyitjuk a kalóriát és allergéneket!
+          
+          // Odagörgetjük a sínt is a kiválasztott elemhez egy kis késleltetéssel
+          setTimeout(() => {
+            if (railRef.current) {
+              const activeEl = railRef.current.children[targetIndex] as HTMLElement;
+              if (activeEl) {
+                activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }
+            }
+          }, 300);
+        }
+      }
+    }
+  }, [items]);
+
+  const handleSelect = (index: number) => {
+    if (index === activeIndex) return;
+    setDirection(index > activeIndex ? 1 : -1);
+    setActiveIndex(index);
+    setIsAccordionOpen(false); // Bezárjuk, ha a felhasználó másikra kattint
+
+    // Opcionális varázslat: frissítjük az URL-t az új termékre
+    if (typeof window !== 'undefined') {
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.set('item', items[index].id);
+      window.history.replaceState({}, '', newUrl);
+    }
+  };
+
+  if (!items || items.length === 0) return null;
+
+  const activeItem = items[activeIndex];
+  const theme = getTheme(activeItem.category);
+
+  return (
+    <div className="im-container">
+      <style>{styles}</style>
+
+      <motion.div
+        className="im-detail-area"
+        animate={{ background: theme.bg, color: theme.text }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+      >
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={activeItem.id}
+            className="im-detail-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="im-visual-wrapper">
+              <motion.div
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="im-emoji-container"
+              >
+                {activeItem.imageUrl ? (
+                  <img src={activeItem.imageUrl} alt={activeItem.name} className="im-photo" />
+                ) : (
+                  <span className="im-emoji" aria-hidden="true">{activeItem.emoji}</span>
+                )}
+              </motion.div>
+            </div>
+
+            <div className="im-info-card" style={{ background: theme.cardBg, borderColor: 'rgba(255,255,255,0.1)' }}>
+              
+              <div className="im-card-header">
+                <span className="im-badge" style={{ backgroundColor: theme.accent, color: activeItem.category === 'Fagyik' ? '#fff' : '#1c1410' }}>
+                  {activeItem.category}
+                </span>
+                
+                {activeItem.priceNormal && activeItem.priceLarge ? (
+                  <div className="im-dual-price">
+                    <div className="im-price-pill" style={{ background: 'rgba(0,0,0,0.06)' }}>
+                      <small>Kicsi</small>
+                      <span>{activeItem.priceNormal} Ft</span>
+                    </div>
+                    <div className="im-price-pill highlight" style={{ backgroundColor: theme.btnBg, color: theme.btnText }}>
+                      <small style={{ color: 'inherit', opacity: 0.8 }}>Nagy</small>
+                      <span>{activeItem.priceLarge} Ft</span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="im-price">
+                    {new Intl.NumberFormat('hu-HU').format(activeItem.price || 0)} Ft
+                  </span>
+                )}
+              </div>
+              
+              <h2 className="im-title">{activeItem.name}</h2>
+              <p className="im-desc">{activeItem.description}</p>
+
+              <div className="im-accordion" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
+                <button
+                  className="im-acc-btn"
+                  style={{ color: theme.text }}
+                  onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                  aria-expanded={isAccordionOpen}
+                >
+                  <span className="im-acc-label">Kalória és Allergének</span>
+                  <motion.svg
+                    animate={{ rotate: isAccordionOpen ? 180 : 0 }}
+                    width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </motion.svg>
+                </button>
+
+                <AnimatePresence>
+                  {isAccordionOpen && (
+                    <motion.div
+                      className="im-acc-content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="im-nutrition-grid">
+                        <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Kcal</span><strong>{activeItem.nutrition.calories}</strong></div>
+                        <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Fehérje</span><strong>{activeItem.nutrition.protein}g</strong></div>
+                        <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Szénh.</span><strong>{activeItem.nutrition.carbs}g</strong></div>
+                        <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Zsír</span><strong>{activeItem.nutrition.fat}g</strong></div>
+                      </div>
+                      <div className="im-allergens">
+                        <strong>Allergének:</strong> {activeItem.allergens.length > 0 ? activeItem.allergens.join(', ') : 'Mentes'}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* ITT VAN AZ ÚJ LINKED BEÁLLÍTVA */}
+              <motion.a
+                href="https://enfagyi-app-122a0.web.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="im-cta-btn"
+                style={{ backgroundColor: theme.btnBg, color: theme.btnText, textDecoration: 'none' }}
+                whileTap={{ scale: 0.95 }}
+                aria-label={`${activeItem.name} megrendelése`}
+              >
+                <span>Rendelés</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </motion.a>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+
+      <div className="im-rail-area">
+        {/* --- ÚJ: ref={railRef} SEGÍT AZ ODAGÖRGETÉSBEN --- */}
+        <div className="im-rail-track" role="tablist" ref={railRef}>
+          {items.map((item, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <button
+                key={item.id}
+                role="tab"
+                aria-selected={isActive}
+                className={`im-rail-item ${isActive ? 'active' : ''}`}
+                onClick={() => handleSelect(index)}
+              >
+                <div className="im-rail-icon">{item.emoji}</div>
+                <div className="im-rail-name">{item.name}</div>
+                
+                {isActive && (
+                  <motion.div
+                    className="im-rail-indicator"
+                    layoutId="railIndicator"
+                    style={{ borderColor: getTheme(item.category).accent }}
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = `
+  .im-container { width: 100%; flex: 1; display: flex; flex-direction: column; font-family: 'Work Sans', sans-serif; border-radius: 32px; overflow: hidden; background: #f4efe9; box-shadow: 0 16px 32px rgba(0,0,0,0.1); }
+  .im-detail-area { position: relative; width: 100%; flex: 1; padding: 16px 16px 12px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .im-detail-content { display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+  .im-visual-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; overflow: visible; min-height: 0; }
+  .im-emoji-container { display: flex; align-items: center; justify-content: center; }
+  .im-emoji { font-size: clamp(80px, 18vh, 130px); line-height: 1; filter: drop-shadow(0 16px 24px rgba(0,0,0,0.25)); }
+  .im-photo { max-width: 80%; max-height: 200px; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3)); }
+  .im-info-card { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid; border-radius: 20px; padding: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); flex-shrink: 0; }
+  .im-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .im-dual-price { display: flex; gap: 6px; }
+  .im-price-pill { display: flex; flex-direction: column; align-items: center; padding: 4px 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); }
+  .im-price-pill small { font-size: 8px; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace; opacity: 0.8; margin-bottom: 2px; white-space: nowrap; }
+  .im-price-pill span { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
+  .im-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 8px; letter-spacing: 0.05em; }
+  .im-price { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; }
+  .im-title { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; margin: 0 0 4px 0; line-height: 1.1; font-weight: 400; }
+  .im-desc { font-size: 12px; line-height: 1.4; opacity: 0.85; margin: 0 0 12px 0; }
+  .im-accordion { border-top: 1px dashed; border-bottom: 1px dashed; margin-bottom: 12px; }
+  .im-acc-btn { width: 100%; background: none; border: none; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; outline: none; }
+  .im-acc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .im-acc-content { overflow: hidden; }
+  .im-nutrition-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+  .im-nut-box { border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 6px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+  .im-nut-box span { font-size: 9px; text-transform: uppercase; opacity: 0.7; }
+  .im-nut-box strong { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; }
+  .im-allergens { font-size: 11px; opacity: 0.8; padding-bottom: 12px; }
+  .im-cta-btn { width: 100%; border: none; padding: 14px; border-radius: 14px; font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.15); transition: transform 0.2s, background-color 0.3s; }
+  .im-rail-area { position: relative; width: 100%; background: rgba(255,255,255,0.6); backdrop-filter: blur(10px); }
+  .im-rail-area::after { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 30px; background: linear-gradient(to right, transparent, rgba(244,239,233,1)); pointer-events: none; z-index: 5; }
+  .im-rail-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 12px 30px 24px 16px; margin-bottom: env(safe-area-inset-bottom, 0px); }
+  .im-rail-track::-webkit-scrollbar { display: none; }
+  .im-rail-item { scroll-snap-align: center; flex: 0 0 100px; position: relative; background: #fff; border: 2px solid transparent; border-radius: 16px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); outline: none; -webkit-tap-highlight-color: transparent; }
+  .im-rail-icon { font-size: 28px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); position: relative; z-index: 2; }
+  .im-rail-name { font-family: 'Anton', sans-serif; font-size: 11px; text-transform: uppercase; text-align: center; color: #1c1410; line-height: 1.1; position: relative; z-index: 2; font-weight: 400; }
+  .im-rail-indicator { position: absolute; inset: -2px; border: 2px solid; border-radius: 18px; pointer-events: none; z-index: 1; }
+`;
+
+=================================================
+FÁJL: src\components\LocationCard.astro
+=================================================
+
+---
+export interface Props {
+	title: string;
+	address: string;
+	hours: string;
+	tags: string[];
+}
+const { title, address, hours, tags } = Astro.props;
+---
+
+<address class="location-card" itemscope itemtype="https://schema.org/Store">
+	<h3 class="loc-header" itemprop="name">{title}</h3>
+	<p itemprop="address">{address}</p>
+	<p><strong>Nyitva:</strong> <span itemprop="openingHours">{hours}</span></p>
+	<div class="tags" aria-label="Elérhető kínálat">
+		{tags.map((tag) => (
+			<span class="tag">{tag}</span>
+		))}
+	</div>
+</address>
+
+<style>
+	.location-card { background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); font-style: normal; }
+	.loc-header { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); margin: 0 0 8px 0; font-weight: 400; }
+	.location-card p { font-size: 13px; margin: 0 0 4px 0; }
+	.tags { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+	.tag { background: var(--cream-2); font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; }
+</style>
+
+=================================================
+FÁJL: src\components\ProductCard.astro
+=================================================
+
+---
+export interface Props {
+	isPromo?: boolean;
+	isNew?: boolean;
+	badgeText?: string;
+	category: string;
+	emoji?: string;
+	imageUrl?: string;
+	name: string;
+	price: string;
+	actionUrl?: string;
+	actionText?: string;
+}
+
+const {
+	isPromo = false,
+	isNew = false,
+	badgeText,
+	category,
+	emoji = "🍩",
+	imageUrl,
+	name,
+	price,
+	actionUrl,
+	actionText = "+"
+} = Astro.props;
+---
+
+<article class:list={['product-card', { 'new-item': isNew, 'coupon-card': isPromo }]} itemscope itemtype="https://schema.org/Product">
+	<meta itemprop="category" content={category} />
+
+	{actionUrl && <a href={actionUrl} class="card-link-overlay" aria-label={`${name} megtekintése`}></a>}
+
+	{badgeText && <div class="badge">{badgeText}</div>}
+	
+	<div class="cat">{category}</div>
+	
+	<!-- Itt a varázslat: Ha van kép, a 'full-bleed' osztály CSS-ből a kártya tetejére rántja! -->
+	<div class:list={['visual-container', { 'full-bleed': imageUrl }]}>
+		{imageUrl ? (
+			<img src={imageUrl} alt={name} class="product-image" loading="lazy" />
+		) : (
+			<div class="emoji" aria-hidden="true">{emoji}</div>
+		)}
+	</div>
+	
+	<h3 class="name" itemprop="name">{name}</h3>
+
+	<div class="price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+		<span class="price" itemprop="price">{price}</span>
+		<meta itemprop="priceCurrency" content="HUF" />
+		{actionUrl ? (
+			<a href={actionUrl} class:list={['add', { 'promo-add': isPromo }]} aria-label="Tovább">{actionText}</a>
+		) : (
+			<button class="add" aria-label={`${name} kosárba`}>{actionText}</button>
+		)}
+	</div>
+</article>
+
+<style>
+	.product-card {
+		scroll-snap-align: start; flex: 0 0 150px; 
+		background: #ffffff; border-radius: 20px; padding: 14px;
+		position: relative; color: var(--ink); 
+		box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.02);
+		border: 1px solid rgba(0,0,0,0.04);
+		display: flex; flex-direction: column;
+		transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.product-card:active { transform: scale(0.96); } 
+	
+	.card-link-overlay { position: absolute; inset: 0; z-index: 5; border-radius: 20px; }
+	
+	.new-item { border: 1.5px solid var(--ember); }
+	.coupon-card { background: var(--cheese); border: 2px dashed var(--char-900); }
+	
+	.badge { position: absolute; top: -8px; right: -8px; background: var(--ember); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 10px; box-shadow: 0 4px 8px rgba(255, 90, 31, 0.3); z-index: 6; }
+	
+	.cat { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px; }
+	
+	/* ALAP (EMOJI) KINÉZET */
+	.visual-container {
+		width: 100%; height: 60px; margin-bottom: 12px;
+		display: flex; align-items: center; justify-content: center;
+	}
+	
+	/* ÚJ: FALTÓL-FALIG (FULL BLEED) KÉPES KINÉZET */
+	.visual-container.full-bleed {
+		order: -1; /* Flexbox mágia: felugrik a kártya legtetejére! */
+		width: calc(100% + 28px); /* Ellensúlyozza a kártya 14px paddingját */
+		margin: -14px -14px 12px -14px; /* Húzza ki a szélekig és a tetejéig */
+		height: 110px; /* Legyen szép nagy a kép */
+		border-radius: 19px 19px 0 0; /* Illeszkedjen a kártya lekerekítéséhez */
+		overflow: hidden;
+	}
+	
+	.emoji { font-size: 42px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.1)); transition: transform 0.3s; }
+	.product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+	
+	.product-card:hover .emoji, .product-card:hover .product-image { transform: translateY(-4px) scale(1.05); }
+	
+	.name { font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; line-height: 1.15; margin-bottom: 16px; min-height: 36px; margin-top: 0;}
+	.price-row { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px; margin-top: auto; position: relative; z-index: 10; }
+	.price { font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14px; }
+	
+	.add {
+		width: 30px; height: 30px; border-radius: 10px; background: var(--ember); color: var(--cream);
+		display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; border: none; cursor: pointer;
+		box-shadow: 0 4px 10px rgba(255, 90, 31, 0.3); transition: transform 0.1s; text-decoration: none;
+	}
+	.add:active { transform: scale(0.85); background: var(--ember-dim); }
+	.promo-add { background: var(--char-900); color: var(--cheese); box-shadow: none; font-size: 14px; padding: 0 8px; width: auto; }
+</style>
+
+=================================================
+FÁJL: src\components\SeoText.astro
+=================================================
+
+---
+---
+<section class="seo-text" aria-labelledby="seo-heading" itemscope itemtype="https://schema.org/AboutPage">
+	<header class="seo-header">
+		<h2 id="seo-heading" itemprop="name">Egy fagyis triciklitől a kulináris mennyországig</h2>
+	</header>
+	
+	<div class="seo-content" itemprop="mainContentOfPage">
+		<p>Történetünk <time datetime="2009">15 éve</time> indult egyetlen fagyis triciklivel egy parkban. A szenvedélyből hivatás lett: a cukrásziskola elvégzése után Káposztásmegyeren nyitottuk meg első üzletünket. Mára két erős márkával vagyunk jelen: a sós ízek szerelmeseit a <strong>Hot & Loaded</strong> (smash burgerek, ropogós köretek, tálak), míg az édesszájúakat a <strong>Nyaloda</strong> kézműves fagylaltjai várják.</p>
+		
+		<blockquote class="philosophy">
+			„Jó minőséget, jó áron és olyan adagban, amit mi is elvárnánk!”
+		</blockquote>
+
+		<div class="tech-box">
+			<h3>Ipari Standardok & Food Safety</h3>
+			<p>Filozófiánk alapja a tiszta, minőségi alapanyagok kompromisszumok nélküli használata, a folyamatos kísérletezés és a fejlődés. A napi 10-20 kg feldolgozási volument szigorú ipari Food Safety protokollok szerint végezzük. Gyors és kíméletes eljárásokat alkalmazunk: a <strong>vákuumozás</strong> és <strong>pasztörizálás</strong> után termékeinket azonnali <strong>ipari sokkolással (blast-chilling)</strong> hűtjük le.</p>
+			<p>Nálunk nincs pulton felejtett alapanyag, csak tökéletes, szaftos <a href="#burgerek" class="seo-link">burgerek</a> és prémium fagylaltok.</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.seo-text { background: var(--cream-2); border-radius: 24px; text-align: left; padding: 32px 24px; margin: 16px 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+	.seo-text h2 { font-size: 20px; margin: 0 0 16px 0; font-family: 'Anton', sans-serif; text-transform: uppercase; color: var(--char-900); font-weight: 400; text-align: center;}
+	.seo-text p { font-size: 13px; line-height: 1.6; color: rgba(36, 24, 18, 0.85); margin: 0 0 16px 0; }
+	.seo-text p:last-of-type { margin-bottom: 0; }
+	
+	.philosophy {
+		border-left: 4px solid var(--ember);
+		background: rgba(255, 90, 31, 0.05);
+		padding: 12px 16px; margin: 20px 0;
+		font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-style: italic; font-size: 13px; color: var(--char-900); border-radius: 0 12px 12px 0;
+	}
+
+	.tech-box { background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 20px; border-radius: 16px; margin-top: 24px; }
+	.tech-box h3 { font-family: 'Anton', sans-serif; font-size: 16px; text-transform: uppercase; margin: 0 0 12px 0; color: var(--char-900); }
+	.tech-box p { font-size: 13px; margin: 0 0 12px 0; }
+	.seo-link { color: var(--ember); font-weight: 700; text-decoration: none; border-bottom: 2px solid transparent; transition: border-color 0.2s; }
+	.seo-link:hover { border-color: var(--ember); }
+</style>
+
+=================================================
+FÁJL: src\components\ServiceCard.astro
+=================================================
+
+---
+export interface Props {
+	href: string;
+	emoji: string;
+	title: string;
+	description: string;
+}
+const { href, emoji, title, description } = Astro.props;
+---
+
+<a href={href} class="service-card">
+	<span class="emoji-box" aria-hidden="true">{emoji}</span>
+	<div class="info">
+		<h3>{title}</h3>
+		<p>{description}</p>
+	</div>
+</a>
+
+<style>
+	.service-card {
+		display: flex; align-items: center; gap: 16px; background: #fff; padding: 16px; border-radius: 20px;
+		text-decoration: none; color: var(--ink); border: 1px solid rgba(0,0,0,0.04);
+		box-shadow: 0 6px 16px rgba(0,0,0,0.03); transition: transform 0.2s;
+	}
+	.service-card:active { transform: scale(0.97); }
+	.emoji-box { font-size: 28px; background: var(--cream-2); width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+	h3 { font-family: 'Anton', sans-serif; font-size: 15px; text-transform: uppercase; margin: 0 0 4px 0; font-weight: 400;}
+	p { font-size: 12px; font-weight: 500; opacity: 0.7; margin: 0; }
+</style>
+
+=================================================
+FÁJL: src\components\TopBar.astro
+=================================================
+
+---
+export interface Props {
+	cartCount?: number;
+}
+const { cartCount = 0 } = Astro.props;
+---
+
+<header class="top-bar">
+	<a href="/" class="brand-link" aria-label="Főoldal">
+		<div class="brand">
+			NYALODA <span class="divider">|</span> <span class="accent">HOT</span>&nbsp;&amp; LOADED
+		</div>
+	</a>
+	
+	<nav class="icons" aria-label="Felső navigáció">
+		<div class="dropdown-wrapper">
+			<button id="menu-toggle" class="icon-btn" aria-label="Menü megnyitása" aria-expanded="false">
+				<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+			</button>
+			
+			<div id="dropdown-menu" class="dropdown-menu">
+				<a href="/" class="dropdown-item">Kínálat</a>
+				<a href="/b2b" class="dropdown-item">B2B Fagylalt</a>
+				<a href="/services" class="dropdown-item">Gépszerviz</a>
+				<a href="/contact" class="dropdown-item">Kapcsolat</a>
+                <a href="/rolunk" class="dropdown-item">A mi sztorink</a>
+			</div>
+		</div>
+		
+		<a href="https://enfagyi-app-122a0.web.app" class="icon-btn" aria-label={`Kosár, ${cartCount} termék`}>
+			<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+			{cartCount > 0 && <span class="cart-badge">{cartCount}</span>}
+		</a>
+	</nav>
+</header>
+
+<script>
+	const menuBtn = document.getElementById('menu-toggle');
+	const dropdown = document.getElementById('dropdown-menu');
+
+	if (menuBtn && dropdown) {
+		menuBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			dropdown.classList.toggle('open');
+		});
+
+		document.addEventListener('click', (e) => {
+			if (!dropdown.contains(e.target as Node)) {
+				dropdown.classList.remove('open');
+			}
+		});
+	}
+</script>
+
+<style>
+	.top-bar {
+		position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+		padding: 10px 16px; background: rgba(28, 20, 16, 0.65); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
+		color: var(--cream); border-bottom: 1px solid rgba(255,255,255,0.08);
+	}
+	
+	.brand-link { text-decoration: none !important; color: inherit !important; -webkit-tap-highlight-color: transparent; transition: opacity 0.2s; }
+	.brand-link:active { opacity: 0.7; }
+
+	.brand { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+	.brand .accent { color: var(--ember); }
+	.divider { opacity: 0.4; font-family: 'IBM Plex Mono', monospace; font-weight: 300; margin: 0 2px; }
+	
+	.icons { display: flex; gap: 12px; }
+	
+	.icon-btn { 
+		position: relative; width: 36px; height: 36px; border-radius: 50%; 
+		background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); 
+		display: flex; align-items: center; justify-content: center; 
+		cursor: pointer; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+		text-decoration: none !important; color: var(--cream) !important;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.icon-btn:active { transform: scale(0.9); }
+	.icon-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+	
+	.cart-badge {
+		position: absolute; top: -2px; right: -2px; background: var(--ember); color: var(--cream);
+		font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; 
+		width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+		box-shadow: 0 0 0 3px rgba(28, 20, 16, 0.8);
+	}
+
+	.dropdown-wrapper { position: relative; }
+
+	.dropdown-menu {
+		position: absolute; top: calc(100% + 12px); right: 0;
+		background: rgba(28, 20, 16, 0.85); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+		border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+		display: flex; flex-direction: column; min-width: 200px; padding: 8px;
+		box-shadow: 0 16px 40px rgba(0,0,0,0.4); opacity: 0; transform: translateY(-10px) scale(0.95);
+		transform-origin: top right; pointer-events: none;
+		transition: opacity 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.dropdown-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+	.dropdown-item {
+		color: var(--cream); text-decoration: none; font-family: 'Anton', sans-serif; font-size: 16px;
+		letter-spacing: 0.05em; text-transform: uppercase; padding: 12px 16px; border-radius: 10px;
+		transition: background 0.2s, color 0.2s;
+	}
+	.dropdown-item:active { background: rgba(255,255,255,0.1); color: var(--ember); }
+</style>
+
+=================================================
+FÁJL: src\layouts\Layout.astro
+=================================================
+
+---
+export interface Props {
+	title: string;
+	description?: string;
+	noindex?: boolean; /* ÚJ: Ezzel tiltjuk le az indexelést a jogi oldalakon */
+}
+
+const { title, description = "A legjobb kézműves fagyik és burgerek.", noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="hu">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<!-- ÚJ: Ha a noindex true, a keresőmotorok békén hagyják ezt az aloldalt -->
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+		
+		<title>{title}</title>
+
+		<!-- Google Fonts globális betöltése -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+		<slot name="head" />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	/* CSS RESET */
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	html { scroll-behavior: smooth; }
+
+	/* ROOT & GLOBAL STYLES */
+	:root {
+		--char-900: #1c1410;
+		--ember: #ff5a1f;
+		--ember-dim: #c2410c;
+		--cheese: #ffc94a;
+		--cream: #fff6e9;
+		--cream-2: #fce9d8;
+		--ink: #241812;
+		--paper: #f4efe9;
+	}
+
+	body { background-color: #e5dfd6; margin: 0; display: flex; justify-content: center; font-family: 'Work Sans', sans-serif; color: var(--ink); }
+
+	.app-wrapper {
+		width: 100%; max-width: 480px; background: var(--paper); min-height: 100vh;
+		position: relative; overflow-x: hidden; box-shadow: 0 0 0 transparent;
+	}
+
+	@media (min-width: 540px) {
+		.app-wrapper {
+			margin: 4vh 0; min-height: 92vh; border-radius: 40px;
+			box-shadow: 0 32px 64px -12px rgba(0,0,0,0.2), 0 0 0 10px var(--char-900), inset 0 0 0 4px rgba(255,255,255,0.2);
+			border: 4px solid #332822; overflow: hidden;
+		}
+	}
+</style>
+
+=================================================
+FÁJL: src\pages\aszf.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Általános Szerződési Feltételek | Nyaloda" noindex={true}>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza</a>
+				<h1>ÁSZF</h1>
+			</header>
+
+			<section class="legal-content">
+				<div class="legal-card legal-text-heavy">
+					<p class="last-updated">Utolsó frissítés: 2026. augusztus 22.</p>
+					
+					<h2>1. Bevezető rendelkezések</h2>
+					<p>A jelen Általános Szerződési Feltételek (ÁSZF) a Hókuszpókusz Ice Kft. (1157 Budapest, Zsókavár utca 62., Adószám: 23314287-2-42, a továbbiakban: Szolgáltató) által üzemeltetett weboldal és rendelési rendszer felhasználási feltételeit tartalmazza.</p>
+					<p>A rendelés leadásával a Vásárló kijelenti, hogy a jelen ÁSZF-et megismerte, és azt magára nézve kötelezőnek ismeri el.</p>
+
+					<h2>2. Megrendelés és Teljesítés</h2>
+					<p>A weboldalon található termékkínálat (kézműves hamburgerek, fagylaltok, köretek és italok) online megrendelhetőek. A rendelés leadása elektronikus úton megkötött szerződésnek minősül.</p>
+					<p>A Szolgáltató fenntartja a jogot a megrendelés visszautasítására (pl. alapanyaghiány, vagy a szállítási körzeten kívül eső cím esetén).</p>
+
+					<h2>3. Árak és Fizetés</h2>
+					<p>A feltüntetett árak magyar forintban értendőek és tartalmazzák a törvényben előírt ÁFÁ-t. A fizetés történhet online bankkártyával, vagy a futárnál készpénzzel/kártyával. A csomagolási és szállítási díjakat a rendszer a rendelés véglegesítése előtt egyértelműen jelzi.</p>
+					
+					<h2>4. Elállási jog (KIVÉTEL!)</h2>
+					<p>A fogyasztó és a vállalkozás közötti szerződések részletes szabályairól szóló 45/2014. (II. 26.) Korm. rendelet 29. § (1) bekezdés d) pontja alapján a Vásárlót <strong>nem illeti meg az indokolás nélküli elállási jog</strong> romlandó vagy minőségét rövid ideig megőrző termékek (frissen készült ételek, hamburgerek, fagylaltok) tekintetében.</p>
+
+					<h2>5. Panaszkezelés</h2>
+					<p>Amennyiben a minőséggel, vagy a kiszállítással kapcsolatban probléma merülne fel, kérjük, haladéktalanul, de legkésőbb a rendelés átvételétől számított 1 órán belül jelezze azt a <strong>hokuszpokuszicekft@gmail.com</strong> címen, vagy az üzlet telefonszámán. Utólagos, napokkal későbbi minőségi reklamációt élelmiszer lévén nem áll módunkban elfogadni.</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+	.minimal-back { 
+		text-decoration: none; color: var(--char-900); font-weight: 600; 
+		font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+		background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+	}
+	.minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+	
+	.legal-content { padding: 0 16px 40px; }
+	.legal-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); color: var(--ink); }
+	
+	.last-updated { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ember); text-transform: uppercase; margin-bottom: 24px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 12px;}
+	.legal-text-heavy h2 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--char-900); margin: 24px 0 8px; }
+	.legal-text-heavy h2:first-of-type { margin-top: 0; }
+	.legal-text-heavy p { font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; opacity: 0.85; }
+</style>
+
+=================================================
+FÁJL: src\pages\b2b.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+---
+
+<Layout title="B2B Fagylalt Kiszállítás | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={2} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>B2B Nagyker</h1>
+        <p>Prémium kézműves fagylaltok beszállítása partnereinknek.</p>
+      </header>
+
+      <section class="content-section">
+        <div class="service-list">
+          <ServiceCard 
+            href="/contact" emoji="🚚" 
+            title="Fagylalt Kiszállítás (B2B)" 
+            description="Viszonteladóknak, éttermeknek, kávézóknak nagykereskedelmi árak." 
+          />
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+  
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+
+  .content-section { padding: 16px; }
+  .service-list { display: flex; flex-direction: column; gap: 12px; }
+</style>
+
+=================================================
+FÁJL: src\pages\burgerek.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+const burgerData: MenuItem[] = [
+  {
+    id: 'b-sajt', name: 'Sajtburger', category: 'Burgerek', price: 1800,
+    description: 'Marhahús, sajt, hagyma, házi burger szósz, uborka.',
+    nutrition: { calories: 510, protein: 28, carbs: 38, fat: 26 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
+  },
+  {
+    id: 'b-oklahoma', name: 'Oklahomai Burger', category: 'Burgerek', price: 1900,
+    description: 'Hagymával sült marhahús, uborka, cheddar.',
+    nutrition: { calories: 530, protein: 29, carbs: 39, fat: 28 },
+    allergens: ['Glutén', 'Tej', 'Mustár'], emoji: '🧅'
+  },
+  {
+    id: 'b-tavaszi', name: 'Tavaszi Burger', category: 'Burgerek', price: 2000,
+    description: 'Marhahús, jégsaláta, burger szósz, cheddar, paradicsom.',
+    nutrition: { calories: 520, protein: 28, carbs: 40, fat: 26 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🥬'
+  },
+  {
+    id: 'b-rio', name: 'Rio Burger', category: 'Burgerek', price: 2000,
+    description: 'Marhahúspogácsa, sajt, jalapeno, pirított hagyma, házi burgerszósz.',
+    nutrition: { calories: 580, protein: 31, carbs: 42, fat: 32 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🌶️'
+  },
+  {
+    id: 'b-dupla', name: 'Dupla Burger', category: 'Burgerek', price: 2900,
+    description: 'Dupla marhahús, dupla cheddar sajt, házi burgerszósz, paradicsom, jégsaláta.',
+    nutrition: { calories: 820, protein: 52, carbs: 42, fat: 48 },
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
+  },
+  {
+    id: 't-sajt', name: 'Sajtos Toast', category: 'Burgerek', price: 700,
+    description: 'Klasszikus toast, sok sajttal.',
+    nutrition: { calories: 320, protein: 14, carbs: 30, fat: 16 },
+    allergens: ['Glutén', 'Tej'], emoji: '🥪'
+  },
+  {
+    id: 't-bacon', name: 'Sajtos Baconös Toast', category: 'Burgerek', price: 950,
+    description: 'Sajt és ropogós bacon egy finom toastban.',
+    nutrition: { calories: 410, protein: 18, carbs: 30, fat: 24 },
+    allergens: ['Glutén', 'Tej'], emoji: '🥓'
+  }
+];
+---
+
+<Layout title="Kézműves Burgereink | Fagyi és Burger Mennyország">
+  <div class="app-wrapper fixed-app">
+    <TopBar cartCount={2} />
+
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={burgerData} />
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .fixed-app {
+    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .fixed-app { height: 92vh; }
+  }
+
+  .fixed-page {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* Apple iPhone "Safe Area" támogatása alul */
+    padding-bottom: env(safe-area-inset-bottom, 0px); 
+    overflow: hidden; 
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px; 
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active { 
+    transform: scale(0.9); 
+    background: rgba(255, 255, 255, 0.85); 
+  }
+
+  .menu-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
+    padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow: hidden; 
+  }
+</style>
+
+=================================================
+FÁJL: src\pages\contact.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import LocationCard from '../components/LocationCard.astro';
+---
+
+<Layout title="Kapcsolat | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={2} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>Kapcsolat</h1>
+        <p>Látogass el üzleteink valamelyikébe, vagy vedd fel velünk a kapcsolatot online!</p>
+      </header>
+
+      <section class="content-section">
+        <LocationCard 
+          title="📍 1. Üzlet (Újpest-Központ)" 
+          address="1042 Budapest, Király u. 25." 
+          hours="11:00 - 22:00" 
+          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
+        />
+
+        <LocationCard 
+          title="📍 2. Üzlet (Káposztásmegyer)" 
+          address="1041 Budapest, Óceánárok utca 29." 
+          hours="11:00 - 22:00" 
+          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
+        />
+
+        <LocationCard 
+          title="📍 3. Üzlet (Újpalota)" 
+          address="1157 Budapest, Nyírpalota út 52." 
+          hours="11:00 - 22:00" 
+          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
+        />
+        
+        <div class="contact-info-card">
+            <h3>Elérhetőségek</h3>
+            <p>✉️ <strong>Email:</strong> <a href="mailto:hokuszpokuszicekft@gmail.com">hokuszpokuszicekft@gmail.com</a></p>
+            <p>📱 <strong>Facebook:</strong> Hot & Loaded / Nyaloda</p>
+            <p>📸 <strong>Instagram:</strong> <a href="https://instagram.com/nyalodafagyi" target="_blank">@nyalodafagyi</a></p>
+            <p>🎵 <strong>TikTok:</strong> <a href="https://tiktok.com/@nyaloda" target="_blank">@nyaloda</a></p>
+            <br>
+            <a href="https://enfagyi-app-122a0.web.app/drive" class="order-btn" target="_blank">Rendelés és Kiszállítás 🚀</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+  
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+
+  .content-section { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  .contact-info-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+  }
+
+  .contact-info-card h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      color: var(--char-900);
+      margin: 0 0 12px 0;
+      text-transform: uppercase;
+      font-weight: 400;
+  }
+
+  .contact-info-card p {
+      font-size: 14px;
+      margin: 0 0 8px 0;
+      color: var(--ink);
+  }
+
+  .contact-info-card a {
+      color: var(--ember);
+      text-decoration: none;
+      font-weight: 600;
+  }
+
+  .contact-info-card a:hover {
+      text-decoration: underline;
+  }
+
+  .order-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--char-900);
+      color: var(--cream) !important;
+      padding: 12px;
+      border-radius: 12px;
+      font-family: 'Anton', sans-serif;
+      font-size: 16px;
+      text-transform: uppercase;
+      text-decoration: none !important;
+      letter-spacing: 0.05em;
+      transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .order-btn:active {
+      transform: scale(0.98);
+      background: var(--ember);
+  }
+</style>
+
+=================================================
+FÁJL: src\pages\fagyik.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+const fagyiData: MenuItem[] = [
+  // --- MINIFÁNK AZ ÚJ KÉPPEL ---
+  {
+    id: 'f-minifank', name: 'Nyaloda Minifánk', category: 'Fagyik', 
+    priceNormal: 700, priceLarge: 1100,
+    description: 'Fémlapon sült, forró minifánkok választható prémium öntettel (csokoládé, fehércsokoládé, erdei gyümölcs, mogyoró, pisztácia).',
+    nutrition: { calories: 467, protein: 11.9, carbs: 72.5, fat: 14.3 },
+    allergens: ['Glutén', 'Tojás', 'Tej', 'Nyomokban mogyoró/diófélék'], emoji: '🍩', imageUrl: '/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg'
+  },
+
+  // --- PRÉMIUM FAGYIK (750 / 1300) ---
+  {
+    id: 'f-pisztacia', name: 'Pisztácia Mennyország', category: 'Fagyik', 
+    priceNormal: 750, priceLarge: 1300,
+    description: '100% brontei pisztáciából készült, ipari sokkolóval hűtött prémium textúra.',
+    nutrition: { calories: 310, protein: 8, carbs: 32, fat: 18 },
+    allergens: ['Tej', 'Diófélék'], emoji: '🍨'
+  },
+  {
+    id: 'f-brazil', name: 'Brazil Álom', category: 'Fagyik', 
+    priceNormal: 750, priceLarge: 1300,
+    description: 'Egzotikus prémium ízélmény a legfinomabb trópusi alapanyagokból.',
+    nutrition: { calories: 290, protein: 5, carbs: 34, fat: 14 },
+    allergens: ['Tej', 'Nyomokban diófélék'], emoji: '🥥'
+  },
+
+  // --- CUKORMENTES (495 / 795) ---
+  {
+    id: 'f-cukormentes-eper', name: 'Cukormentes Eper', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 795,
+    description: 'Valódi eperből készült, hozzáadott cukor nélkül. Vegán, laktózmentes.',
+    nutrition: { calories: 65, protein: 0.2, carbs: 12.4, fat: 0.1 },
+    allergens: ['Mentes'], emoji: '🍓'
+  },
+
+  // --- SIMA FAGYIK (495 / 695) ---
+  {
+    id: 'f-citrom', name: 'Citrom Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '40% valódi citromléből készült frissítő sorbet. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 105, protein: 0.1, carbs: 24.3, fat: 0.2 },
+    allergens: ['Szulfitok'], emoji: '🍋'
+  },
+  {
+    id: 'f-zoldalma', name: 'Zöldalma Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Intenzív, roppanós zöldalma ízvilág. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍏'
+  },
+  {
+    id: 'f-kekszolo', name: 'Kékszőlő Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Édes és zamatos kékszőlő íz. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍇'
+  },
+  {
+    id: 'f-dinnye', name: 'Dinnye Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A nyár slágere! Hűsítő, édes görögdinnye íz. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍉'
+  },
+  {
+    id: 'f-ananasz', name: 'Ananász Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Trópusi, egzotikus ananász íz. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍍'
+  },
+  {
+    id: 'f-gumi', name: 'Gumibogyó Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A gyerekek kedvence, vidám gumibogyó ízvilág. Vegán és gluténmentes.',
+    nutrition: { calories: 99, protein: 0.0, carbs: 23.1, fat: 0.2 },
+    allergens: ['Nyomokban mogyoró/tej'], emoji: '🍬'
+  },
+  {
+    id: 'f-eper', name: 'Valódi Eper Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi eperből készült, prémium sorbet. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 93, protein: 0.2, carbs: 22.4, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🍓'
+  },
+  {
+    id: 'f-szeder', name: 'Valódi Szeder Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi szederből, intenzív erdei ízzel. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 96, protein: 0.4, carbs: 23.0, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🫐'
+  },
+  {
+    id: 'f-ribizli', name: 'Valódi Ribizli Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi, pikáns ribizliből. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 94, protein: 0.3, carbs: 22.3, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍒'
+  },
+  {
+    id: 'f-malna', name: 'Valódi Málna Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi málnából. Krémesen gyümölcsös. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 96, protein: 0.3, carbs: 21.2, fat: 0.3 },
+    allergens: ['Mentes'], emoji: '🍧'
+  },
+  {
+    id: 'f-afonya', name: 'Valódi Áfonya Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '25% valódi áfonyából. Szuperélelmiszer fagyasztva! Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.1, carbs: 23.5, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🫐'
+  },
+  {
+    id: 'f-szilva', name: 'Fahéjas Szilva Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '31% valódi szilva és egy csipet fahéj. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.2, carbs: 23.5, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍑'
+  },
+  {
+    id: 'f-banan', name: 'Valódi Banán Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: '15% valódi banánnal. Selymes és édes. Vegán, glutén- és laktózmentes.',
+    nutrition: { calories: 97, protein: 0.1, carbs: 23.4, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍌'
+  },
+  {
+    id: 'f-barack-eper', name: 'Barackos-Eper Sorbet', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Eper és őszibarack találkozása egy csipet vaníliával és feketeborssal. Különlegesség!',
+    nutrition: { calories: 93, protein: 0.1, carbs: 22.4, fat: 0.2 },
+    allergens: ['Mentes'], emoji: '🍑'
+  },
+
+  // --- TEJALAPÚ FAGYLALTOK ---
+  {
+    id: 'f-kinder', name: 'Kinder Ízvilág', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Lágy tejfagylalt gazdag kakaós-csokoládés öntettel. Gluténmentes.',
+    nutrition: { calories: 167, protein: 3.0, carbs: 27.1, fat: 5.1 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-mogyoro', name: 'Tejszínes Mogyoró', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Tejszínes alap, prémium mogyorós-kakaós krémmel rétegezve. Gluténmentes.',
+    nutrition: { calories: 179, protein: 3.2, carbs: 26.8, fat: 6.5 },
+    allergens: ['Tej', 'Törökmogyoró', 'Szója'], emoji: '🌰'
+  },
+  {
+    id: 'f-vanilia', name: 'Vanília Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A legklasszikusabb, selymesen lágy vanília tejfagylalt. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🍦'
+  },
+  {
+    id: 'f-madartej', name: 'Madártej Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A nagyi kedvenc desszertje hűsítő fagyiként. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🍨'
+  },
+  {
+    id: 'f-puncs', name: 'Puncs Tejfagylalt', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Hamisítatlan puncs íz, krémes tejes alapon. Gluténmentes.',
+    nutrition: { calories: 141, protein: 3.1, carbs: 25.3, fat: 3.0 },
+    allergens: ['Tej'], emoji: '🧁'
+  },
+  {
+    id: 'f-tejcsoki', name: 'Tejcsokoládé', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Selymes és édes tejcsokoládé fagylalt. Gluténmentes.',
+    nutrition: { calories: 146, protein: 3.7, carbs: 24.9, fat: 3.3 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-etcsoki', name: 'Étcsokoládé', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'Intenzív, 5.6% kakaótartalmú étcsokoládé tejfagylalt. Gluténmentes.',
+    nutrition: { calories: 151, protein: 4.2, carbs: 24.5, fat: 3.6 },
+    allergens: ['Tej'], emoji: '🍫'
+  },
+  {
+    id: 'f-sport', name: 'Sportszelet Ízvilág', category: 'Fagyik', 
+    priceNormal: 495, priceLarge: 695,
+    description: 'A klasszikus csokis-rumos ízvilág hűsítő formában. Gluténmentes.',
+    nutrition: { calories: 146, protein: 3.7, carbs: 24.9, fat: 3.3 },
+    allergens: ['Tej'], emoji: '🏋️'
+  }
+];
+---
+
+<Layout title="Kézműves Fagyik | Fagyi és Burger Mennyország">
+  <div class="app-wrapper fixed-app">
+    <TopBar cartCount={2} />
+
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={fagyiData} />
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .fixed-app {
+    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .fixed-app { height: 92vh; }
+  }
+
+  .fixed-page {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* Apple iPhone "Safe Area" támogatása alul */
+    padding-bottom: env(safe-area-inset-bottom, 0px); 
+    overflow: hidden; 
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px; 
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active { 
+    transform: scale(0.9); 
+    background: rgba(255, 255, 255, 0.85); 
+  }
+
+  .menu-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
+    padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow: hidden; 
+  }
+</style>
+
+=================================================
+FÁJL: src\pages\gdpr.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Adatkezelési Tájékoztató | Nyaloda" noindex={true}>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza</a>
+				<h1>Adatkezelés</h1>
+			</header>
+
+			<section class="legal-content">
+				<div class="legal-card legal-text-heavy">
+					<p class="last-updated">Utolsó frissítés: 2026. augusztus 22.</p>
+					
+					<h2>1. Az Adatkezelő azonosítása</h2>
+					<p>Név: Hókuszpókusz Ice Kft.<br>
+					Székhely: 1157 Budapest, Zsókavár utca 62.<br>
+					Adószám: 23314287-2-42<br>
+					E-mail: hokuszpokuszicekft@gmail.com</p>
+
+					<h2>2. A kezelt adatok köre és célja</h2>
+					<p>Rendelés leadásakor az alábbi adatokat kezeljük a szerződés teljesítése (kiszállítás) érdekében:<br>
+					- <strong>Név:</strong> A vásárló beazonosításához.<br>
+					- <strong>Szállítási cím:</strong> A rendelés pontos célba juttatásához.<br>
+					- <strong>Telefonszám:</strong> Kapcsolattartáshoz a futár részéről.<br>
+					- <strong>E-mail cím:</strong> A rendelés visszaigazolásához és a digitális nyugta megküldéséhez.</p>
+					
+					<h2>3. Az adatkezelés jogalapja és időtartama</h2>
+					<p>Az adatkezelés jogalapja a szerződés teljesítése (GDPR 6. cikk (1) bek. b) pont). A számlázási adatokat a számviteli törvény előírásainak megfelelően, a kiállítástól számított 8 évig megőrizzük.</p>
+
+					<h2>4. Adatfeldolgozók</h2>
+					<p>A weboldal üzemeltetéséhez a Netlify, Inc. (San Francisco, USA) tárhelyszolgáltatását vesszük igénybe. Az adatok harmadik fél (pl. marketing ügynökség, adatbróker) számára értékesítésre nem kerülnek.</p>
+
+					<h2>5. Az Érintettek jogai</h2>
+					<p>Ön jogosult kérelmezni az adatkezelőtől a rá vonatkozó személyes adatokhoz való hozzáférést, azok helyesbítését, törlését, valamint tiltakozhat a személyes adatok kezelése ellen. Ezen kéréseket az adatkezelő e-mail címén fogadjuk.</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+	.minimal-back { 
+		text-decoration: none; color: var(--char-900); font-weight: 600; 
+		font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+		background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+	}
+	.minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+	
+	.legal-content { padding: 0 16px 40px; }
+	.legal-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); color: var(--ink); }
+	
+	.last-updated { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--ember); text-transform: uppercase; margin-bottom: 24px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 12px;}
+	.legal-text-heavy h2 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--char-900); margin: 24px 0 8px; }
+	.legal-text-heavy h2:first-of-type { margin-top: 0; }
+	.legal-text-heavy p { font-size: 13px; line-height: 1.6; margin: 0 0 12px 0; opacity: 0.85; }
+</style>
+
+=================================================
+FÁJL: src\pages\impresszum.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Impresszum | Nyaloda" noindex={true}>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza</a>
+				<h1>Impresszum</h1>
+			</header>
+
+			<section class="legal-content">
+				<div class="legal-card">
+					<h2>Szolgáltató adatai</h2>
+					<p><strong>Cégnév:</strong> Hókuszpókusz Ice Kft.</p>
+					<p><strong>Székhely:</strong> 1157 Budapest, Zsókavár utca 62.</p>
+					<p><strong>Adószám:</strong> 23314287-2-42</p>
+					
+					<p><strong>Képviselők:</strong> Szabó Beatrix, Bajerle Tas</p>
+					
+					<h2>Elérhetőségek</h2>
+					<p><strong>E-mail cím:</strong> <a href="mailto:hokuszpokuszicekft@gmail.com">hokuszpokuszicekft@gmail.com</a></p>
+					<p><strong>Weboldal:</strong> nyaloda.hu</p>
+
+					<h2>Tárhelyszolgáltató</h2>
+					<p><strong>Név:</strong> Netlify, Inc.</p>
+					<p><strong>Székhely:</strong> 44 Montgomery Street, Suite 300, San Francisco, California 94104, USA</p>
+					<p><strong>Web:</strong> <a href="https://www.netlify.com" target="_blank">netlify.com</a></p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+	.minimal-back { 
+		text-decoration: none; color: var(--char-900); font-weight: 600; 
+		font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+		background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+	}
+	.minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+	
+	.legal-content { padding: 0 16px 40px; }
+	.legal-card {
+		background: #fff; padding: 24px; border-radius: 20px;
+		border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); color: var(--ink);
+	}
+	
+	.legal-card h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; margin: 24px 0 12px; color: var(--char-900); font-weight: 400;}
+	.legal-card h2:first-child { margin-top: 0; }
+	.legal-card p { font-size: 14px; line-height: 1.6; margin: 0 0 8px 0; }
+	.legal-card a { color: var(--ember); text-decoration: none; font-weight: 600; }
+</style>
+
+=================================================
+FÁJL: src\pages\index.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import Hero from '../components/Hero.astro';
+import CtaDock from '../components/CtaDock.astro';
+import ProductCard from '../components/ProductCard.astro';
+import BentoTile from '../components/BentoTile.astro';
+import SeoText from '../components/SeoText.astro';
+import Footer from '../components/Footer.astro';
+import DynamicIsland from '../components/DynamicIsland.astro';
+
+const schemaOrg = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Nyaloda | Hot & Loaded",
+  "servesCuisine": ["Burgers", "Ice Cream"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Példa utca 1.",
+    "addressLocality": "Budapest",
+    "postalCode": "1051",
+    "addressCountry": "HU"
+  }
+};
+---
+
+<Layout title="Nyaloda | Hot & Loaded Kínálat">
+	<script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
+	<link rel="preconnect" href="https://fonts.googleapis.com" slot="head" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin slot="head" />
+	<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" slot="head" />
+
+	<div class="app-wrapper">
+		<TopBar cartCount={2} />
+
+		<main class="page">
+			<Hero />
+
+			<CtaDock 
+				title="Rendelj most" 
+				subtitle="Kiszállítás 30 percen belül 🚀" 
+				actionText="Webapp" 
+				actionUrl="https://enfagyi-app-122a0.web.app" 
+			/>
+
+			<section class="section compact-top" aria-labelledby="featured-heading">
+				<header class="section-head">
+					<h2 id="featured-heading">Kiemelt ajánlataink</h2>
+					<nav class="nav-arrows" aria-label="Görgetés vezérlő">
+						<button id="btn-prev" aria-label="Előző termékek">‹</button>
+						<button id="btn-next" aria-label="Következő termékek">›</button>
+					</nav>
+				</header>
+
+				<div class="rail-container">
+					<div class="rail" id="featured-rail" role="list">
+						<!-- MINIFÁNK AZ ÚJ KÉPPEL -->
+						<ProductCard 
+							isNew={true} badgeText="AUG. 30!" category="Édesség" 
+							imageUrl="/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg" 
+							name="Minifánk" price="700 Ft-tól" 
+							actionUrl="/fagyik?item=f-minifank" actionText="➔"
+						/>
+
+						<!-- KÉRDŐÍV KÁRTYA -->
+						<ProductCard 
+							isPromo={true} badgeText="FONTOS!" category="Visszajelzés" emoji="💬" 
+							name="Kérdőív" price="Mondd el nekünk!" 
+							actionUrl="/kerdoiv" actionText="Kitöltöm"
+						/>
+						
+						<!-- 10% KUPON -->
+						<ProductCard 
+							isPromo={true} badgeText="PROMO" category="Kedvezmény" emoji="🔥" 
+							name="NYAR2026 Kupon" price="-10% a Webappban" 
+							actionUrl="https://enfagyi-app-122a0.web.app" actionText="Beváltom"
+						/>
+
+						
+					</div>
+				</div>
+			</section>
+
+			<section class="section bento-section" aria-labelledby="categories-heading">
+				<header class="section-head">
+					<h2 id="categories-heading" class="light">Kategóriák</h2>
+				</header>
+				<nav class="bento-grid" aria-label="Kategória választó">
+					<BentoTile href="/burgerek" emoji="🍔" label="Burgerek" subLabel="100% Marhahús" isLarge={true} theme="burger" />
+					<BentoTile href="/fagyik" emoji="🍦" label="Fagyik" subLabel="Kézműves" isLarge={true} theme="fagyi" />
+					
+					<!-- B2B ÉS GÉPSZERVIZ BOXOK -->
+					<BentoTile href="/b2b" emoji="🚚" label="B2B Nagyker" />
+					<BentoTile href="/services" emoji="🔧" label="Gépszerviz" />
+
+					<!-- EZEKET KIKOMMENTELTÜK, AMÍG NINCSENEK KÉSZ AZ OLDALAK -->
+					<!-- <BentoTile href="/csirkek" emoji="🍗" label="Csirkék" /> -->
+					<!-- <BentoTile href="/menuk" emoji="🍟" label="Menük" /> -->
+					<!-- <BentoTile href="/italok" emoji="🥤" label="Italok" /> -->
+					<!-- <BentoTile href="/koretek" emoji="🥗" label="Köretek" /> -->
+				</nav>
+			</section>
+
+			<SeoText />
+		</main>
+
+		<Footer />
+		<DynamicIsland />
+	</div>
+</Layout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const rail = document.getElementById('featured-rail');
+		const btnPrev = document.getElementById('btn-prev');
+		const btnNext = document.getElementById('btn-next');
+
+		if (rail && btnPrev && btnNext) {
+			const scrollAmount = 164; 
+
+			btnPrev.addEventListener('click', () => {
+				rail.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+			});
+
+			btnNext.addEventListener('click', () => {
+				rail.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+			});
+		}
+	});
+</script>
+
+<style is:global>
+	:root {
+		--char-900: #1c1410; --ember: #ff5a1f; --ember-dim: #c2410c; --cheese: #ffc94a;
+		--cream: #fff6e9; --cream-2: #fce9d8; --ink: #241812; --paper: #f4efe9;
+	}
+
+	body { background-color: #e5dfd6; margin: 0; display: flex; justify-content: center; font-family: 'Work Sans', sans-serif; color: var(--ink); }
+
+	.app-wrapper {
+		width: 100%; max-width: 480px; background: var(--paper); min-height: 100vh; position: relative; overflow-x: hidden; box-shadow: 0 0 0 transparent;
+	}
+
+	@media (min-width: 540px) {
+		.app-wrapper {
+			margin: 4vh 0; min-height: 92vh; border-radius: 40px; border: 4px solid #332822; overflow: hidden;
+			box-shadow: 0 32px 64px -12px rgba(0,0,0,0.2), 0 0 0 10px var(--char-900), inset 0 0 0 4px rgba(255,255,255,0.2);
+		}
+	}
+</style>
+
+<style>
+	.page { padding-bottom: 100px; }
+	.section { padding: 24px 16px; }
+	.compact-top { padding-top: 12px; }
+	.section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 16px; }
+	.section-head h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; color: var(--char-900); margin: 0; font-weight: 400;}
+	.section-head h2.light { color: var(--cream); }
+	
+	.nav-arrows { display: flex; gap: 8px; }
+	.nav-arrows button { width: 32px; height: 32px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.08); background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 16px; cursor: pointer; color: var(--ink); transition: transform 0.2s, background 0.2s; }
+	.nav-arrows button:active { transform: scale(0.9); background: var(--paper); }
+
+	.rail-container { position: relative; margin-right: -16px; }
+	.rail-container::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, rgba(244,239,233,0), var(--paper)); pointer-events: none; z-index: 10; }
+	.rail { display: flex; gap: 14px; overflow-x: auto; padding: 4px 40px 24px 4px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+	.rail::-webkit-scrollbar { display: none; }
+
+	.bento-section { background: var(--char-900); color: var(--cream); border-radius: 32px; padding: 24px 16px 32px; margin: 0 8px; }
+	.bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+</style>
+
+=================================================
+FÁJL: src\pages\kerdoiv.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Mondd el a tutit! Kérdőív | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={0} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>Mondd el a tutit!</h1>
+        <p>Ne fogd vissza magad, mondd el, mi a szitu! A véleményedből építkezünk.</p>
+      </header>
+
+      <section class="survey-section">
+        <div class="survey-card">
+          <!-- Levettük az action-t, mert JavaScripttel küldjük be a háttérben! -->
+          <form name="Nyaloda-Velemeny" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="survey-form">
+            
+            <!-- Netlify bot-field (rejtett mező a spam botok ellen) -->
+            <p class="hidden" style="display: none;">
+              <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <!-- Netlify form neve -->
+            <input type="hidden" name="form-name" value="Nyaloda-Velemeny" />
+            
+            <!-- 1. KÉRDÉS -->
+            <div class="form-group">
+              <label>1. A környezet és a felújítások</label>
+              <p class="hint">Az elmúlt időben elég sok energiát és pénzt tettünk a hely szépítésébe.</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="kornyezet" value="A_Eszrevettem" required /> 😎 A: Persze, egyből feltűnt! Sokat dob a hely hangulatán.</label>
+                <label class="radio-label"><input type="radio" name="kornyezet" value="B_Nem_figyeltem" /> 🤔 B: Őszintén szólva nem is figyeltem, de most, hogy mondjátok...</label>
+                <label class="radio-label"><input type="radio" name="kornyezet" value="C_Csak_kaja" /> 🍔 C: Ne haragudjatok, de engem csak a kaja érdekel.</label>
+              </div>
+            </div>
+
+            <!-- 2. KÉRDÉS -->
+            <div class="form-group">
+              <label>2. Receptúrák és fejlesztések</label>
+              <p class="hint">Folyamatosan finomítjuk a fagyi- és a burger-recepteket.</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="receptura" value="A_Szintlepes" required /> 🔥 A: Érzem a törődést, szerintem határozottan szintet léptetek!</label>
+                <label class="radio-label"><input type="radio" name="receptura" value="B_Jo_ez_igy" /> ✋ B: Eddig is nagyon bejött, légyszi, ne változtassátok meg túlságosan!</label>
+                <label class="radio-label"><input type="radio" name="receptura" value="C_Mindegy" /> 🧊 C: Nekem az a lényeg, hogy a fagyi hűsítsen, a burger meg laktasson.</label>
+              </div>
+            </div>
+
+            <!-- 3. KÉRDÉS -->
+            <div class="form-group">
+              <label>3. A "Nyaloda Élmény"</label>
+              <p class="hint">Célunk, hogy igazi közösségi tér is legyünk, ne csak egy sima falatozó.</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="elmeny" value="A_Johetnek_programok" required /> 🎉 A: Maximálisan! Nagyon adnám, ha lennének jó programok.</label>
+                <label class="radio-label"><input type="radio" name="elmeny" value="B_Enni_jovok" /> 🤷‍♂️ B: Nem rossz ötlet, de én elsősorban tényleg csak enni jövök.</label>
+                <label class="radio-label"><input type="radio" name="elmeny" value="C_Csak_gyorsan" /> 🏃‍♂️ C: Engem nem vonzanak a programok, csak kapjam meg a rendelést gyorsan.</label>
+              </div>
+            </div>
+
+            <!-- 4. KÉRDÉS -->
+            <div class="form-group">
+              <label>4. Jövőkép: Mit látnál szívesen?</label>
+              <p class="hint">Szerinted mi hiányzik nálunk a legjobban? (Többet is bejelölhetsz!)</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Extrem_izek" /> 🤯 Még bátrabb, különlegesebb ízkombinációk.</label>
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Mentes_opciok" /> 🌱 Több mentes és alternatív opció.</label>
+                <label class="radio-label"><input type="checkbox" name="jovokep" value="Programok" /> 🎸 Élőzene, DJ, vagy más helyszíni programok.</label>
+                <label class="radio-label" style="flex-wrap: wrap;">
+                  <input type="checkbox" name="jovokep" value="Mas_otlet" /> ✍️ Más ötletem van:
+                  <input type="text" name="jovokep_mas" class="inline-text" placeholder="Ide írhatod..." />
+                </label>
+              </div>
+            </div>
+
+            <!-- 5. KÉRDÉS -->
+            <div class="form-group">
+              <label>5. A téli nyitvatartás kérdése</label>
+              <p class="hint">Tudtad egyáltalán, hogy a Király utcai bázisunk télen sem zár be?</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="A_Alap" required /> 💪 A: Alap! Télen is ott melegszem fel a kedvenceimmel.</label>
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="B_Azt_hittem_bezartok" /> 🤦‍♂️ B: Tényleg? Azt hittem, ti is bezártok télen.</label>
+                <label class="radio-label"><input type="radio" name="teli_nyitva" value="C_Hazhozszallitas" id="delivery-radio" /> 🏠 C: Jó tudni, de télen ki se mozdulok. Jöhet a házhozszállítás!</label>
+              </div>
+              
+              <div id="webapp-promo" class="hidden-promo">
+                <p><strong>Akkor a rendelős appunkat egyenesen neked találtuk ki! 👇</strong></p>
+                <a href="https://enfagyi-app-122a0.web.app" target="_blank" class="promo-btn">Megnézem a Webappot 🚀</a>
+              </div>
+            </div>
+
+            <!-- 6. KÉRDÉS -->
+            <div class="form-group">
+              <label>6. Kira és Brúnó története (Nem csak gyerekeknek!)</label>
+              <p class="hint">Milyen formában látnátok a kabaláinkat a legszívesebben?</p>
+              <div class="radio-group">
+                <label class="radio-label"><input type="radio" name="kabalak" value="A_Rajzfilm" required /> 📺 A: Jöhet egy rövid rajzfilmsorozat!</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="B_Mesekonyv" /> 📖 B: Én a kézzelfogható dolgokat szeretem: mesekönyv, színező.</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="C_Mindketto" /> 🚀 C: Mindkettő szuper ötlet! Jöhet minden.</label>
+                <label class="radio-label"><input type="radio" name="kabalak" value="D_Hidegen_hagy" /> 🥱 D: Minket ez kevésbé köt le, fókuszáljatok az ételekre.</label>
+              </div>
+            </div>
+
+            <!-- FEKETELEVES -->
+            <div class="form-group">
+              <label for="feketeleves">7. Na és most jöhet a feketeleves. Mi az, ami hiányzik nálunk, vagy amin feltétlenül változtatnunk kéne?</label>
+              <p class="hint">Bírjuk a kritikát, adjátok ki magatokból!</p>
+              <textarea id="feketeleves" name="feketeleves" rows="4" placeholder="Szerintem az a baj, hogy..."></textarea>
+            </div>
+
+            <!-- TÉLI NYITVATARTÁS INFO BLOKK -->
+            <div class="winter-alert">
+              <h3>❄️ Téli Haditerv ❄️</h3>
+              <p>Mielőtt elküldöd, vésd az eszedbe: hiába jön a hideg, a <strong>Hot & Loaded burgerek</strong> pörögnek tovább!</p>
+              <p class="hours"><strong>Téli Nyitvatartás: MINDEN NAP 11:00 - 21:00</strong></p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">Mehet a válasz! 🚀</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Promo doboz vezérlése
+    const radioBtns = document.querySelectorAll('input[name="teli_nyitva"]');
+    const promoDiv = document.getElementById('webapp-promo');
+    const deliveryRadio = document.getElementById('delivery-radio');
+
+    radioBtns.forEach(btn => {
+      btn.addEventListener('change', () => {
+        if (deliveryRadio && deliveryRadio.checked) {
+          promoDiv.style.display = 'block';
+        } else {
+          promoDiv.style.display = 'none';
+        }
+      });
+    });
+
+    // ÚJ: Háttérben történő (AJAX) form beküldés, ami kikerüli a 404-et
+    const form = document.querySelector('form[name="Nyaloda-Velemeny"]') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Megállítjuk a gyári újratöltést és POST-ot!
+        
+        // Gomb inaktiválása, hogy ne nyomkodják százszor
+        if (submitBtn) {
+          submitBtn.innerText = 'Küldés folyamatban... ⏳';
+          submitBtn.disabled = true;
+        }
+
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData as any).toString();
+        
+        // Elküldjük a főoldalnak a háttérben, így a Netlify elkapja
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: data
+        })
+        .then(() => {
+          // Ha sikeres a küldés, GOND NÉLKÜL betöltjük a koszi oldalt
+          window.location.href = '/koszi';
+        })
+        .catch((error) => {
+          console.error('Hiba a beküldésnél:', error);
+          if (submitBtn) {
+            submitBtn.innerText = 'Hiba! Próbáld újra.';
+            submitBtn.disabled = false;
+          }
+        });
+      });
+    }
+  });
+</script>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.8; margin: 0; line-height: 1.4; font-weight: 500;}
+
+  .survey-section { padding: 16px; margin-bottom: 40px; }
+  
+  .survey-card {
+      background: #fff; padding: 24px; border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+  }
+
+  .survey-form { display: flex; flex-direction: column; gap: 32px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 12px; }
+  .form-group label { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); font-weight: 400; line-height: 1.2;}
+  .form-group .hint { font-size: 13px; color: #666; margin: -8px 0 0 0; font-style: italic; }
+  
+  .radio-group { display: flex; flex-direction: column; gap: 12px; background: var(--paper); padding: 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); }
+  .radio-label { display: flex; align-items: flex-start; gap: 12px; font-family: 'Work Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-transform: none !important; line-height: 1.4;}
+  .radio-label input[type="radio"], .radio-label input[type="checkbox"] { margin-top: 3px; accent-color: var(--ember); width: 18px; height: 18px;}
+  
+  .inline-text { margin-top: 8px; width: 100%; font-family: 'Work Sans', sans-serif; font-size: 14px; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); outline: none; }
+  .inline-text:focus { border-color: var(--ember); }
+
+  textarea {
+      font-family: 'Work Sans', sans-serif; font-size: 14px;
+      padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1);
+      background: var(--paper); outline: none; transition: border-color 0.2s; resize: vertical;
+  }
+  textarea:focus { border-color: var(--ember); }
+
+  .hidden-promo { display: none; background: var(--cheese); padding: 16px; border-radius: 12px; border: 2px dashed var(--char-900); margin-top: 8px; text-align: center; animation: popIn 0.3s ease-out;}
+  .hidden-promo p { margin: 0 0 12px 0; font-size: 14px; color: var(--char-900); }
+  .promo-btn { display: inline-block; background: var(--char-900); color: var(--cream); text-decoration: none; font-family: 'Anton', sans-serif; text-transform: uppercase; padding: 10px 20px; border-radius: 8px; letter-spacing: 0.05em; transition: transform 0.2s; }
+  .promo-btn:active { transform: scale(0.95); }
+
+  .winter-alert { background: linear-gradient(135deg, rgba(255, 90, 31, 0.1), transparent); border-left: 4px solid var(--ember); padding: 16px; border-radius: 0 12px 12px 0; }
+  .winter-alert h3 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; margin: 0 0 8px 0; color: var(--char-900); }
+  .winter-alert p { font-size: 13px; margin: 0 0 8px 0; line-height: 1.5; color: var(--ink); }
+  .winter-alert .hours { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ember); margin-bottom: 0; }
+
+  .submit-btn {
+      background: var(--ember); color: var(--cream);
+      font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 16px; border-radius: 12px; border: none; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 90, 31, 0.2); transition: transform 0.2s, background-color 0.2s; margin-top: 8px;
+  }
+  .submit-btn:active { transform: scale(0.98); background: var(--ember-dim); }
+  .submit-btn:disabled { background: #999; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+=================================================
+FÁJL: src\pages\koszi.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Layout title="Köszi a választ! | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={0} />
+    
+    <main class="page koszi-page">
+      <section class="success-section">
+        <div class="success-card">
+          <div class="icon-wrapper">
+            🍦🤘
+          </div>
+          <h1>Vettük az adást!</h1>
+          <p>Köszi, hogy rászántad az időt. A véleményed sikeresen landolt a rendszerünkben. Be is faljuk, mint egy jó pisztáciásat!</p>
+          
+          <div class="action-buttons">
+            <a href="/" class="primary-btn">Vissza a főoldalra</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  /* Kifejezetten ennek az oldalnak a layoutja, hogy középre húzza a kártyát */
+  .koszi-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 100px); /* Visszaszámoljuk a TopBar magasságát nagyjából */
+      padding: 16px;
+  }
+
+  .success-card {
+      background: #fff;
+      padding: 48px 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      animation: slideUp 0.4s ease-out;
+  }
+
+  .icon-wrapper {
+      font-size: 56px;
+      margin-bottom: 16px;
+      line-height: 1;
+  }
+
+  h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      text-transform: uppercase;
+      color: var(--char-900);
+      margin: 0 0 16px 0;
+      line-height: 1.1;
+  }
+
+  p {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.5;
+      margin: 0 0 32px 0;
+  }
+
+  .primary-btn {
+      display: inline-block;
+      background: var(--ember);
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(255, 90, 31, 0.2);
+      transition: transform 0.2s, background-color 0.2s;
+  }
+
+  .primary-btn:active {
+      transform: scale(0.98);
+      background: var(--ember-dim, #e04a1a); /* Ha nincs ember-dim, adtam egy fallback narancsot */
+  }
+
+  /* Egy kis extra animáció, hogy ne legyen dögunalom a felbukkanás */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+=================================================
+FÁJL: src\pages\rolunk.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import Footer from '../components/Footer.astro';
+
+// JSON-LD strukturált adat a Rólunk oldalhoz (AboutPage)
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "mainEntity": {
+    "@type": "FoodEstablishment",
+    "name": "Nyaloda és Hot & Loaded",
+    "legalName": "Hókuszpókusz Ice Kft.",
+    "foundingDate": "2009",
+    "founders": [
+      { "@type": "Person", "name": "Szabó Beatrix" },
+      { "@type": "Person", "name": "Bajerle Tas" }
+    ],
+    "description": "15 éves múltra visszatekintő magyar családi vállalkozás, amely prémium kézműves fagylaltokat és friss vágású marhahúsból készült smash burgereket kínál. Közvetlen alapanyag-beszerzéssel, a nagykerek kihagyásával biztosítjuk az elérhető árú prémium minőséget."
+  }
+};
+---
+
+<Layout title="A mi sztorink | Nyaloda & Hot & Loaded">
+    <script type="application/ld+json" set:html={JSON.stringify(aboutSchema)} slot="head" />
+    
+    <div class="app-wrapper">
+        <TopBar cartCount={0} />
+        
+        <main class="page">
+            <header class="page-header">
+                <a href="/" class="minimal-back">← Vissza a főoldalra</a>
+                <h1>A mi sztorink</h1>
+                <p class="subtitle">Egy fagyis triciklitől a kulináris mennyországig.</p>
+            </header>
+
+            <section class="story-content">
+                <div class="content-block">
+                    <h2>Kik vagyunk mi?</h2>
+                    <p>A Hókuszpókusz Ice Kft. egy 15 éves múltra visszatekintő, 100%-ban magyar tulajdonú családi vállalkozás. Szabó Beatrix és Bajerle Tas vezetésével egyetlen fagyis triciklivel indultunk útnak egy parkban, ma pedig már Újpest és vonzáskörzete minőségi gasztronómiájának meghatározó szereplői vagyunk a <strong>Nyaloda</strong> és a <strong>Hot & Loaded</strong> márkákkal.</p>
+                </div>
+
+                <div class="content-block highlight-block">
+                    <h2>Hogyan lehet a prémium elérhető?</h2>
+                    <p>Sokan kérdezik, mi a titkunk. Hogyan tudunk ilyen alacsony áron adni ilyen brutális minőséget? A válasz egyszerű, de sok munkát igényel: <strong>mindent mi magunk készítünk az alapoktól.</strong></p>
+                    <p>Hatalmas volumenben vásárolunk alapanyagot – közvetlenül a termelőktől, gyártóktól és az elsődleges forrásoktól. Kihagyjuk az ellátási láncból a nagykereket és a közvetítőket. Ezt a felhalmozott árelőnyt pedig nem tesszük zsebre, hanem beépítjük a végtermékbe, hogy a vásárlóink a legjobb áron juthassanak hozzá a csúcsminőséghez.</p>
+                </div>
+
+                <div class="content-block">
+                    <h2>Kompromisszummentes minőség</h2>
+                    <ul class="quality-list">
+                        <li><strong>A 7-féle pisztácia blend:</strong> A fagylaltjainkhoz nem előre kevert pasztákat, hanem 7 különböző, általunk gondosan válogatott pisztácia egyedi keverékét használjuk, garantálva a megismételhetetlen ízélményt.</li>
+                        <li><strong>Friss vágású marha & Csirkemell:</strong> A Hot & Loaded konyhájában sosem kötünk kompromisszumot. Mindig friss vágású marhahúsból (az aktuális kínálat legjavából) és általunk, házilag készített, szaftos csirkemell csíkokból dolgozunk.</li>
+                        <li><strong>Ipari technológia (Blast-chilling):</strong> A konyhánkban szigorú ipari ételbiztonsági sztenderdek uralkodnak. A termékeket a leggyorsabb és legkíméletesebb sokkolásos eljárással hűtjük le, hogy az íz, a szaftosság és a minőség 100%-ban megmaradjon.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        
+        <Footer />
+    </div>
+</Layout>
+
+<style>
+    .page { padding-bottom: 40px; }
+    
+    .page-header { 
+        padding: 32px 16px 24px; 
+        display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+        background: var(--char-900);
+        color: var(--cream);
+        border-radius: 0 0 32px 32px;
+        margin-bottom: 24px;
+    }
+    
+    .minimal-back { 
+        text-decoration: none; color: var(--cream); font-weight: 600; 
+        font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+        background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+    }
+    .minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+    
+    .page-header h1 { font-family: 'Anton', sans-serif; font-size: 40px; text-transform: uppercase; margin: 0; line-height: 1; color: var(--cheese);}
+    .subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 0; }
+
+    .story-content { padding: 0 16px; display: flex; flex-direction: column; gap: 24px; }
+    
+    .content-block {
+        background: #fff; padding: 24px; border-radius: 20px;
+        border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+    }
+    
+    .highlight-block {
+        background: var(--cheese);
+        border: 2px solid var(--char-900);
+        box-shadow: 4px 4px 0 var(--char-900);
+    }
+    
+    .content-block h2 { font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; margin: 0 0 16px 0; color: var(--char-900); font-weight: 400;}
+    .content-block p { font-size: 14px; line-height: 1.6; margin: 0 0 16px 0; color: rgba(36, 24, 18, 0.9); }
+    .content-block p:last-child { margin-bottom: 0; }
+    
+    .quality-list { margin: 0; padding-left: 16px; font-size: 14px; line-height: 1.6; color: rgba(36, 24, 18, 0.9); }
+    .quality-list li { margin-bottom: 12px; }
+    .quality-list li:last-child { margin-bottom: 0; }
+    .quality-list strong { color: var(--ember); font-family: 'Work Sans', sans-serif; font-weight: 700; }
+</style>
+
+=================================================
+FÁJL: src\pages\services.astro
+=================================================
+
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+---
+
+<Layout title="Gépszerviz | Nyaloda">
+  <div class="app-wrapper">
+    <TopBar cartCount={2} />
+    
+    <main class="page">
+      <header class="page-header">
+        <a href="/" class="minimal-back">← Vissza</a>
+        <h1>Gépszerviz</h1>
+        <p>Ipari pultok és vezérlők professzionális karbantartása.</p>
+      </header>
+
+      <section class="content-section">
+        <div class="service-list">
+          <ServiceCard 
+            href="/contact" emoji="🔧" 
+            title="Gépjavítás & Karbantartás" 
+            description="CAREL vezérlők és ipari pultok professzionális javítása és karbantartása." 
+          />
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  
+  .minimal-back { 
+      text-decoration: none; color: var(--char-900); font-weight: 600; 
+      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
+      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
+  }
+  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+  
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
+  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+
+  .content-section { padding: 16px; }
+  .service-list { display: flex; flex-direction: column; gap: 12px; }
+</style>
+
+=================================================
+FÁJL: tsconfig.json
+=================================================
+
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

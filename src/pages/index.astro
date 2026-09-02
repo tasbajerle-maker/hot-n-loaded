@@ -13,23 +13,25 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
   "name": "Nyaloda | Hot & Loaded",
-  "servesCuisine": ["Burgers", "Ice Cream"],
+  "image": "https://nyaloda.com/nyaloda-logo.jpg",
+  "servesCuisine": ["Burgers", "Ice Cream", "Desserts"],
+  "priceRange": "$$",
+  "telephone": "+36300000000",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Példa utca 1.",
+    "streetAddress": "Király u. 25.",
     "addressLocality": "Budapest",
-    "postalCode": "1051",
+    "postalCode": "1042",
     "addressCountry": "HU"
   }
 };
 ---
 
-<Layout title="Nyaloda | Hot & Loaded Kínálat">
-	<script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
-	<link rel="preconnect" href="https://fonts.googleapis.com" slot="head" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin slot="head" />
-	<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" slot="head" />
-
+<Layout 
+	title="Nyaloda | Hot & Loaded Kínálat" 
+	description="15 éves tapasztalat, kézműves fagyik és szaftos smash burgerek friss marhahúsból Újpesten és Káposztásmegyeren."
+	jsonLd={schemaOrg}
+>
 	<div class="app-wrapper">
 		<TopBar cartCount={2} />
 
@@ -75,8 +77,6 @@ const schemaOrg = {
 							name="NYAR2026 Kupon" price="-10% a Webappban" 
 							actionUrl="https://enfagyi-app-122a0.web.app" actionText="Beváltom"
 						/>
-
-						
 					</div>
 				</div>
 			</section>

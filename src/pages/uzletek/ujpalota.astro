@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TopBar from '../../components/TopBar.astro';
+import Footer from '../../components/Footer.astro';
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "IceCreamShop",
+  "name": "Nyaloda - Újpalota",
+  "image": "https://nyaloda.com/ujpalota-bolt.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Nyírpalota út 52.",
+    "addressLocality": "Budapest",
+    "postalCode": "1157",
+    "addressCountry": "HU"
+  },
+  "telephone": "+36305620808",
+  "servesCuisine": ["Ice Cream", "Desserts"],
+  "priceRange": "$$",
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Free Parking", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Outdoor Seating", "value": true }
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "22:00"
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Nyaloda | Újpalota, Nyírpalota út 52." 
+	description="Látogass el újpalotai fagyizónkba! Prémium kézműves fagylaltok, kiülős terasz és ingyenes parkolás."
+	jsonLd={localBusinessSchema}
+>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/contact" class="minimal-back">← Vissza az üzletekhez</a>
+				<h1>Újpalota</h1>
+				<p class="subtitle">A kézműves fagylaltok szentélye.</p>
+			</header>
+
+			<section class="store-details">
+				<div class="detail-card">
+					<h2>📍 Cím és Nyitvatartás</h2>
+					<p><strong>Cím:</strong> 1157 Budapest, Nyírpalota út 52.</p>
+					<p><strong>Nyitva:</strong> Hétfőtől Vasárnapig: 11:00 - 22:00</p>
+					<p><strong>Telefon:</strong> <a href="tel:+36305620808" class="phone-link">+36 30 562 0808</a></p>
+				</div>
+
+				<div class="detail-card highlight-card">
+					<h2>Kínálat és Szolgáltatások</h2>
+					<ul class="features-list">
+						<li>🍦 <strong>Nyaloda:</strong> Hatalmas választék prémium kézműves fagylaltjainkból</li>
+						<li>☀️ <strong>Terasz:</strong> Hangulatos kiülős rész</li>
+						<li>🚗 <strong>Parkolás:</strong> Ingyenes a környéken, könnyen megközelíthető</li>
+					</ul>
+					<p class="note"><em>Megjegyzés: Ezen a helyszínen burgert (Hot & Loaded) nem készítünk, azt keresd a Király utcai üzletünkben!</em></p>
+				</div>
+			</section>
+		</main>
+		
+		<Footer />
+	</div>
+</Layout>
+
+<style>
+	.page { padding-bottom: 40px; }
+	.page-header { padding: 32px 16px 24px; background: var(--char-900); color: var(--cream); border-radius: 0 0 32px 32px; margin-bottom: 24px; }
+	.minimal-back { text-decoration: none; color: var(--cream); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+	.minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; margin: 12px 0 0 0; color: #f7c9d4; line-height: 1.1;}
+	.subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 8px 0 0 0; }
+
+	.store-details { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+	.detail-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.highlight-card { border: 2px solid #e894a8; box-shadow: 4px 4px 0 #e894a8; }
+	
+	.detail-card h2 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; margin: 0 0 16px 0; color: var(--char-900); font-weight: 400;}
+	.detail-card p { font-size: 14px; margin: 0 0 8px 0; color: var(--ink); line-height: 1.5;}
+	.phone-link { color: var(--ember); font-weight: 700; text-decoration: none; }
+	
+	.features-list { list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; }
+	.features-list li { margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;}
+	.features-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+	
+	.note { font-size: 12px !important; color: #666 !important; margin: 0 !important; }
+</style>

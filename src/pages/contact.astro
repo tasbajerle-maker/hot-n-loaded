@@ -1,122 +1,128 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
-import LocationCard from '../components/LocationCard.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="Kapcsolat | Nyaloda">
+<Layout title="Kapcsolat és Üzletek | Nyaloda">
   <div class="app-wrapper">
-    <TopBar cartCount={2} />
+    <TopBar cartCount={0} />
     
     <main class="page">
       <header class="page-header">
-        <a href="/" class="minimal-back">← Vissza</a>
-        <h1>Kapcsolat</h1>
-        <p>Látogass el üzleteink valamelyikébe, vagy vedd fel velünk a kapcsolatot online!</p>
+        <a href="/" class="minimal-back">← Vissza a főoldalra</a>
+        <h1>Üzletek & Kapcsolat</h1>
+        <p class="subtitle">Látogass el hozzánk, vagy csörögj ránk üzleti ügyekben!</p>
       </header>
 
       <section class="content-section">
-        <LocationCard 
-          title="📍 1. Üzlet (Újpest-Központ)" 
-          address="1042 Budapest, Király u. 25." 
-          hours="11:00 - 22:00" 
-          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
-        />
-
-        <LocationCard 
-          title="📍 2. Üzlet (Káposztásmegyer)" 
-          address="1041 Budapest, Óceánárok utca 29." 
-          hours="11:00 - 22:00" 
-          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
-        />
-
-        <LocationCard 
-          title="📍 3. Üzlet (Újpalota)" 
-          address="1157 Budapest, Nyírpalota út 52." 
-          hours="11:00 - 22:00" 
-          tags={['🍔 Hot & Loaded', '🍦 Nyaloda']} 
-        />
         
+        <!-- B2B és Gépszerviz Info -->
+        <div class="b2b-alert">
+          <h3>🚚 B2B & 🔧 Gépszerviz</h3>
+          <p>Ezekben az ügyekben felesleges elzarándokolnod az üzletekbe, ott csak az éhes és édesszájú vendégeket szolgáljuk ki. <strong>Hívj fel az alábbi számok valamelyikén, a többit elmondom!</strong></p>
+          <div class="phone-group">
+            <a href="tel:+36305620808">+36 30 562 0808</a>
+            <span>vagy</span>
+            <a href="tel:+36303970093">+36 30 397 0093</a>
+          </div>
+          <p class="email-line">Vagy írj ide: <a href="mailto:hokuszpokuszicekft@gmail.com">hokuszpokuszicekft@gmail.com</a></p>
+        </div>
+
+        <!-- Üzletek listája (Local SEO hub) -->
+        <h2 class="section-title">Válaszd ki az üzleted:</h2>
+
+        <a href="/uzletek/kiraly-utca" class="store-link-card">
+          <div class="card-head">
+            <h3>📍 Újpest-Központ</h3>
+            <span class="open-badge">Nyitva</span>
+          </div>
+          <p class="address">1042 Budapest, Király u. 25.</p>
+          <div class="tags">
+            <span class="tag bg-burger">🍔 Hot & Loaded</span>
+            <span class="tag bg-fagyi">🍦 Nyaloda</span>
+          </div>
+        </a>
+
+        <a href="/uzletek/kaposztasmegyer" class="store-link-card">
+          <div class="card-head">
+            <h3>📍 Káposztásmegyer</h3>
+            <span class="open-badge">Nyitva</span>
+          </div>
+          <p class="address">1041 Budapest, Óceánárok utca 29.</p>
+          <div class="tags">
+            <span class="tag bg-fagyi">🍦 Nyaloda</span>
+          </div>
+        </a>
+
+        <a href="/uzletek/ujpalota" class="store-link-card">
+          <div class="card-head">
+            <h3>📍 Újpalota</h3>
+            <span class="open-badge">Nyitva</span>
+          </div>
+          <p class="address">1157 Budapest, Nyírpalota út 52.</p>
+          <div class="tags">
+            <span class="tag bg-fagyi">🍦 Nyaloda</span>
+          </div>
+        </a>
+        
+        <!-- Visszakerült a Közösségi Média kártya! -->
         <div class="contact-info-card">
-            <h3>Elérhetőségek</h3>
-            <p>✉️ <strong>Email:</strong> <a href="mailto:hokuszpokuszicekft@gmail.com">hokuszpokuszicekft@gmail.com</a></p>
-            <p>📱 <strong>Facebook:</strong> Hot & Loaded / Nyaloda</p>
+            <h3>Közösségi Média</h3>
+            <p>Kövess minket, és ne maradj le az újdonságokról!</p>
+            <p>📱 <strong>Facebook:</strong> <a href="https://www.facebook.com/nyalodafagyizo" target="_blank">Hot & Loaded / Nyaloda</a></p>
             <p>📸 <strong>Instagram:</strong> <a href="https://instagram.com/nyalodafagyi" target="_blank">@nyalodafagyi</a></p>
             <p>🎵 <strong>TikTok:</strong> <a href="https://tiktok.com/@nyaloda" target="_blank">@nyaloda</a></p>
-            <br>
-            <a href="https://enfagyi-app-122a0.web.app/drive" class="order-btn" target="_blank">Rendelés és Kiszállítás 🚀</a>
         </div>
+
       </section>
     </main>
+
+    <Footer />
   </div>
 </Layout>
 
 <style>
-  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .page { padding-bottom: 40px; }
+  .page-header { padding: 32px 16px 24px; background: var(--char-900); color: var(--cream); border-radius: 0 0 32px 32px; margin-bottom: 24px; }
+  .minimal-back { text-decoration: none; color: var(--cream); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+  .minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; margin: 12px 0 0 0; color: var(--cheese); line-height: 1.1;}
+  .subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 8px 0 0 0; }
+
+  .content-section { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* B2B Alert */
+  .b2b-alert { background: #fff; border: 2px dashed var(--char-900); padding: 20px; border-radius: 20px; text-align: center; }
+  .b2b-alert h3 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--char-900); margin: 0 0 8px 0; font-weight: 400;}
+  .b2b-alert p { font-size: 13px; line-height: 1.5; margin: 0 0 16px 0; color: var(--ink); }
+  .phone-group { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 14px;}
+  .phone-group a { background: var(--ember); color: #fff; padding: 8px 12px; border-radius: 8px; text-decoration: none; transition: transform 0.2s; }
+  .phone-group a:active { transform: scale(0.95); background: var(--ember-dim); }
+  .email-line { font-family: 'IBM Plex Mono', monospace; font-size: 12px !important; margin: 0 !important; }
+  .email-line a { color: var(--ember); text-decoration: none; font-weight: 700; }
+
+  .section-title { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; color: var(--char-900); margin: 16px 0 0 0; font-weight: 400;}
+
+  /* Store Cards */
+  .store-link-card { display: block; background: #fff; padding: 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); text-decoration: none; color: var(--ink); transition: transform 0.2s, border-color 0.2s; }
+  .store-link-card:active { transform: scale(0.98); border-color: var(--ember); }
   
-  .minimal-back { 
-      text-decoration: none; color: var(--char-900); font-weight: 600; 
-      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
-      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
-  }
-  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
+  .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .card-head h3 { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); margin: 0; font-weight: 400; text-transform: uppercase; }
+  .open-badge { background: #e0f8e5; color: #1e8131; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 8px; }
   
-  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
-  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+  .address { font-size: 14px; margin: 0 0 12px 0; color: #555; }
+  
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 6px 10px; border-radius: 8px; }
+  .bg-burger { background: rgba(255, 90, 31, 0.15); color: var(--ember-dim); }
+  .bg-fagyi { background: rgba(232, 148, 168, 0.15); color: #d6476b; }
 
-  .content-section { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
-
-  .contact-info-card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 20px;
-      border: 1px solid rgba(0,0,0,0.04);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.03);
-  }
-
-  .contact-info-card h3 {
-      font-family: 'Anton', sans-serif;
-      font-size: 18px;
-      color: var(--char-900);
-      margin: 0 0 12px 0;
-      text-transform: uppercase;
-      font-weight: 400;
-  }
-
-  .contact-info-card p {
-      font-size: 14px;
-      margin: 0 0 8px 0;
-      color: var(--ink);
-  }
-
-  .contact-info-card a {
-      color: var(--ember);
-      text-decoration: none;
-      font-weight: 600;
-  }
-
-  .contact-info-card a:hover {
-      text-decoration: underline;
-  }
-
-  .order-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--char-900);
-      color: var(--cream) !important;
-      padding: 12px;
-      border-radius: 12px;
-      font-family: 'Anton', sans-serif;
-      font-size: 16px;
-      text-transform: uppercase;
-      text-decoration: none !important;
-      letter-spacing: 0.05em;
-      transition: transform 0.2s, background-color 0.2s;
-  }
-
-  .order-btn:active {
-      transform: scale(0.98);
-      background: var(--ember);
-  }
+  /* Social Media Card */
+  .contact-info-card { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); margin-top: 16px;}
+  .contact-info-card h3 { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--char-900); margin: 0 0 8px 0; text-transform: uppercase; font-weight: 400; }
+  .contact-info-card p { font-size: 14px; margin: 0 0 8px 0; color: var(--ink); }
+  .contact-info-card a { color: var(--ember); text-decoration: none; font-weight: 600; }
+  .contact-info-card a:hover { text-decoration: underline; }
 </style>

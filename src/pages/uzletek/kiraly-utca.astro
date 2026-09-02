@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TopBar from '../../components/TopBar.astro';
+import Footer from '../../components/Footer.astro';
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["IceCreamShop", "FastFoodRestaurant"],
+  "name": "Nyaloda & Hot & Loaded - Újpest",
+  "image": "https://nyaloda.com/kiraly-utca-bolt.jpg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Király u. 25.",
+    "addressLocality": "Budapest",
+    "postalCode": "1042",
+    "addressCountry": "HU"
+  },
+  "telephone": "+36305620808",
+  "hasMap": "https://www.google.com/maps/place/Nyaloda/@47.5624977,19.096256,17.93z/data=!4m6!3m5!1s0x4741da48625b2f87:0x652646e326e68a6f!8m2!3d47.5613956!4d19.0980619!16s%2Fg%2F11c3k6hycq?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D",
+  "servesCuisine": ["Burgers", "Ice Cream"],
+  "priceRange": "$$",
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Free Parking", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Outdoor Seating", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Indoor Seating", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Restroom", "value": true }
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "11:00",
+      "closes": "22:00"
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Nyaloda & Hot & Loaded | Újpest, Király utca 25." 
+	description="Látogass el újpesti főhadiszállásunkra! Prémium smash burgerek friss marhahúsból, kézműves fagylalt, benti leülési lehetőség, terasz és ingyenes parkolás."
+	jsonLd={localBusinessSchema}
+>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/contact" class="minimal-back">← Vissza az üzletekhez</a>
+				<h1>Király utca (Újpest)</h1>
+				<p class="subtitle">A sós és az édes találkozása egy helyen.</p>
+			</header>
+
+			<section class="store-details">
+				<div class="detail-card">
+					<h2>📍 Cím és Nyitvatartás</h2>
+					<p><strong>Cím:</strong> 1042 Budapest, Király u. 25.</p>
+					<p><strong>Nyitva:</strong> Hétfőtől Vasárnapig: 11:00 - 22:00</p>
+					<p><strong>Telefon:</strong> <a href="tel:+36305620808" class="phone-link">+36 30 562 0808</a></p>
+					
+					<a href="https://www.google.com/maps/place/Nyaloda/@47.5624977,19.096256,17.93z/data=!4m6!3m5!1s0x4741da48625b2f87:0x652646e326e68a6f!8m2!3d47.5613956!4d19.0980619!16s%2Fg%2F11c3k6hycq?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-btn">
+						🗺️ Útvonaltervezés (Google Térkép)
+					</a>
+				</div>
+
+				<div class="detail-card highlight-card">
+					<h2>Kínálat és Szolgáltatások</h2>
+					<ul class="features-list">
+						<li>🍔 <strong>Hot & Loaded:</strong> Szaftos smash burgerek friss vágású marhahúsból</li>
+						<li>🍦 <strong>Nyaloda:</strong> Prémium kézműves fagylaltok</li>
+						<li>☀️ <strong>Terasz:</strong> Kényelmes kiülős rész</li>
+						<li>🛋️ <strong>Benti fogyasztás:</strong> Rossz idő esetén is várunk benti asztalainknál</li>
+						<li>🚻 <strong>Vendég mosdó:</strong> Elérhető</li>
+						<li>🚗 <strong>Parkolás:</strong> Ingyenes a környéken</li>
+					</ul>
+				</div>
+
+				<a href="https://enfagyi-app-122a0.web.app/" target="_blank" class="action-btn">Rendelés ebből az üzletből 🚀</a>
+			</section>
+		</main>
+		
+		<Footer />
+	</div>
+</Layout>
+
+<style>
+	.page { padding-bottom: 40px; }
+	.page-header { padding: 32px 16px 24px; background: var(--char-900); color: var(--cream); border-radius: 0 0 32px 32px; margin-bottom: 24px; }
+	.minimal-back { text-decoration: none; color: var(--cream); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+	.minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; margin: 12px 0 0 0; color: var(--cheese); line-height: 1.1;}
+	.subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 8px 0 0 0; }
+
+	.store-details { padding: 0 16px; display: flex; flex-direction: column; gap: 16px; }
+	.detail-card { background: #fff; padding: 24px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.highlight-card { border: 2px solid var(--ember); box-shadow: 4px 4px 0 var(--ember); }
+	
+	.detail-card h2 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; margin: 0 0 16px 0; color: var(--char-900); font-weight: 400;}
+	.detail-card p { font-size: 14px; margin: 0 0 8px 0; color: var(--ink); line-height: 1.5;}
+	.phone-link { color: var(--ember); font-weight: 700; text-decoration: none; }
+	
+	.map-btn { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #eef2ff; color: #1e8131; font-family: 'IBM Plex Mono', monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; text-decoration: none; border-radius: 8px; border: 1px solid #c3e6cb; transition: transform 0.2s, background 0.2s; }
+	.map-btn:active { transform: scale(0.97); background: #d4edda; }
+
+	.features-list { list-style: none; padding: 0; margin: 0; font-size: 14px; line-height: 1.6; }
+	.features-list li { margin-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 8px;}
+	.features-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+	
+	.action-btn { display: flex; align-items: center; justify-content: center; background: var(--char-900); color: var(--cream); font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 0.05em; padding: 16px; border-radius: 12px; text-decoration: none; margin-top: 8px; transition: transform 0.2s, background 0.2s; }
+	.action-btn:active { transform: scale(0.98); background: var(--ember); }
+</style>

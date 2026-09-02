@@ -1,0 +1,40 @@
+---
+export interface Props {
+	title: string;
+	description: string;
+	noindex?: boolean;
+	ogImage?: string;
+	ogType?: 'website' | 'article' | 'restaurant';
+	jsonLd?: Record<string, any>;
+}
+
+const {
+	title,
+	description,
+	noindex = false,
+	ogImage = '/default-og-image.jpg',
+	ogType = 'website',
+	jsonLd
+} = Astro.props;
+
+// Az aktuális URL kinyerése
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nyaloda.com');
+---
+
+<!-- Alap Meta Tagek -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(ogImage, Astro.site || 'https://nyaloda.com')} />
+
+<!-- JSON-LD Struktúra beágyazása -->
+{jsonLd && (
+	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

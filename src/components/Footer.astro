@@ -15,8 +15,8 @@ const currentYear = new Date().getFullYear();
 	</div>
 
 	<nav class="footer-links" aria-label="Jogi és információs menü">
-		<!-- ÚJ WEBAPP RENDELÉS LINK (Kiemelve) -->
-		<a href="https://enfagyi-app-122a0.web.app/" target="_blank" rel="noopener noreferrer" style="color: var(--ember); opacity: 1; font-weight: 700;">Rendelés (Webapp) 🚀</a>
+		<!-- Profi Webapp Gomb -->
+		<a href="https://enfagyi-app-122a0.web.app/" target="_blank" rel="noopener noreferrer" class="webapp-link">Rendelés (Webapp) 🚀</a>
 		
 		<!-- Eredeti linkek -->
 		<a href="/aszf">ÁSZF</a>
@@ -24,6 +24,7 @@ const currentYear = new Date().getFullYear();
 		<a href="/impresszum">Impresszum</a>
 		<a href="/contact">Kapcsolat</a>
 	</nav>
+	
 	<p class="copyright">&copy; {currentYear} Hókuszpókusz Ice Kft. | Hot & Loaded | Nyaloda.</p>
 </footer>
 
@@ -31,13 +32,32 @@ const currentYear = new Date().getFullYear();
 	.footer { background: var(--char-900); color: var(--cream); padding: 40px 16px 80px; text-align: center; border-radius: 32px 32px 0 0; }
 	
 	.contact-info { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-	.email { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--cheese); text-decoration: none; display: block; margin-bottom: 16px; }
+	.email { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--cheese); text-decoration: none; display: block; margin-bottom: 16px; transition: color 0.2s; }
+	.email:hover { color: var(--ember); }
+	
 	.socials { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
-	.socials a { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; color: var(--cream); text-decoration: none; letter-spacing: 0.05em; }
+	.socials a { font-family: 'Anton', sans-serif; font-size: 14px; text-transform: uppercase; color: var(--cream); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
 	.socials a:hover { color: var(--ember); }
 
-	.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 24px; }
-	.footer-links a { color: var(--cream); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.6; }
+	.footer-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; margin-bottom: 24px; }
+	.footer-links a { color: var(--cream); text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; opacity: 0.6; transition: opacity 0.2s, color 0.2s; }
 	.footer-links a:hover { opacity: 1; }
+	
+	/* A kiemelt rendelés gomb stílusa */
+	.footer-links .webapp-link {
+		color: var(--ember) !important;
+		opacity: 1 !important;
+		font-weight: 700 !important;
+		border: 1px solid rgba(255, 90, 31, 0.4);
+		padding: 8px 14px;
+		border-radius: 10px;
+		background: rgba(255, 90, 31, 0.1);
+		transition: transform 0.2s, background 0.2s;
+	}
+	.footer-links .webapp-link:active {
+		transform: scale(0.95);
+		background: rgba(255, 90, 31, 0.2);
+	}
+
 	.copyright { font-family: 'IBM Plex Mono', monospace; font-size: 10px; opacity: 0.4; margin: 0; }
 </style>

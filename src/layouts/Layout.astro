@@ -1,24 +1,34 @@
 ---
+import Seo from '../components/Seo.astro';
+
 export interface Props {
 	title: string;
 	description?: string;
-	noindex?: boolean; /* ÚJ: Ezzel tiltjuk le az indexelést a jogi oldalakon */
+	noindex?: boolean;
+	jsonLd?: Record<string, any>;
 }
 
-const { title, description = "A legjobb kézműves fagyik és burgerek.", noindex = false } = Astro.props;
+const { 
+	title, 
+	description = "A legjobb kézműves fagyik és burgerek Újpesten és Káposztásmegyeren.", 
+	noindex = false,
+	jsonLd
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="hu">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
-		<!-- ÚJ: Ha a noindex true, a keresőmotorok békén hagyják ezt az aloldalt -->
-		{noindex && <meta name="robots" content="noindex, nofollow" />}
-		
-		<title>{title}</title>
+		<!-- Itt hívjuk meg a Seo komponenst -->
+		<Seo 
+			title={title} 
+			description={description} 
+			noindex={noindex} 
+			jsonLd={jsonLd} 
+		/>
 
 		<!-- Google Fonts globális betöltése -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

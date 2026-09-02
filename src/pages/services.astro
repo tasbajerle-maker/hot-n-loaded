@@ -1,46 +1,163 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
-import ServiceCard from '../components/ServiceCard.astro';
+import Footer from '../components/Footer.astro';
+
+// JSON-LD a szerviz oldalhoz
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Ipari Fagylaltgép és Hűtőgép Szerviz",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Hókuszpókusz Ice Kft. - Gépszerviz",
+    "telephone": "+36305620808",
+    "email": "hokuszpokuszicekft@gmail.com"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Hungary"
+  },
+  "description": "Ipari fagylaltgépek, fagyasztók és hűtők helyszíni javítása, karbantartása és állapotfelmérése. Dixell és CAREL vezérlések, Carpigiani és Bravo gépek szervizelése. Szakszerű hibaok-feltárás, nem csak 'gáztöltögetés'.",
+  "offers": {
+    "@type": "Offer",
+    "description": "Karbantartás, kondenzátor takarítás, állapotfelmérés és helyszíni javítás."
+  }
+};
 ---
 
-<Layout title="Gépszerviz | Nyaloda">
-  <div class="app-wrapper">
-    <TopBar cartCount={2} />
-    
-    <main class="page">
-      <header class="page-header">
-        <a href="/" class="minimal-back">← Vissza</a>
-        <h1>Gépszerviz</h1>
-        <p>Ipari pultok és vezérlők professzionális karbantartása.</p>
-      </header>
+<Layout 
+	title="Ipari Fagylaltgép és Hűtő Szerviz | Nyaloda" 
+	description="Ipari fagylaltgépek, hűtők és fagyasztók helyszíni javítása. Dixell, CAREL vezérlők, Carpigiani, Bravo karbantartás. Valós hibafeltárás, nálunk nincs 'csak egy kis gáztöltés'."
+	jsonLd={serviceSchema}
+>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza a főoldalra</a>
+				<h1>Ipari Gépszerviz</h1>
+				<p class="subtitle">Mert a gép mindig a legnagyobb kánikulában áll meg.</p>
+			</header>
 
-      <section class="content-section">
-        <div class="service-list">
-          <ServiceCard 
-            href="/contact" emoji="🔧" 
-            title="Gépjavítás & Karbantartás" 
-            description="CAREL vezérlők és ipari pultok professzionális javítása és karbantartása." 
-          />
-        </div>
-      </section>
-    </main>
-  </div>
+			<section class="service-content">
+				
+				<!-- A "Fájdalompont" Blokkk (SEO aranybánya) -->
+				<div class="alert-block">
+					<h2>🔥 A Tavaszi Kánikula-Csapda</h2>
+					<p>Minden évben ugyanaz a sztori: beüt az első komolyabb meleg, és országszerte sorban halnak le a fagyasztók és a fagylaltgépek. <strong>Miért?</strong> Mert a szezon előtti karbantartás elmarad, a kondenzátorokat nem takarítják ki.</p>
+					<p>A gép hűtés nélkül szenved, erőlködik, a kompresszor túlmelegszik, és az első nagyobb igénybevételnél egyszerűen elfüstöl. Ne várd meg, amíg elolvad az árukészleted! Egy szakszerű kondenzátor takarítás és állapotfelmérés töredékébe kerül egy kompresszorcserének.</p>
+				</div>
+
+				<!-- MÍTOSZROMBOLÓ BLOKK (ÚJ!) -->
+				<div class="myth-buster-block">
+					<h2>🚫 A "Csak egy kis gázt kell rátölteni" illúziója</h2>
+					<p>Tisztázzuk rögtön az elején: <strong>ilyen típusú felkéréseket nem vállalunk.</strong> Ha egy gép rendszeresen elereszti a hűtőközeget, ott lyuk van. Ha csak rátöltünk, a lyuk marad, lassan de biztosan tovább tágul, és a probléma heteken belül újra előjön. Ez nem javítás, ez sarlatánság.</p>
+					
+					<h3>Mitől lehet még meleg a gép?</h3>
+					<ul class="tech-reasons">
+						<li><strong>Adagoló hiba:</strong> Ha elromlik, a gázkör egyszerűen nem tud rendesen felállni.</li>
+						<li><strong>Légáramlási gondok:</strong> Egy koszos elpárologtató vagy kondenzátor, esetleg a leállt elszívó ventilátorok azonnali hatékonyságcsökkenést vagy teljes leállást okoznak.</li>
+						<li><strong>Elektromos és vezérlési hibák:</strong> Egy beragadt mágnesszelep vagy egy elöregedett kompresszor felborítja a rendszert. Ha a kompresszor már nem tudja leadni a teljesítményét, a gyári 3 óránkénti leolvasztás (defrost) kinyírja a fagylaltot: mire újra visszahűtene, jön a következő leolvasztási ciklus.</li>
+					</ul>
+					<p class="conclusion">Ettől még lehet gázhiányos a gép, de mi a kiváltó okot keressük és javítjuk meg, nem a tünetet kezeljük ideig-óráig.</p>
+				</div>
+
+				<div class="service-grid">
+					<div class="service-card">
+						<div class="emoji-header">🛠️</div>
+						<h3>Helyszíni Javítás</h3>
+						<p>Nem kell a többmázsás gépeket mozgatnod. Kimegyünk a helyszínre, és elhárítjuk a hibát, legyen szó fagyasztóról, pultról vagy fagylaltgépről.</p>
+					</div>
+
+					<div class="service-card">
+						<div class="emoji-header">🧠</div>
+						<h3>Vezérlés Specialista</h3>
+						<p>Megbolondult az elektronika? Kenjük-vágjuk az ipari sztenderdeket. <strong>Dixell</strong> és <strong>CAREL</strong> vezérlők programozása, cseréje és hibaelhárítása.</p>
+					</div>
+
+					<div class="service-card">
+						<div class="emoji-header">⚙️</div>
+						<h3>Márkafüggetlen Szerviz</h3>
+						<p>Legyen szó olasz csúcsgépekről (mint a <strong>Carpigiani</strong> vagy a <strong>Bravo</strong>), vagy bármilyen más ipari hűtőberendezésről, mi rendberakjuk.</p>
+					</div>
+
+					<div class="service-card">
+						<div class="emoji-header">🧼</div>
+						<h3>Karbantartás & Takarítás</h3>
+						<p>Szezon előtti és utáni teljes körű állapotfelmérés, mechanikai tisztítás, kondenzátorok portalanítása, hogy a gép ne egye le a gatyádat áramban.</p>
+					</div>
+				</div>
+
+				<!-- Kapcsolat CTA -->
+				<div class="cta-box">
+					<h3>Valós megoldást akarsz a gép problémájára?</h3>
+					<p>Ne kísértsd a sorsot, csörögj ránk, egyeztetünk egy időpontot, és profi módon ránézünk a vasra!</p>
+					<div class="contact-methods">
+						<a href="tel:+36305620808" class="phone-btn">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+							+36 30 562 0808
+						</a>
+						<a href="tel:+36303970093" class="phone-btn">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+							+36 30 397 0093
+						</a>
+					</div>
+				</div>
+
+			</section>
+		</main>
+		
+		<Footer />
+	</div>
 </Layout>
 
 <style>
-  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-  
-  .minimal-back { 
-      text-decoration: none; color: var(--char-900); font-weight: 600; 
-      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
-      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
-  }
-  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
-  
-  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
-  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+	.page { padding-bottom: 40px; }
+	.page-header { padding: 32px 16px 24px; background: var(--char-900); color: var(--cream); border-radius: 0 0 32px 32px; margin-bottom: 24px; }
+	.minimal-back { text-decoration: none; color: var(--cream); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+	.minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; margin: 12px 0 0 0; color: var(--cheese); line-height: 1.1;}
+	.subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 8px 0 0 0; }
 
-  .content-section { padding: 16px; }
-  .service-list { display: flex; flex-direction: column; gap: 12px; }
+	.service-content { padding: 0 16px; display: flex; flex-direction: column; gap: 24px; }
+
+	/* Alert Block */
+	.alert-block { background: rgba(255, 90, 31, 0.1); border-left: 4px solid var(--ember); padding: 20px; border-radius: 0 20px 20px 0; }
+	.alert-block h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; color: var(--char-900); margin: 0 0 12px 0; font-weight: 400;}
+	.alert-block p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 12px 0; }
+	.alert-block p:last-child { margin-bottom: 0; }
+
+	/* MÍTOSZROMBOLÓ BLOKK */
+	.myth-buster-block { background: #fff; border: 2px solid var(--char-900); padding: 20px; border-radius: 20px; box-shadow: 4px 4px 0 var(--char-900); }
+	.myth-buster-block h2 { font-family: 'Anton', sans-serif; font-size: 20px; text-transform: uppercase; color: var(--ember); margin: 0 0 12px 0; font-weight: 400;}
+	.myth-buster-block p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 16px 0; }
+	.myth-buster-block h3 { font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 700; margin: 0 0 12px 0; color: var(--char-900); }
+	
+	.tech-reasons { list-style: none; padding: 0; margin: 0 0 16px 0; font-size: 13px; line-height: 1.6; color: var(--ink); }
+	.tech-reasons li { margin-bottom: 12px; padding-left: 24px; position: relative; }
+	.tech-reasons li::before { content: '❌'; position: absolute; left: 0; top: 0; font-size: 12px; }
+	.tech-reasons strong { color: var(--char-900); font-weight: 700; }
+	
+	.conclusion { font-style: italic; font-weight: 600; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 12px; margin-bottom: 0 !important; }
+
+	/* Grid */
+	.service-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+	@media (min-width: 400px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
+
+	.service-card { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.emoji-header { font-size: 32px; margin-bottom: 12px; }
+	.service-card h3 { font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; color: var(--char-900); font-weight: 400;}
+	.service-card p { font-size: 13px; line-height: 1.5; color: rgba(36, 24, 18, 0.85); margin: 0; }
+
+	/* CTA Box */
+	.cta-box { background: var(--char-900); padding: 24px; border-radius: 24px; text-align: center; color: var(--cream); margin-top: 8px; }
+	.cta-box h3 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; margin: 0 0 12px 0; color: var(--cheese); font-weight: 400; }
+	.cta-box p { font-size: 14px; margin: 0 0 20px 0; opacity: 0.9; }
+	
+	.contact-methods { display: flex; flex-direction: column; gap: 12px; }
+	.phone-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--ember); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 700; padding: 16px; border-radius: 12px; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+	.phone-btn svg { width: 20px; height: 20px; }
+	.phone-btn:active { transform: scale(0.98); background: var(--ember-dim); }
 </style>

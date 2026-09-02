@@ -1,46 +1,159 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
-import ServiceCard from '../components/ServiceCard.astro';
+import Footer from '../components/Footer.astro';
+
+// JSON-LD a B2B Nagyker oldalhoz
+const b2bSchema = {
+  "@context": "https://schema.org",
+  "@type": "WholesaleStore",
+  "name": "Hókuszpókusz Ice Kft. - B2B Fagylalt Nagykereskedés",
+  "image": "https://nyaloda.com/b2b-fagylalt.jpg",
+  "telephone": "+36305620808",
+  "email": "hokuszpokuszicekft@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Király u. 25.",
+    "addressLocality": "Budapest",
+    "postalCode": "1042",
+    "addressCountry": "HU"
+  },
+  "areaServed": ["Budapest", "Pest megye"],
+  "description": "Prémium kézműves fagylaltok nagykereskedelmi értékesítése éttermeknek, kávézóknak. Főzött tejfagylaltok, 20-40% gyümölcstartalmú sorbetek, pultkihelyezés Budapesten és Pest megyében.",
+  "offers": {
+    "@type": "AggregateOffer",
+    "description": "Nagykereskedelmi fagylalt értékesítés és fagylaltpult kihelyezés."
+  }
+};
 ---
 
-<Layout title="B2B Fagylalt Kiszállítás | Nyaloda">
-  <div class="app-wrapper">
-    <TopBar cartCount={2} />
-    
-    <main class="page">
-      <header class="page-header">
-        <a href="/" class="minimal-back">← Vissza</a>
-        <h1>B2B Nagyker</h1>
-        <p>Prémium kézműves fagylaltok beszállítása partnereinknek.</p>
-      </header>
+<Layout 
+	title="B2B Fagylalt Nagykereskedés & Pultkihelyezés | Nyaloda" 
+	description="Prémium és kézműves fagylalt nagykereskedés viszonteladóknak. Főzött tejfagylaltok, valódi gyümölcsfagylaltok, mentes opciók és pultkihelyezés Budapesten és Pest megyében."
+	jsonLd={b2bSchema}
+>
+	<div class="app-wrapper">
+		<TopBar cartCount={0} />
+		
+		<main class="page">
+			<header class="page-header">
+				<a href="/" class="minimal-back">← Vissza a főoldalra</a>
+				<h1>B2B Nagyker</h1>
+				<p class="subtitle">Kézműves minőség a te üzletedben is, barátságos árakon.</p>
+			</header>
 
-      <section class="content-section">
-        <div class="service-list">
-          <ServiceCard 
-            href="/contact" emoji="🚚" 
-            title="Fagylalt Kiszállítás (B2B)" 
-            description="Viszonteladóknak, éttermeknek, kávézóknak nagykereskedelmi árak." 
-          />
-        </div>
-      </section>
-    </main>
-  </div>
+			<section class="b2b-content">
+				
+				<div class="intro-block">
+					<p>Közvetlen gyártóként kihagyjuk a közvetítőket, így <strong>rendkívül versenyképes, barátságos nagykereskedelmi árakkal</strong> tudunk dolgozni, anélkül, hogy a minőségből egy fikarcnyit is engednénk. Bővítsd kávézód, éttermed vagy cukrászdád kínálatát a Nyaloda prémium termékeivel!</p>
+				</div>
+
+				<h2 class="section-title">Fagylalt Kínálatunk</h2>
+				<div class="product-grid">
+					<div class="product-card">
+						<div class="emoji-header">🥛</div>
+						<h3>Főzött Tejfagylaltok</h3>
+						<p>Klasszikus, selymesen lágy textúra, gazdag ízvilág, ahogy a nagykönyvben meg van írva. A hagyományos ízektől a modern kedvencekig.</p>
+					</div>
+
+					<div class="product-card">
+						<div class="emoji-header">🍓</div>
+						<h3>Valódi Gyümölcsfagylaltok</h3>
+						<p>Tejmentes sorbetek <strong>20-40% valódi gyümölcstartalommal</strong>. Ezt a sűrűséget és minőséget bárhol a világon büszkén hívják igazi fagylaltnak, nem csak vizezett jégkásának.</p>
+					</div>
+
+					<div class="product-card">
+						<div class="emoji-header">🌱</div>
+						<h3>Mentes Opciók</h3>
+						<p>Alkalmazkodunk a modern igényekhez: cukormentes, valamint kombinált (cukor- és tejmentes) megoldásainkkal minden vendéged megtalálja a számítását.</p>
+					</div>
+
+					<div class="product-card premium-card">
+						<div class="emoji-header">💎</div>
+						<h3>Prémium Vonal</h3>
+						<p>Ha a kompromisszummentes csúcsminőséget keresed (pl. 100% brontei pisztácia blend). <em>Prémium fagylaltjaink prémium árazással érhetők el.</em></p>
+					</div>
+				</div>
+
+				<div class="alert-block">
+					<h2>🧊 Fagylaltpult Kihelyezés</h2>
+					<p>Budapest és Pest megye területén vállaljuk fagylaltpultok kihelyezését is. Mivel kapacitásaink és gépparkunk véges, minden kihelyezést alapos előzetes egyeztetés és elbírálás előz meg.</p>
+					
+					<h3>Amire az ajánlathoz szükségünk lesz:</h3>
+					<ul class="req-list">
+						<li><strong>Pontos helyszín</strong> és a bolt profilja.</li>
+						<li><strong>Rendelkezésre álló méretek</strong> a pult számára.</li>
+						<li><strong>Elhelyezés:</strong> Kültérre vagy beltérre tervezitek?</li>
+						<li><strong>Áramellátottság:</strong> Fázis és elérhető teljesítmény.</li>
+					</ul>
+
+					<div class="warning-box">
+						<strong>⚠️ Fontos technikai feltétel:</strong> A kihelyezett pultokhoz <u>nem tartozik</u> kanálmosó és háttérfagyasztó. A háttérfagyasztó megléte a helyszínen elengedhetetlen feltétele a biztonságos és folyamatos fagylaltértékesítésnek!
+					</div>
+				</div>
+
+				<div class="cta-box">
+					<h3>Légy a partnerünk!</h3>
+					<p>Kérj egyedi árajánlatot, és beszéljük meg a részleteket. Hívj telefonon, vagy küldd el az üzleted paramétereit e-mailben!</p>
+					<div class="contact-methods">
+						<a href="tel:+36305620808" class="phone-btn">📞 +36 30 562 0808</a>
+						<a href="tel:+36303970093" class="phone-btn">📞 +36 30 397 0093</a>
+						<a href="mailto:hokuszpokuszicekft@gmail.com" class="email-btn">✉️ hokuszpokuszicekft@gmail.com</a>
+					</div>
+				</div>
+
+			</section>
+		</main>
+		
+		<Footer />
+	</div>
 </Layout>
 
 <style>
-  .page-header { padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-  
-  .minimal-back { 
-      text-decoration: none; color: var(--char-900); font-weight: 600; 
-      font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; 
-      background: rgba(0, 0, 0, 0.05); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; 
-  }
-  .minimal-back:active { background: rgba(0, 0, 0, 0.1); }
-  
-  .page-header h1 { font-family: 'Anton', sans-serif; font-size: 32px; text-transform: uppercase; color: var(--char-900); margin: 0; line-height: 1.1; }
-  .page-header p { font-size: 14px; opacity: 0.7; margin: 0; line-height: 1.4; }
+	.page { padding-bottom: 40px; }
+	.page-header { padding: 32px 16px 24px; background: var(--char-900); color: var(--cream); border-radius: 0 0 32px 32px; margin-bottom: 24px; }
+	.minimal-back { text-decoration: none; color: var(--cream); font-weight: 600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; background: rgba(255, 255, 255, 0.1); padding: 6px 12px; border-radius: 8px; transition: background 0.2s; }
+	.minimal-back:active { background: rgba(255, 255, 255, 0.2); }
+	.page-header h1 { font-family: 'Anton', sans-serif; font-size: 36px; text-transform: uppercase; margin: 12px 0 0 0; color: var(--cheese); line-height: 1.1;}
+	.subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; opacity: 0.8; margin: 8px 0 0 0; }
 
-  .content-section { padding: 16px; }
-  .service-list { display: flex; flex-direction: column; gap: 12px; }
+	.b2b-content { padding: 0 16px; display: flex; flex-direction: column; gap: 24px; }
+
+	.intro-block { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.intro-block p { font-size: 14px; line-height: 1.6; margin: 0; color: var(--ink); }
+
+	.section-title { font-family: 'Anton', sans-serif; font-size: 24px; text-transform: uppercase; color: var(--char-900); margin: 0; font-weight: 400;}
+
+	/* Product Grid */
+	.product-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+	@media (min-width: 400px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+
+	.product-card { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.premium-card { border: 2px solid var(--char-900); background: linear-gradient(135deg, #fff, var(--cream-2)); }
+	.emoji-header { font-size: 32px; margin-bottom: 12px; }
+	.product-card h3 { font-family: 'Anton', sans-serif; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; color: var(--char-900); font-weight: 400;}
+	.product-card p { font-size: 13px; line-height: 1.5; color: rgba(36, 24, 18, 0.85); margin: 0; }
+
+	/* Alert Block - Pultkihelyezés */
+	.alert-block { background: rgba(255, 201, 74, 0.15); border-left: 4px solid var(--cheese); padding: 20px; border-radius: 0 20px 20px 0; }
+	.alert-block h2 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; color: var(--char-900); margin: 0 0 12px 0; font-weight: 400;}
+	.alert-block p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0 0 16px 0; }
+	.alert-block h3 { font-family: 'Work Sans', sans-serif; font-size: 15px; font-weight: 700; margin: 0 0 8px 0; color: var(--char-900); }
+	
+	.req-list { list-style: disc; padding-left: 20px; font-size: 13px; line-height: 1.6; color: var(--ink); margin-bottom: 16px; }
+	.req-list li { margin-bottom: 4px; }
+	
+	.warning-box { background: #fff; border: 1px solid rgba(255, 90, 31, 0.3); border-left: 4px solid var(--ember); padding: 12px 16px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: var(--char-900); }
+
+	/* CTA Box */
+	.cta-box { background: var(--char-900); padding: 24px; border-radius: 24px; text-align: center; color: var(--cream); margin-top: 8px; }
+	.cta-box h3 { font-family: 'Anton', sans-serif; font-size: 22px; text-transform: uppercase; margin: 0 0 12px 0; color: var(--cheese); font-weight: 400; }
+	.cta-box p { font-size: 14px; margin: 0 0 20px 0; opacity: 0.9; }
+	
+	.contact-methods { display: flex; flex-direction: column; gap: 12px; }
+	.phone-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--ember); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 16px; font-weight: 700; padding: 14px; border-radius: 12px; text-decoration: none; transition: transform 0.2s, background 0.2s; }
+	.phone-btn:active { transform: scale(0.98); background: var(--ember-dim); }
+	
+	.email-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.1); color: var(--cream); font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; padding: 14px; border-radius: 12px; text-decoration: none; transition: background 0.2s; border: 1px solid rgba(255,255,255,0.2); }
+	.email-btn:active { background: rgba(255,255,255,0.2); }
 </style>
