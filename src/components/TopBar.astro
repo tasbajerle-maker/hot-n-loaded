@@ -8,6 +8,7 @@ const { cartCount = 0 } = Astro.props;
 <header class="top-bar">
 	<a href="/" class="brand-link" aria-label="Főoldal">
 		<div class="brand">
+			<img src="/images/brand/logo-mark.webp" alt="" class="brand-logo" width="28" height="33" />
 			NYALODA <span class="divider">|</span> <span class="accent">HOT</span>&nbsp;&amp; LOADED
 		</div>
 	</a>
@@ -63,6 +64,7 @@ const { cartCount = 0 } = Astro.props;
 	.brand-link:active { opacity: 0.7; }
 
 	.brand { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+	.brand-logo { height: 30px; width: auto; margin-right: 4px; }
 	.brand .accent { color: var(--ember); }
 	.divider { opacity: 0.4; font-family: 'IBM Plex Mono', monospace; font-weight: 300; margin: 0 2px; }
 	

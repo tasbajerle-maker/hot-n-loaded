@@ -13,10 +13,10 @@ const schemaOrg = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
   "name": "Nyaloda | Hot & Loaded",
-  "image": "https://nyaloda.com/nyaloda-logo.jpg",
-  "servesCuisine": ["Burgers", "Ice Cream", "Desserts"],
+  "image": "https://nyaloda.com/images/brand/logo-full.webp",
+  "servesCuisine": ["Burgers", "Ice Cream", "Desserts", "Hot Chocolate"],
   "priceRange": "$$",
-  "telephone": "+36300000000",
+  "telephone": "+36305620808",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Király u. 25.",
@@ -33,14 +33,14 @@ const schemaOrg = {
 	jsonLd={schemaOrg}
 >
 	<div class="app-wrapper">
-		<TopBar cartCount={2} />
+		<TopBar />
 
 		<main class="page">
 			<Hero />
 
 			<CtaDock 
 				title="Rendelj most" 
-				subtitle="Kiszállítás 30 percen belül 🚀" 
+				subtitle="Szállítás, elvitel, drive-in 🚗" 
 				actionText="Webapp" 
 				actionUrl="https://enfagyi-app-122a0.web.app" 
 			/>
@@ -56,9 +56,17 @@ const schemaOrg = {
 
 				<div class="rail-container">
 					<div class="rail" id="featured-rail" role="list">
+						<!-- ÚJ: FORRÓ CSOKI -->
+						<ProductCard 
+							isNew={true} badgeText="ÚJ!" category="Forró csoki" 
+							imageUrl="/images/menu/cs-bomba.webp" cutout={true} 
+							name="Forró csoki" price="1 650 Ft-tól" 
+							actionUrl="/forrocsoki" actionText="➔"
+						/>
+
 						<!-- MINIFÁNK AZ ÚJ KÉPPEL -->
 						<ProductCard 
-							isNew={true} badgeText="AUG. 30!" category="Édesség" 
+							category="Édesség" 
 							imageUrl="/Gemini_Generated_Image_vec7rzvec7rzvec7.jpg" 
 							name="Minifánk" price="700 Ft-tól" 
 							actionUrl="/fagyik?item=f-minifank" actionText="➔"
@@ -69,13 +77,6 @@ const schemaOrg = {
 							isPromo={true} badgeText="FONTOS!" category="Visszajelzés" emoji="💬" 
 							name="Kérdőív" price="Mondd el nekünk!" 
 							actionUrl="/kerdoiv" actionText="Kitöltöm"
-						/>
-						
-						<!-- 10% KUPON -->
-						<ProductCard 
-							isPromo={true} badgeText="PROMO" category="Kedvezmény" emoji="🔥" 
-							name="NYAR2026 Kupon" price="-10% a Webappban" 
-							actionUrl="https://enfagyi-app-122a0.web.app" actionText="Beváltom"
 						/>
 					</div>
 				</div>
@@ -88,6 +89,7 @@ const schemaOrg = {
 				<nav class="bento-grid" aria-label="Kategória választó">
 					<BentoTile href="/burgerek" emoji="🍔" label="Burgerek" subLabel="100% Marhahús" isLarge={true} theme="burger" />
 					<BentoTile href="/fagyik" emoji="🍦" label="Fagyik" subLabel="Kézműves" isLarge={true} theme="fagyi" />
+					<BentoTile href="/forrocsoki" emoji="☕" label="Forró csoki" subLabel="Callebaut belga csoki, 8 ízben" isLarge={true} theme="csoki" />
 					
 					<!-- B2B ÉS GÉPSZERVIZ BOXOK -->
 					<BentoTile href="/b2b" emoji="🚚" label="B2B Nagyker" />

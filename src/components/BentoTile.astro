@@ -5,12 +5,12 @@ export interface Props {
 	label: string;
 	subLabel?: string;
 	isLarge?: boolean;
-	theme?: 'default' | 'burger' | 'fagyi';
+	theme?: 'default' | 'burger' | 'fagyi' | 'csoki';
 }
 const { href, emoji, label, subLabel, isLarge = false, theme = 'default' } = Astro.props;
 ---
 
-<a href={href} class:list={['bento-tile', { 'bento-large': isLarge, 'burger-theme': theme === 'burger', 'fagyi-theme': theme === 'fagyi' }]} aria-label={`${label} kategória megtekintése`}>
+<a href={href} class:list={['bento-tile', { 'bento-large': isLarge, 'burger-theme': theme === 'burger', 'fagyi-theme': theme === 'fagyi', 'csoki-theme': theme === 'csoki' }]} aria-label={`${label} kategória megtekintése`}>
 	<div class="emoji" aria-hidden="true">{emoji}</div>
 	{isLarge ? (
 		<div class="label-wrap">
@@ -33,6 +33,7 @@ const { href, emoji, label, subLabel, isLarge = false, theme = 'default' } = Ast
 	
 	.bento-large { grid-column: span 2; flex-direction: row; gap: 20px; justify-content: flex-start; padding: 20px 24px; }
 	.burger-theme { background: linear-gradient(135deg, rgba(255, 90, 31, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 90, 31, 0.3); }
+	.csoki-theme { background: linear-gradient(135deg, rgba(242, 197, 143, 0.15), rgba(255,255,255,0.05)); border-color: rgba(242, 197, 143, 0.3); }
 	.fagyi-theme { background: linear-gradient(135deg, rgba(255, 201, 74, 0.15), rgba(255,255,255,0.05)); border-color: rgba(255, 201, 74, 0.3); }
 	
 	.bento-large .emoji { font-size: 44px; margin-bottom: 0; }

@@ -6,6 +6,8 @@ export interface Props {
 	category: string;
 	emoji?: string;
 	imageUrl?: string;
+	/** Átlátszó hátterű kivágott fotó: egészben, meleg háttér előtt jelenik meg */
+	cutout?: boolean;
 	name: string;
 	price: string;
 	actionUrl?: string;
@@ -19,6 +21,7 @@ const {
 	category,
 	emoji = "🍩",
 	imageUrl,
+	cutout = false,
 	name,
 	price,
 	actionUrl,
@@ -36,7 +39,7 @@ const {
 	<div class="cat">{category}</div>
 	
 	<!-- Itt a varázslat: Ha van kép, a 'full-bleed' osztály CSS-ből a kártya tetejére rántja! -->
-	<div class:list={['visual-container', { 'full-bleed': imageUrl }]}>
+	<div class:list={['visual-container', { 'full-bleed': imageUrl, 'cutout': cutout }]}>
 		{imageUrl ? (
 			<img src={imageUrl} alt={name} class="product-image" loading="lazy" />
 		) : (
@@ -96,6 +99,8 @@ const {
 	
 	.emoji { font-size: 42px; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.1)); transition: transform 0.3s; }
 	.product-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+	.cutout { background: radial-gradient(120% 120% at 50% 20%, #f7e3cf 0%, #c98a5a 100%); }
+	.cutout .product-image { object-fit: contain; padding: 8px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25)); }
 	
 	.product-card:hover .emoji, .product-card:hover .product-image { transform: translateY(-4px) scale(1.05); }
 	

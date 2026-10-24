@@ -9,50 +9,49 @@ const burgerData: MenuItem[] = [
     id: 'b-sajt', name: 'Sajtburger', category: 'Burgerek', price: 1800,
     description: 'Marhahús, sajt, hagyma, házi burger szósz, uborka.',
     nutrition: { calories: 510, protein: 28, carbs: 38, fat: 26 },
-    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
-  },
-  {
-    id: 'b-oklahoma', name: 'Oklahomai Burger', category: 'Burgerek', price: 1900,
-    description: 'Hagymával sült marhahús, uborka, cheddar.',
-    nutrition: { calories: 530, protein: 29, carbs: 39, fat: 28 },
-    allergens: ['Glutén', 'Tej', 'Mustár'], emoji: '🧅'
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔', imageUrl: '/images/menu/b-sajt.webp'
   },
   {
     id: 'b-tavaszi', name: 'Tavaszi Burger', category: 'Burgerek', price: 2000,
     description: 'Marhahús, jégsaláta, burger szósz, cheddar, paradicsom.',
     nutrition: { calories: 520, protein: 28, carbs: 40, fat: 26 },
-    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🥬'
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🥬', imageUrl: '/images/menu/b-tavaszi.webp'
   },
   {
     id: 'b-rio', name: 'Rio Burger', category: 'Burgerek', price: 2000,
     description: 'Marhahúspogácsa, sajt, jalapeno, pirított hagyma, házi burgerszósz.',
     nutrition: { calories: 580, protein: 31, carbs: 42, fat: 32 },
-    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🌶️'
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🌶️', imageUrl: '/images/menu/b-rio.webp'
   },
   {
     id: 'b-dupla', name: 'Dupla Burger', category: 'Burgerek', price: 2900,
     description: 'Dupla marhahús, dupla cheddar sajt, házi burgerszósz, paradicsom, jégsaláta.',
     nutrition: { calories: 820, protein: 52, carbs: 42, fat: 48 },
-    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔'
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍔', imageUrl: '/images/menu/b-dupla.webp'
+  },
+  {
+    id: 'b-tal', name: 'Burger Tál', category: 'Burgerek', price: 4300,
+    description: 'Dupla marhahús, dupla sajt, sültkrumpli, saláta, paradicsom, hagyma, bacon, pirított hagyma, házi burgerszósz.',
+    allergens: ['Glutén', 'Tej', 'Tojás', 'Mustár'], emoji: '🍟', imageUrl: '/images/menu/b-tal.webp'
   },
   {
     id: 't-sajt', name: 'Sajtos Toast', category: 'Burgerek', price: 700,
     description: 'Klasszikus toast, sok sajttal.',
     nutrition: { calories: 320, protein: 14, carbs: 30, fat: 16 },
-    allergens: ['Glutén', 'Tej'], emoji: '🥪'
+    allergens: ['Glutén', 'Tej'], emoji: '🥪', imageUrl: '/images/menu/t-sajt.webp'
   },
   {
     id: 't-bacon', name: 'Sajtos Baconös Toast', category: 'Burgerek', price: 950,
     description: 'Sajt és ropogós bacon egy finom toastban.',
     nutrition: { calories: 410, protein: 18, carbs: 30, fat: 24 },
-    allergens: ['Glutén', 'Tej'], emoji: '🥓'
+    allergens: ['Glutén', 'Tej'], emoji: '🥓', imageUrl: '/images/menu/t-bacon.webp'
   }
 ];
 ---
 
 <Layout title="Kézműves Burgereink | Fagyi és Burger Mennyország">
   <div class="app-wrapper fixed-app">
-    <TopBar cartCount={2} />
+    <TopBar />
 
     <main class="page fixed-page">
       <a href="/" class="floating-back" aria-label="Vissza a főoldalra">

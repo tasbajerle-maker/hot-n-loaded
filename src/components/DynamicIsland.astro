@@ -4,20 +4,90 @@ export interface Props {
 	actionUrl?: string;
 	actionText?: string;
 }
-// Itt írtam át a default időpontot 10-20-ra!
-const { statusText = "Nyitva · 10:00–20:00", actionUrl = "https://webappod.hu", actionText = "Rendelés" } = Astro.props;
+// A státusz élőben a webapp nyitvatartásából (Firestore settings/shop) frissül;
+// ez a szöveg csak addig látszik, amíg az adat megérkezik.
+const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfagyi-app-122a0.web.app", actionText = "Rendelés" } = Astro.props;
 ---
 
 <nav class="order-pill" aria-label="Gyors rendelési sáv">
 	<div class="left">
-		<span class="pulse-dot" aria-hidden="true"></span>
-		<span class="status-text">{statusText}</span>
+		<span class="pulse-dot" data-state="unknown" aria-hidden="true"></span>
+		<span class="status-text" role="status">{statusText}</span>
 	</div>
 	<a href={actionUrl} class="cta-btn small">
 		{actionText}
 		<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
 	</a>
 </nav>
+
+<script>
+	const SHOP_URL = 'https://firestore.googleapis.com/v1/projects/enfagyi-app-122a0/databases/(default)/documents/settings/shop';
+	const DAY = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+	type Hours = Record<string, { open: string; close: string }>;
+	let shop: { status: string; hours: Hours } | null = null;
+
+	// Budapesti nap és idő (ugyanúgy, mint a webappban)
+	function budapestNow() {
+		const p: Record<string, string> = {};
+		new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Budapest', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+			.formatToParts(new Date()).forEach((x) => { p[x.type] = x.value; });
+		return { day: DAY[p.weekday as keyof typeof DAY], time: `${String(parseInt(p.hour, 10) % 24).padStart(2, '0')}:${p.minute}` };
+	}
+
+	const isOpenDay = (h?: { open: string; close: string }) => !!h && !!h.open && !!h.close && h.open !== h.close;
+
+	function render() {
+		if (!shop) return;
+		const dot = document.querySelector<HTMLElement>('.order-pill .pulse-dot');
+		const text = document.querySelector<HTMLElement>('.order-pill .status-text');
+		if (!dot || !text) return;
+
+		const { day, time } = budapestNow();
+		const today = shop.hours[day];
+		let open = false;
+		let label: string;
+
+		if (shop.status === 'CLOSED') {
+			label = 'Most zárva';
+		} else if (!isOpenDay(today)) {
+			label = 'Ma zárva';
+		} else if (time < today.open) {
+			label = `Nyitunk ${today.open}-kor`;
+		} else if (time < today.close) {
+			open = true;
+			label = `Nyitva ${today.close}-ig`;
+		} else {
+			const tomorrow = shop.hours[(day + 1) % 7];
+			label = isOpenDay(tomorrow) ? `Zárva · holnap ${tomorrow.open}` : 'Zárva';
+		}
+		dot.dataset.state = open ? 'open' : 'closed';
+		text.textContent = label;
+	}
+
+	async function load() {
+		try {
+			const res = await fetch(SHOP_URL);
+			if (!res.ok) return;
+			const doc = await res.json();
+			const f = doc.fields || {};
+			const hours: Hours = {};
+			for (const [k, v] of Object.entries<any>(f.openingHours?.mapValue?.fields || {})) {
+				const d = v.mapValue?.fields || {};
+				hours[k] = { open: d.open?.stringValue || '', close: d.close?.stringValue || '' };
+			}
+			shop = { status: f.status?.stringValue || 'OPEN', hours };
+			render();
+		} catch {
+			// hálózati hiba: marad az alap szöveg
+		}
+	}
+
+	load();
+	setInterval(render, 60 * 1000);
+	setInterval(load, 5 * 60 * 1000);
+	document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') load(); });
+</script>
 
 <style>
 	.order-pill {
@@ -37,7 +107,9 @@ const { statusText = "Nyitva · 10:00–20:00", actionUrl = "https://webappod.hu
 	}
 	
 	.order-pill .left { display: flex; align-items: center; gap: 12px; color: var(--cream); }
-	.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #5fe17a; animation: pulse 2s infinite; }
+	.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,246,233,0.45); }
+	.pulse-dot[data-state="open"] { background: #5fe17a; animation: pulse 2s infinite; }
+	.pulse-dot[data-state="closed"] { background: #ef4444; }
 	.status-text { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 	
 	.cta-btn.small { 

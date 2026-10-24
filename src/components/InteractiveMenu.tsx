@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 
-export type Category = 'Burgerek' | 'Csirkék' | 'Fagyik';
+export type Category = 'Burgerek' | 'Csirkék' | 'Fagyik' | 'Forró csoki';
 
 export interface NutritionInfo {
   calories: number;
@@ -19,10 +19,12 @@ export interface MenuItem {
   priceNormal?: number; 
   priceLarge?: number; 
   description: string;
-  nutrition: NutritionInfo;
+  nutrition?: NutritionInfo;
   allergens: string[];
   emoji: string;
   imageUrl?: string;
+  badge?: string;
+  options?: { label: string; values: string[] };
 }
 
 export interface InteractiveMenuProps {
@@ -48,6 +50,15 @@ const getTheme = (category: Category) => {
         cardBg: 'rgba(255, 255, 255, 0.55)',
         btnBg: '#1c1410',
         btnText: '#ffffff',
+      };
+    case 'Forró csoki':
+      return {
+        bg: 'radial-gradient(150% 150% at 50% 0%, #c98a5a 0%, #4a2414 55%, #1c0f0a 100%)',
+        text: '#fff6e9',
+        accent: '#f2c58f',
+        cardBg: 'rgba(28, 15, 10, 0.5)',
+        btnBg: '#f2c58f',
+        btnText: '#1c0f0a',
       };
     case 'Csirkék':
       return {
@@ -166,7 +177,7 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
               
               <div className="im-card-header">
                 <span className="im-badge" style={{ backgroundColor: theme.accent, color: activeItem.category === 'Fagyik' ? '#fff' : '#1c1410' }}>
-                  {activeItem.category}
+                  {activeItem.badge || activeItem.category}
                 </span>
                 
                 {activeItem.priceNormal && activeItem.priceLarge ? (
@@ -189,6 +200,16 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
               
               <h2 className="im-title">{activeItem.name}</h2>
               <p className="im-desc">{activeItem.description}</p>
+              {activeItem.options && (
+                <div className="im-options">
+                  <span className="im-options-label">{activeItem.options.label}</span>
+                  <div className="im-chips">
+                    {activeItem.options.values.map((v) => (
+                      <span key={v} className="im-chip" style={{ borderColor: theme.accent }}>{v}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="im-accordion" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
                 <button
@@ -197,7 +218,7 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
                   onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                   aria-expanded={isAccordionOpen}
                 >
-                  <span className="im-acc-label">Kalória és Allergének</span>
+                  <span className="im-acc-label">{activeItem.nutrition ? 'Kalória és Allergének' : 'Allergének'}</span>
                   <motion.svg
                     animate={{ rotate: isAccordionOpen ? 180 : 0 }}
                     width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
@@ -215,12 +236,14 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
+                      {activeItem.nutrition && (
                       <div className="im-nutrition-grid">
                         <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Kcal</span><strong>{activeItem.nutrition.calories}</strong></div>
                         <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Fehérje</span><strong>{activeItem.nutrition.protein}g</strong></div>
                         <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Szénh.</span><strong>{activeItem.nutrition.carbs}g</strong></div>
                         <div className="im-nut-box" style={{ background: 'rgba(255,255,255,0.15)' }}><span>Zsír</span><strong>{activeItem.nutrition.fat}g</strong></div>
                       </div>
+                      )}
                       <div className="im-allergens">
                         <strong>Allergének:</strong> {activeItem.allergens.length > 0 ? activeItem.allergens.join(', ') : 'Mentes'}
                       </div>
@@ -262,7 +285,7 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
                 className={`im-rail-item ${isActive ? 'active' : ''}`}
                 onClick={() => handleSelect(index)}
               >
-                <div className="im-rail-icon">{item.emoji}</div>
+                <div className="im-rail-icon">{item.imageUrl ? <img src={item.imageUrl} alt="" className="im-rail-photo" loading="lazy" /> : item.emoji}</div>
                 <div className="im-rail-name">{item.name}</div>
                 
                 {isActive && (
@@ -318,5 +341,10 @@ const styles = `
   .im-rail-item { scroll-snap-align: center; flex: 0 0 100px; position: relative; background: #fff; border: 2px solid transparent; border-radius: 16px; padding: 12px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); outline: none; -webkit-tap-highlight-color: transparent; }
   .im-rail-icon { font-size: 28px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); position: relative; z-index: 2; }
   .im-rail-name { font-family: 'Anton', sans-serif; font-size: 11px; text-transform: uppercase; text-align: center; color: #1c1410; line-height: 1.1; position: relative; z-index: 2; font-weight: 400; }
+  .im-rail-photo { width: 56px; height: 40px; object-fit: contain; display: block; }
+  .im-options { margin: -4px 0 12px; }
+  .im-options-label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
+  .im-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .im-chip { font-size: 11px; padding: 3px 8px; border: 1px solid; border-radius: 999px; background: rgba(255,255,255,0.08); }
   .im-rail-indicator { position: absolute; inset: -2px; border: 2px solid; border-radius: 18px; pointer-events: none; z-index: 1; }
 `;

@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+const flavors = ["A Forró Csoki","Étcsoki","Belga tejcsoki","Ruby és málna","100% szicíliai pisztácia","Sós karamell","Mogyorós","Fehércsoki"];
+
+const csokiData: MenuItem[] = [
+  {
+    id: 'cs-alap', name: 'Alap Forró Csoki', category: 'Forró csoki', price: 1650,
+    description: '2 dl, a választott ízben. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
+    options: { label: 'Válassz ízt', values: flavors },
+    allergens: ['Tej', 'Szója'], emoji: '☕', imageUrl: '/images/menu/cs-alap.webp'
+  },
+  {
+    id: 'cs-habos', name: 'Habos és Ropogós', category: 'Forró csoki', price: 2000,
+    description: 'Tejszínhabkorona és ropogós szórás. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
+    options: { label: 'Válassz ízt', values: flavors },
+    allergens: ['Tej', 'Szója'], emoji: '☕', imageUrl: '/images/menu/cs-habos.webp'
+  },
+  {
+    id: 'cs-bomba', name: 'A Fánkos Bomba', category: 'Forró csoki', price: 2400, badge: 'Kedvenc',
+    description: 'Hab, öntet és 3 frissen sült, meleg mini fánk. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
+    options: { label: 'Válassz ízt', values: flavors },
+    allergens: ['Tej', 'Szója', 'Glutén', 'Tojás'], emoji: '🍩', imageUrl: '/images/menu/cs-bomba.webp'
+  }
+];
+---
+
+<Layout title="Forró csoki | Nyaloda – Hot & Loaded" description="Callebaut belga csokiból készült forró csokik 8 ízben – habbal, ropogós szórással vagy meleg mini fánkkal.">
+  <div class="app-wrapper fixed-app">
+    <TopBar />
+
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={csokiData} />
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  :global(html), :global(body) {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .fixed-app {
+    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .fixed-app { height: 92vh; }
+  }
+
+  .fixed-page {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* Apple iPhone "Safe Area" támogatása alul */
+    padding-bottom: env(safe-area-inset-bottom, 0px); 
+    overflow: hidden; 
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px; 
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active { 
+    transform: scale(0.9); 
+    background: rgba(255, 255, 255, 0.85); 
+  }
+
+  .menu-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
+    padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow: hidden; 
+  }
+</style>
