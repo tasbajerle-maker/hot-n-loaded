@@ -6,23 +6,29 @@ import type { MenuItem } from '../components/InteractiveMenu';
 
 const flavors = ["A Forró Csoki","Étcsoki","Belga tejcsoki","Ruby és málna","100% szicíliai pisztácia","Sós karamell","Mogyorós","Fehércsoki"];
 
+// A webappban is le van tiltva: a forró csoki házhozszállítással nem rendelhető.
+const noDeliveryNote = '🚫 Házhozszállítással nem rendelhető – pultnál, drive-innel vagy helyben kérheted.';
+
 const csokiData: MenuItem[] = [
   {
     id: 'cs-alap', name: 'Alap Forró Csoki', category: 'Forró csoki', price: 1650,
     description: '2 dl, a választott ízben. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
     options: { label: 'Válassz ízt', values: flavors },
+    note: noDeliveryNote,
     allergens: ['Tej', 'Szója'], emoji: '☕', imageUrl: '/images/menu/cs-alap.webp'
   },
   {
     id: 'cs-habos', name: 'Habos és Ropogós', category: 'Forró csoki', price: 2000,
     description: 'Tejszínhabkorona és ropogós szórás. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
     options: { label: 'Válassz ízt', values: flavors },
+    note: noDeliveryNote,
     allergens: ['Tej', 'Szója'], emoji: '☕', imageUrl: '/images/menu/cs-habos.webp'
   },
   {
     id: 'cs-bomba', name: 'A Fánkos Bomba', category: 'Forró csoki', price: 2400, badge: 'Kedvenc',
     description: 'Hab, öntet és 3 frissen sült, meleg mini fánk. Minden pohárba 40 g Callebaut belga csokit olvasztunk, krémesen sűrű. Bármelyik íz kérhető egy shot friss eszpresszóval (+500 Ft).',
     options: { label: 'Válassz ízt', values: flavors },
+    note: noDeliveryNote,
     allergens: ['Tej', 'Szója', 'Glutén', 'Tojás'], emoji: '🍩', imageUrl: '/images/menu/cs-bomba.webp'
   }
 ];

@@ -24,6 +24,8 @@ export interface MenuItem {
   emoji: string;
   imageUrl?: string;
   badge?: string;
+  /** Kiemelt figyelmeztetés a leírás alatt (pl. házhoz nem kérhető) */
+  note?: string;
   options?: { label: string; values: string[] };
 }
 
@@ -200,6 +202,9 @@ export default function InteractiveMenu({ items = defaultItems }: InteractiveMen
               
               <h2 className="im-title">{activeItem.name}</h2>
               <p className="im-desc">{activeItem.description}</p>
+              {activeItem.note && (
+                <p className="im-note" style={{ borderColor: theme.accent }}>{activeItem.note}</p>
+              )}
               {activeItem.options && (
                 <div className="im-options">
                   <span className="im-options-label">{activeItem.options.label}</span>
@@ -342,6 +347,7 @@ const styles = `
   .im-rail-icon { font-size: 28px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); position: relative; z-index: 2; }
   .im-rail-name { font-family: 'Anton', sans-serif; font-size: 11px; text-transform: uppercase; text-align: center; color: #1c1410; line-height: 1.1; position: relative; z-index: 2; font-weight: 400; }
   .im-rail-photo { width: 56px; height: 40px; object-fit: contain; display: block; }
+  .im-note { font-size: 12px; font-weight: 600; line-height: 1.35; margin: -4px 0 12px; padding: 8px 10px; border: 1px solid; border-radius: 10px; background: rgba(255,255,255,0.1); }
   .im-options { margin: -4px 0 12px; }
   .im-options-label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.8; margin-bottom: 6px; }
   .im-chips { display: flex; flex-wrap: wrap; gap: 5px; }
