@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
 import InteractiveMenu from '../components/InteractiveMenu';
+import LocalGuide from '../components/LocalGuide.astro';
 import type { MenuItem } from '../components/InteractiveMenu';
 
 const flavors = ["A Forró Csoki","Étcsoki","Belga tejcsoki","Ruby és málna","100% szicíliai pisztácia","Sós karamell","Mogyorós","Fehércsoki"];
@@ -32,9 +33,35 @@ const csokiData: MenuItem[] = [
     allergens: ['Tej', 'Szója', 'Glutén', 'Tojás'], emoji: '🍩', imageUrl: '/images/menu/cs-bomba.webp'
   }
 ];
+
+const guide = {
+  heading: 'Forró csoki Újpesten – Callebaut belga csokiból, 8 ízben',
+  intro: [
+    'Az újpesti Király utcai Nyalodában minden pohár forró csokihoz 40 g Callebaut belga csokoládét olvasztunk fel, így krémesen sűrű, nem porból kevert ital kerül a kezedbe. Egy adag 2 dl.',
+    'Nyolc ízből választhatsz: a klasszikus Forró Csoki, étcsoki, belga tejcsoki, ruby és málna, 100% szicíliai pisztácia, sós karamell, mogyorós és fehércsoki. Bármelyik kérhető egy shot friss eszpresszóval is (+500 Ft).',
+    'Ha valami különlegeset keresel, a Fánkos Bomba tetejére hab, öntet és három frissen sült, meleg mini fánk kerül.',
+  ],
+  sectionName: 'Forró csoki',
+  // Az árlistában csak a változat rövid leírása (az első mondat); a közös szöveg fent van.
+  items: csokiData.map((i) => ({ name: i.name, price: i.price ?? 0, description: `${i.description.split('. ')[0].replace(/\.$/, '')}.` })),
+  howToOrder: [
+    'Helyben, a Király utca 25-ben, a pultnál.',
+    'Elvitelre: rendeld meg előre a webappban, és vedd át a pultnál.',
+    'Drive-in: rendelj a webappban, és kivisszük a kocsihoz, ki sem kell szállnod.',
+    'Házhozszállítással a forró csoki nem kérhető.',
+  ],
+  faq: [
+    { q: 'Hol lehet jó forró csokit inni Újpesten?', a: 'A Nyaloda & Hot & Loaded üzletében, 1042 Budapest, Király utca 25. Callebaut belga csokoládéból készítjük, 8 ízben.' },
+    { q: 'Mennyibe kerül a forró csoki?', a: 'Az Alap forró csoki 1650 Ft, a Habos és ropogós 2000 Ft, a Fánkos Bomba 2400 Ft. Eszpresszó shottal +500 Ft.' },
+    { q: 'Milyen ízekben kapható?', a: 'A Forró Csoki, étcsoki, belga tejcsoki, ruby és málna, 100% szicíliai pisztácia, sós karamell, mogyorós és fehércsoki.' },
+    { q: 'Rendelhető házhozszállítással?', a: 'Nem. A forró csokit helyben, elvitelre vagy drive-innel kérheted; elvitelre és drive-inre a webappban előre is megrendelheted.' },
+    { q: 'Milyen allergéneket tartalmaz?', a: 'Tejet és szóját. A Fánkos Bomba glutént és tojást is tartalmaz a mini fánkok miatt.' },
+    { q: 'Hová navigáljak autóval?', a: 'A navigációba a Virág utca 41-et írd be, mert a Király utca 25-öt a térképek pár száz méterrel odébb jelölik.' },
+  ],
+};
 ---
 
-<Layout title="Forró csoki | Nyaloda – Hot & Loaded" description="Callebaut belga csokiból készült forró csokik 8 ízben – habbal, ropogós szórással vagy meleg mini fánkkal.">
+<Layout title="Forró csoki Újpesten – 8 íz Callebaut belga csokiból | Nyaloda" description="Forró csoki Újpesten, a Király utca 25-ben: 40 g Callebaut belga csokoládé minden pohárban, 8 íz, habbal, ropogós szórással vagy meleg mini fánkkal. Helyben, elvitelre és drive-innel." ogImage="/images/menu/cs-bomba-og.jpg">
   <div class="app-wrapper fixed-app">
     <TopBar />
 
@@ -48,35 +75,25 @@ const csokiData: MenuItem[] = [
       <section class="menu-section">
         <InteractiveMenu client:load items={csokiData} />
       </section>
+
+      <LocalGuide {...guide} pageUrl="https://nyaloda.com/forrocsoki/" />
     </main>
   </div>
 </Layout>
 
 <style>
-  :global(html), :global(body) {
-    overflow: hidden;
-    height: 100%;
-  }
-
+  /* A menü egy képernyőnyi magas (a felső sáv alatt), alatta görgetve jön a leírás. */
   .fixed-app {
-    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
-    height: 100dvh; 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-  }
-  @media (min-width: 540px) {
-    .fixed-app { height: 92vh; }
   }
 
   .fixed-page {
     position: relative;
-    flex: 1;
     display: flex;
     flex-direction: column;
     /* Apple iPhone "Safe Area" támogatása alul */
-    padding-bottom: env(safe-area-inset-bottom, 0px); 
-    overflow: hidden; 
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .floating-back {
@@ -109,11 +126,14 @@ const csokiData: MenuItem[] = [
   }
 
   .menu-section { 
-    flex: 1; 
+    height: calc(100dvh - 57px);
     display: flex; 
     flex-direction: column; 
     /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
     padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
     overflow: hidden; 
+  }
+  @media (min-width: 540px) {
+    .menu-section { height: calc(92vh - 57px); }
   }
 </style>

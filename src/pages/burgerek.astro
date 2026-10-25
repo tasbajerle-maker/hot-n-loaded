@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
 import InteractiveMenu from '../components/InteractiveMenu';
+import LocalGuide from '../components/LocalGuide.astro';
 import type { MenuItem } from '../components/InteractiveMenu';
 
 const burgerData: MenuItem[] = [
@@ -47,9 +48,32 @@ const burgerData: MenuItem[] = [
     allergens: ['Glutén', 'Tej'], emoji: '🥓', imageUrl: '/images/menu/t-bacon.webp'
   }
 ];
+
+const guide = {
+  heading: 'Smash burger Újpesten – friss marhahúsból',
+  intro: [
+    'A Hot & Loaded az újpesti Király utcában süti a smash burgereit: friss marhahúsból formázott pogácsa, forró lapon rányomva, hogy kívül ropogós, belül szaftos maradjon.',
+    'A klasszikus sajtburgertől a dupla húsos, dupla cheddaros Dupla Burgerig és a sültkrumplis Burger Tálig mindent megtalálsz, mellé toastot, köreteket és mártogatósokat.',
+  ],
+  sectionName: 'Burgerek és toastok',
+  items: burgerData.map((i) => ({ name: i.name, price: i.price ?? 0, description: i.description })),
+  howToOrder: [
+    'Helyben, a Király utca 25-ben – benti asztalok és terasz is van.',
+    'Elvitelre: rendeld meg előre a webappban, és vedd át a pultnál.',
+    'Drive-in: rendelj a webappban, és kivisszük a kocsihoz.',
+    'Házhozszállítással: a webappban vagy a foodorán.',
+  ],
+  faq: [
+    { q: 'Hol van jó smash burger Újpesten?', a: 'A Hot & Loaded üzletében, 1042 Budapest, Király utca 25. Friss marhahúsból készítjük, helyben, elvitelre, drive-innel és házhozszállítással is.' },
+    { q: 'Mennyibe kerül egy burger?', a: 'A Sajtburger 1800 Ft, a Tavaszi és a Rio Burger 2000 Ft, a Dupla Burger 2900 Ft, a Burger Tál 4300 Ft.' },
+    { q: 'Rendelhetek házhozszállítással?', a: 'Igen, a webappban és a foodorán is.' },
+    { q: 'Van drive-in?', a: 'Igen: rendelj a webappban drive-in átvétellel, és kivisszük a kocsihoz.' },
+    { q: 'Hová navigáljak autóval?', a: 'A navigációba a Virág utca 41-et írd be, mert a Király utca 25-öt a térképek pár száz méterrel odébb jelölik.' },
+  ],
+};
 ---
 
-<Layout title="Kézműves Burgereink | Fagyi és Burger Mennyország">
+<Layout title="Smash burger Újpesten – friss marhahúsból | Hot & Loaded" description="Smash burgerek friss marhahúsból Újpesten, a Király utca 25-ben: Sajtburger, Rio, Dupla Burger, Burger Tál. Helyben, elvitelre, drive-innel és házhozszállítással." ogImage="/images/menu/b-dupla-og.jpg">
   <div class="app-wrapper fixed-app">
     <TopBar />
 
@@ -63,35 +87,25 @@ const burgerData: MenuItem[] = [
       <section class="menu-section">
         <InteractiveMenu client:load items={burgerData} />
       </section>
+
+      <LocalGuide {...guide} pageUrl="https://nyaloda.com/burgerek/" />
     </main>
   </div>
 </Layout>
 
 <style>
-  :global(html), :global(body) {
-    overflow: hidden;
-    height: 100%;
-  }
-
+  /* A menü egy képernyőnyi magas (a felső sáv alatt), alatta görgetve jön a leírás. */
   .fixed-app {
-    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
-    height: 100dvh; 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-  }
-  @media (min-width: 540px) {
-    .fixed-app { height: 92vh; }
   }
 
   .fixed-page {
     position: relative;
-    flex: 1;
     display: flex;
     flex-direction: column;
     /* Apple iPhone "Safe Area" támogatása alul */
-    padding-bottom: env(safe-area-inset-bottom, 0px); 
-    overflow: hidden; 
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .floating-back {
@@ -124,11 +138,14 @@ const burgerData: MenuItem[] = [
   }
 
   .menu-section { 
-    flex: 1; 
+    height: calc(100dvh - 57px);
     display: flex; 
     flex-direction: column; 
     /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
     padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
     overflow: hidden; 
+  }
+  @media (min-width: 540px) {
+    .menu-section { height: calc(92vh - 57px); }
   }
 </style>

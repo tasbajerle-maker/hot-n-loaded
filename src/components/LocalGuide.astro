@@ -1,0 +1,117 @@
+---
+// Keresőknek (és embereknek) szóló tartalom egy termékkategória oldalára:
+// főcím, rövid leírás, árak, hol/hogyan, GYIK + strukturált adat (Menu, FAQPage).
+// A menü (InteractiveMenu) alatt jelenik meg, görgetéssel érhető el.
+
+import { STORE } from '../data/store';
+
+export interface GuideItem {
+	name: string;
+	price: number;
+	description: string;
+}
+
+export interface Props {
+	heading: string;
+	intro: string[];
+	sectionName: string;
+	items: GuideItem[];
+	howToOrder: string[];
+	faq: { q: string; a: string }[];
+	pageUrl: string;
+}
+
+const { heading, intro, sectionName, items, howToOrder, faq, pageUrl } = Astro.props;
+
+const formatPrice = (p: number) => `${new Intl.NumberFormat('hu-HU').format(p)} Ft`;
+
+const jsonLd = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Menu',
+		'@id': `${pageUrl}#menu`,
+		name: `${sectionName} – ${STORE.name}`,
+		url: pageUrl,
+		inLanguage: 'hu',
+		hasMenuSection: {
+			'@type': 'MenuSection',
+			name: sectionName,
+			hasMenuItem: items.map((item) => ({
+				'@type': 'MenuItem',
+				name: item.name,
+				description: item.description,
+				offers: { '@type': 'Offer', price: item.price, priceCurrency: 'HUF' },
+			})),
+		},
+		provider: { '@id': STORE.id },
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: faq.map((f) => ({
+			'@type': 'Question',
+			name: f.q,
+			acceptedAnswer: { '@type': 'Answer', text: f.a },
+		})),
+	},
+];
+---
+
+<article class="guide" aria-labelledby="guide-heading">
+	<h1 id="guide-heading">{heading}</h1>
+	{intro.map((p) => <p>{p}</p>)}
+
+	<h2>{sectionName} – árak</h2>
+	<ul class="price-list">
+		{items.map((item) => (
+			<li>
+				<div class="row"><strong>{item.name}</strong><span>{formatPrice(item.price)}</span></div>
+				<p>{item.description}</p>
+			</li>
+		))}
+	</ul>
+
+	<h2>Hol találsz minket?</h2>
+	<div class="where">
+		<p><strong>{STORE.name}</strong><br />{STORE.addressLine}</p>
+		<p>🚗 Autóval a navigációba ezt írd be: <strong>{STORE.navigationAddress}</strong> – különben pár száz méterrel odébb visz.</p>
+		<p>📞 <a href={`tel:${STORE.phone}`}>{STORE.phoneDisplay}</a> · <a href="/uzletek/kiraly-utca/">Nyitvatartás és útvonal</a></p>
+	</div>
+
+	<h2>Hogyan rendelhetsz?</h2>
+	<ul class="how">
+		{howToOrder.map((line) => <li>{line}</li>)}
+	</ul>
+
+	<h2>Gyakori kérdések</h2>
+	<div class="faq">
+		{faq.map((f) => (
+			<details>
+				<summary>{f.q}</summary>
+				<p>{f.a}</p>
+			</details>
+		))}
+	</div>
+
+	<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</article>
+
+<style>
+	.guide { background: var(--cream-2); border-radius: 24px; padding: 28px 20px; margin: 16px 8px 120px; color: var(--ink); }
+	.guide h1 { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; font-size: 24px; line-height: 1.15; margin: 0 0 14px; color: var(--char-900); }
+	.guide h2 { font-family: 'Anton', sans-serif; font-weight: 400; text-transform: uppercase; font-size: 17px; margin: 26px 0 10px; color: var(--char-900); }
+	.guide p { font-size: 14px; line-height: 1.6; margin: 0 0 10px; }
+	.price-list, .how { list-style: none; padding: 0; margin: 0; }
+	.price-list li { background: #fff; border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; }
+	.price-list .row { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+	.price-list .row span { font-family: 'IBM Plex Mono', monospace; font-weight: 700; white-space: nowrap; }
+	.price-list p { font-size: 13px; opacity: 0.8; margin: 4px 0 0; }
+	.where { background: #fff; border-radius: 14px; padding: 14px; }
+	.where p:last-child { margin-bottom: 0; }
+	.where a { color: var(--ember-dim); font-weight: 700; }
+	.how li { font-size: 14px; line-height: 1.5; padding: 6px 0 6px 22px; position: relative; }
+	.how li::before { content: '✓'; position: absolute; left: 0; color: var(--ember-dim); font-weight: 700; }
+	.faq details { background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+	.faq summary { font-weight: 700; font-size: 14px; cursor: pointer; }
+	.faq details p { margin: 8px 0 0; font-size: 13px; }
+</style>

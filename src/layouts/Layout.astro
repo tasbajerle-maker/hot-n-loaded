@@ -6,13 +6,15 @@ export interface Props {
 	description?: string;
 	noindex?: boolean;
 	jsonLd?: Record<string, any>;
+	ogImage?: string;
 }
 
 const { 
 	title, 
 	description = "A legjobb kézműves fagyik és burgerek Újpesten és Káposztásmegyeren.", 
 	noindex = false,
-	jsonLd
+	jsonLd,
+	ogImage = '/images/brand/og-default.jpg'
 } = Astro.props;
 ---
 
@@ -28,6 +30,7 @@ const {
 			description={description} 
 			noindex={noindex} 
 			jsonLd={jsonLd} 
+			ogImage={ogImage}
 		/>
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="apple-touch-icon" href="/images/brand/apple-touch-icon.png" />
