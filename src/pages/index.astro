@@ -56,6 +56,14 @@ const schemaOrg = {
 
 				<div class="rail-container">
 					<div class="rail" id="featured-rail" role="list">
+						<!-- ÚJ: CSIRKECSÍK -->
+						<ProductCard
+							isNew={true} badgeText="ÚJ!" category="Csirkék"
+							imageUrl="/images/menu/csirkecsik-menu.webp" cutout={true}
+							name="Csirkecsík" price="1 290 Ft-tól"
+							actionUrl="/csirkek" actionText="➔"
+						/>
+
 						<!-- ÚJ: FORRÓ CSOKI -->
 						<ProductCard 
 							isNew={true} badgeText="ÚJ!" category="Forró csoki" 
@@ -82,12 +90,35 @@ const schemaOrg = {
 				</div>
 			</section>
 
+			<section class="section news-section" aria-labelledby="news-heading">
+				<header class="section-head">
+					<h2 id="news-heading">Újdonságok</h2>
+				</header>
+				<div class="news-list">
+					<a href="https://enfagyi-app-122a0.web.app" class="news-card">
+						<span class="news-emoji" aria-hidden="true">🚗</span>
+						<div>
+							<h3>Drive-in</h3>
+							<p>Kihozzuk a kocsihoz, ki sem kell szállnod. Rendelj a webappban, és állj be a bolt melletti két kijelölt parkoló egyikébe.</p>
+						</div>
+					</a>
+					<div class="news-card">
+						<span class="news-emoji" aria-hidden="true">📱</span>
+						<div>
+							<h3>Asztali QR-rendelés</h3>
+							<p>Olvasd be az asztalodon lévő QR-kódot, és bejelentkezés nélkül rendelhetsz.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
 			<section class="section bento-section" aria-labelledby="categories-heading">
 				<header class="section-head">
 					<h2 id="categories-heading" class="light">Kategóriák</h2>
 				</header>
 				<nav class="bento-grid" aria-label="Kategória választó">
 					<BentoTile href="/burgerek" emoji="🍔" label="Burgerek" subLabel="100% Marhahús" isLarge={true} theme="burger" />
+					<BentoTile href="/csirkek" emoji="🍗" label="Csirkék" subLabel="Új · csirkecsík adagban és menüben" isLarge={true} theme="burger" />
 					<BentoTile href="/fagyik" emoji="🍦" label="Fagyik" subLabel="Kézműves" isLarge={true} theme="fagyi" />
 					<BentoTile href="/forrocsoki" emoji="☕" label="Forró csoki" subLabel="8 íz · házhoz nem kérhető" isLarge={true} theme="csoki" />
 					
@@ -96,7 +127,6 @@ const schemaOrg = {
 					<BentoTile href="/services" emoji="🔧" label="Gépszerviz" />
 
 					<!-- EZEKET KIKOMMENTELTÜK, AMÍG NINCSENEK KÉSZ AZ OLDALAK -->
-					<!-- <BentoTile href="/csirkek" emoji="🍗" label="Csirkék" /> -->
 					<!-- <BentoTile href="/menuk" emoji="🍟" label="Menük" /> -->
 					<!-- <BentoTile href="/italok" emoji="🥤" label="Italok" /> -->
 					<!-- <BentoTile href="/koretek" emoji="🥗" label="Köretek" /> -->
@@ -167,6 +197,13 @@ const schemaOrg = {
 	.rail-container::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, rgba(244,239,233,0), var(--paper)); pointer-events: none; z-index: 10; }
 	.rail { display: flex; gap: 14px; overflow-x: auto; padding: 4px 40px 24px 4px; scroll-snap-type: x mandatory; scrollbar-width: none; }
 	.rail::-webkit-scrollbar { display: none; }
+
+	.news-section { padding-top: 0; }
+	.news-list { display: flex; flex-direction: column; gap: 10px; }
+	.news-card { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 18px; padding: 14px 16px; text-decoration: none; color: var(--ink); box-shadow: 0 6px 16px rgba(0,0,0,0.03); }
+	.news-emoji { font-size: 30px; line-height: 1; }
+	.news-card h3 { font-family: 'Anton', sans-serif; font-size: 16px; font-weight: 400; text-transform: uppercase; color: var(--char-900); margin: 0 0 3px; }
+	.news-card p { font-size: 13px; line-height: 1.4; margin: 0; }
 
 	.bento-section { background: var(--char-900); color: var(--cream); border-radius: 32px; padding: 24px 16px 32px; margin: 0 8px; }
 	.bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }

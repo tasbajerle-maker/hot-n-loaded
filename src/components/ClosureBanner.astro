@@ -1,0 +1,35 @@
+---
+import { CLOSURE } from '../data/closure';
+---
+
+<div id="closure-banner" class="closure-banner" role="status" hidden>
+	<span class="closure-icon" aria-hidden="true">🕯️</span>
+	<p>
+		<strong>{CLOSURE.title}</strong>
+		<span>{CLOSURE.subtitle}</span>
+	</p>
+</div>
+
+<script>
+	import { isClosedNow } from '../data/closure';
+
+	// Alapból rejtett: csak a zárás idején látszik, utána magától eltűnik.
+	const banner = document.getElementById('closure-banner');
+	const update = () => { if (banner) banner.hidden = !isClosedNow(); };
+
+	update();
+	setInterval(update, 60 * 1000);
+</script>
+
+<style>
+	.closure-banner {
+		display: flex; align-items: center; gap: 10px;
+		padding: 10px 16px; background: var(--cheese); color: var(--char-900);
+		box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+	}
+	.closure-banner[hidden] { display: none; }
+	.closure-icon { font-size: 22px; line-height: 1; }
+	.closure-banner p { margin: 0; line-height: 1.25; }
+	.closure-banner strong { display: block; font-family: 'Anton', sans-serif; font-size: 16px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; }
+	.closure-banner span:not(.closure-icon) { display: block; font-size: 13px; font-weight: 600; margin-top: 2px; }
+</style>

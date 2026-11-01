@@ -21,6 +21,8 @@ const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfa
 </nav>
 
 <script>
+	import { isClosedNow } from '../data/closure';
+
 	const SHOP_URL = 'https://firestore.googleapis.com/v1/projects/enfagyi-app-122a0/databases/(default)/documents/settings/shop';
 	const DAY = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 
@@ -38,10 +40,17 @@ const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfa
 	const isOpenDay = (h?: { open: string; close: string }) => !!h && !!h.open && !!h.close && h.open !== h.close;
 
 	function render() {
-		if (!shop) return;
 		const dot = document.querySelector<HTMLElement>('.order-pill .pulse-dot');
 		const text = document.querySelector<HTMLElement>('.order-pill .status-text');
 		if (!dot || !text) return;
+
+		// A különleges zárás erősebb a szokásos nyitvatartásnál.
+		if (isClosedNow()) {
+			dot.dataset.state = 'closed';
+			text.textContent = 'Ma zárva';
+			return;
+		}
+		if (!shop) return;
 
 		const { day, time } = budapestNow();
 		const today = shop.hours[day];
@@ -83,6 +92,7 @@ const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfa
 		}
 	}
 
+	render();
 	load();
 	setInterval(render, 60 * 1000);
 	setInterval(load, 5 * 60 * 1000);

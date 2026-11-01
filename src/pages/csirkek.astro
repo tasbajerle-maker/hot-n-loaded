@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopBar from '../components/TopBar.astro';
+import InteractiveMenu from '../components/InteractiveMenu';
+import LocalGuide from '../components/LocalGuide.astro';
+import type { MenuItem } from '../components/InteractiveMenu';
+
+// Ugyanaz a jelzés, mint a webappban: a csík és a krumpli közös olajban sül.
+const oilNote = 'A többi termékkel közös olajban sül, ezért nyomokban glutént, tejet és tojást tartalmazhat.';
+
+const portionAllergens = ['Glutén'];
+const menuAllergens = ['Glutén', 'Tojás', 'Mustár', 'Kén-dioxid'];
+const portionImage = '/images/menu/csirkecsik-adag.webp';
+const menuImage = '/images/menu/csirkecsik-menu.webp';
+
+const csirkeData: MenuItem[] = [
+  {
+    id: 'ck-menu-kis', name: 'Kis csirkecsík menü', category: 'Csirkék', price: 1790,
+    description: '3 db panírozott csirkemell csík, 10 dkg sültkrumpli, H&L szósz és kovászos uborka.',
+    note: oilNote, allergens: menuAllergens, emoji: '🍗', imageUrl: menuImage
+  },
+  {
+    id: 'ck-menu-kozepes', name: 'Közepes csirkecsík menü', category: 'Csirkék', price: 2890,
+    description: '6 db panírozott csirkemell csík, 20 dkg sültkrumpli, H&L szósz és kovászos uborka.',
+    note: oilNote, allergens: menuAllergens, emoji: '🍗', imageUrl: menuImage
+  },
+  {
+    id: 'ck-menu-nagy', name: 'Nagy csirkecsík menü', category: 'Csirkék', price: 3790,
+    description: '9 db panírozott csirkemell csík, 30 dkg sültkrumpli, H&L szósz és kovászos uborka.',
+    note: oilNote, allergens: menuAllergens, emoji: '🍗', imageUrl: menuImage
+  },
+  {
+    id: 'ck-adag-kis', name: 'Csirkecsík – kis adag', category: 'Csirkék', price: 1290,
+    description: '3 db panírozott csirkemell csík.',
+    note: oilNote, allergens: portionAllergens, emoji: '🍗', imageUrl: portionImage
+  },
+  {
+    id: 'ck-adag-kozepes', name: 'Csirkecsík – közepes adag', category: 'Csirkék', price: 1990,
+    description: '6 db panírozott csirkemell csík.',
+    note: oilNote, allergens: portionAllergens, emoji: '🍗', imageUrl: portionImage
+  },
+  {
+    id: 'ck-adag-nagy', name: 'Csirkecsík – nagy adag', category: 'Csirkék', price: 2690,
+    description: '9 db panírozott csirkemell csík.',
+    note: oilNote, allergens: portionAllergens, emoji: '🍗', imageUrl: portionImage
+  }
+];
+
+const guide = {
+  heading: 'Csirkecsík Újpesten – adagban és menüben',
+  intro: [
+    'A Hot & Loaded kínálatában már panírozott csirkemell csík is van: az újpesti Király utcában kis, közepes és nagy adagban kérheted, 3, 6 vagy 9 darabbal.',
+    'A menükben a csík mellé sültkrumpli, saját készítésű H&L szósz és kovászos uborka jár.',
+  ],
+  sectionName: 'Csirkecsík',
+  items: csirkeData.map((i) => ({ name: i.name, price: i.price ?? 0, description: i.description })),
+  howToOrder: [
+    'Helyben, a Király utca 25-ben.',
+    'Elvitelre: rendeld meg előre a webappban, és vedd át a pultnál.',
+    'Drive-in: rendelj a webappban, és kivisszük a kocsihoz, ki sem kell szállnod.',
+    'Házhozszállítással: a webappban.',
+  ],
+  faq: [
+    { q: 'Mennyibe kerül a csirkecsík?', a: 'Kis adag (3 db) 1290 Ft, közepes adag (6 db) 1990 Ft, nagy adag (9 db) 2690 Ft. A menük: kis 1790 Ft, közepes 2890 Ft, nagy 3790 Ft.' },
+    { q: 'Mi van a menüben?', a: 'Csirkecsík, sültkrumpli, H&L szósz és kovászos uborka. Kis menü: 3 db és 10 dkg krumpli, közepes: 6 db és 20 dkg, nagy: 9 db és 30 dkg.' },
+    { q: 'Milyen allergéneket tartalmaz?', a: `Adag: glutén. Menü: glutén, tojás, mustár, kén-dioxid. ${oilNote}` },
+    { q: 'Hová navigáljak autóval?', a: 'A navigációba a Virág utca 41-et írd be, mert a Király utca 25-öt a térképek pár száz méterrel odébb jelölik.' },
+  ],
+};
+---
+
+<Layout title="Csirkecsík Újpesten – adagban és menüben | Hot & Loaded" description="Panírozott csirkemell csík Újpesten, a Király utca 25-ben: 3, 6 vagy 9 darabos adag 1290 Ft-tól, sültkrumplis menü H&L szósszal 1790 Ft-tól. Helyben, elvitelre, drive-innel és házhozszállítással." ogImage="/images/brand/og-default.jpg">
+  <div class="app-wrapper fixed-app">
+    <TopBar />
+
+    <main class="page fixed-page">
+      <a href="/" class="floating-back" aria-label="Vissza a főoldalra">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+
+      <section class="menu-section">
+        <InteractiveMenu client:load items={csirkeData} />
+      </section>
+
+      <LocalGuide {...guide} pageUrl="https://nyaloda.com/csirkek/" />
+    </main>
+  </div>
+</Layout>
+
+<style>
+  /* A menü egy képernyőnyi magas (a felső sáv alatt), alatta görgetve jön a leírás. */
+  .fixed-app {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fixed-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* Apple iPhone "Safe Area" támogatása alul */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .floating-back {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--char-900);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .floating-back svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(-1px);
+  }
+  .floating-back:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .menu-section {
+    height: calc(100dvh - 57px);
+    display: flex;
+    flex-direction: column;
+    /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
+    padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow: hidden;
+  }
+  @media (min-width: 540px) {
+    .menu-section { height: calc(92vh - 57px); }
+  }
+</style>
