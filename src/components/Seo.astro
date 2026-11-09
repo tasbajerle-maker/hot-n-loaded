@@ -12,13 +12,14 @@ const {
 	title,
 	description,
 	noindex = false,
-	ogImage = '/default-og-image.jpg',
+	ogImage = '/images/brand/og-default.jpg',
 	ogType = 'website',
 	jsonLd
 } = Astro.props;
 
-// Az aktuális URL kinyerése
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://nyaloda.com');
+// Az aktuális URL kinyerése (záró perjellel egységesítve)
+const normalizedPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(normalizedPath, Astro.site || 'https://nyaloda.com');
 ---
 
 <!-- Alap Meta Tagek -->

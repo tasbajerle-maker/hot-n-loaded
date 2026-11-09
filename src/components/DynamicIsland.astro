@@ -10,10 +10,10 @@ const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfa
 ---
 
 <nav class="order-pill" aria-label="Gyors rendelési sáv">
-	<div class="left">
+	<a href={actionUrl} class="left">
 		<span class="pulse-dot" data-state="unknown" aria-hidden="true"></span>
 		<span class="status-text" role="status">{statusText}</span>
-	</div>
+	</a>
 	<a href={actionUrl} class="cta-btn small">
 		{actionText}
 		<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -116,7 +116,7 @@ const { statusText = "Nyitvatartás · 10:00–19:00", actionUrl = "https://enfa
 		.order-pill { position: fixed; }
 	}
 	
-	.order-pill .left { display: flex; align-items: center; gap: 12px; color: var(--cream); }
+	.order-pill .left { display: flex; align-items: center; gap: 12px; color: var(--cream); text-decoration: none; }
 	.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,246,233,0.45); }
 	.pulse-dot[data-state="open"] { background: #5fe17a; animation: pulse 2s infinite; }
 	.pulse-dot[data-state="closed"] { background: #ef4444; }

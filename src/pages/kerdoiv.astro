@@ -113,7 +113,7 @@ import TopBar from '../components/TopBar.astro';
             <div class="winter-alert">
               <h3>❄️ Téli Haditerv ❄️</h3>
               <p>Mielőtt elküldöd, vésd az eszedbe: hiába jön a hideg, a <strong>Hot & Loaded burgerek</strong> pörögnek tovább!</p>
-              <p class="hours"><strong>Téli Nyitvatartás: MINDEN NAP 11:00 - 21:00</strong></p>
+              <p class="hours"><strong>Nyitvatartás: <a href="https://enfagyi-app-122a0.web.app/" target="_blank" rel="noopener noreferrer" style="color: inherit;">Aktuális nyitvatartás a webappban →</a></strong></p>
             </div>
 
             <button type="submit" class="submit-btn" id="submit-btn">Mehet a válasz! 🚀</button>
@@ -166,7 +166,7 @@ import TopBar from '../components/TopBar.astro';
         })
         .then(() => {
           // Ha sikeres a küldés, GOND NÉLKÜL betöltjük a koszi oldalt
-          window.location.href = '/koszi';
+          window.location.href = '/koszi/';
         })
         .catch((error) => {
           console.error('Hiba a beküldésnél:', error);

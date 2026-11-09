@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import TopBar from '../components/TopBar.astro';
 import InteractiveMenu from '../components/InteractiveMenu';
+import LocalGuide from '../components/LocalGuide.astro';
 import type { MenuItem } from '../components/InteractiveMenu';
 
 const fagyiData: MenuItem[] = [
@@ -197,9 +198,36 @@ const fagyiData: MenuItem[] = [
     allergens: ['Tej'], emoji: '🏋️'
   }
 ];
+
+const guide = {
+  heading: 'Kézműves fagylalt és minifánk Újpesten, Káposztásmegyeren és Újpalotán',
+  intro: [
+    'A Nyaloda saját műhelyében főzött tejfagylaltokkal, 20–40% valódi gyümölcstartalmú, vegán sorbet-kkal, cukormentes opciókkal és 100% brontei pisztáciával vár.',
+    'A fagylaltok mellett helyben, fémlapon sült, forró minifánkot is kérhetsz választható prémium öntettel (pisztácia, csokoládé, fehércsokoládé, erdei gyümölcs, mogyoró).',
+  ],
+  sectionName: 'Fagylaltok és minifánk',
+  items: fagyiData.map((i) => ({
+    name: i.name,
+    price: i.priceNormal ?? i.price ?? 0,
+    description: i.priceNormal && i.priceLarge
+      ? `${i.description} (Kis adag: ${i.priceNormal} Ft, nagy adag: ${i.priceLarge} Ft)`
+      : i.description,
+  })),
+  howToOrder: [
+    'Helyben az üzleteinkben: Újpest (Király utca 25.), Káposztásmegyer (Óceánárok utca 29.) és Újpalota (Nyírpalota út 52.).',
+    'Elvitelre és drive-innel: a Király utcai üzletből a webappban előre is megrendelheted.',
+    'Házhozszállítással: a webappban vagy a foodorán.',
+  ],
+  faq: [
+    { q: 'Hol találhatóak a Nyaloda fagyizók?', a: 'Három helyszínen várunk: Újpesten (1042 Budapest, Király utca 25.), Káposztásmegyeren (1041 Budapest, Óceánárok utca 29.) és Újpalotán (1157 Budapest, Nyírpalota út 52.).' },
+    { q: 'Mennyibe kerül egy adag fagyi?', a: 'A klasszikus tejfagylaltok és gyümölcs sorbet-k kis adagja 495 Ft, nagy adagja 695 Ft. A Cukormentes Eper 495 / 795 Ft, a prémium ízek (Pisztácia Mennyország, Brazil Álom) 750 / 1300 Ft.' },
+    { q: 'Vannak tejmentes, gluténmentes és cukormentes fagylaltok?', a: 'Igen! A gyümölcs sorbet-k vegánok, tej- és gluténmentesek, a főzött tejfagylaltok gluténmentesek, a Cukormentes Eper pedig hozzáadott cukor nélkül, vegán és laktózmentes formában készül.' },
+    { q: 'Mennyibe kerül a Nyaloda Minifánk?', a: 'A frissen sült minifánk prémium öntettel kis adagban 700 Ft, nagy adagban 1100 Ft.' },
+  ],
+};
 ---
 
-<Layout title="Kézműves Fagyik | Fagyi és Burger Mennyország">
+<Layout title="Kézműves fagylalt és minifánk Újpesten és Káposztásmegyeren | Nyaloda" description="Kézműves főzött tejfagylaltok, valódi gyümölcs sorbet-k, 100% brontei pisztácia, cukormentes fagyi és forró minifánk Újpesten, Káposztásmegyeren és Újpalotán.">
   <div class="app-wrapper fixed-app">
     <TopBar />
 
@@ -213,35 +241,25 @@ const fagyiData: MenuItem[] = [
       <section class="menu-section">
         <InteractiveMenu client:load items={fagyiData} />
       </section>
+
+      <LocalGuide {...guide} pageUrl="https://nyaloda.com/fagyik/" />
     </main>
   </div>
 </Layout>
 
 <style>
-  :global(html), :global(body) {
-    overflow: hidden;
-    height: 100%;
-  }
-
+  /* A menü egy képernyőnyi magas (a felső sáv alatt), alatta görgetve jön a leírás. */
   .fixed-app {
-    /* A varázslat: 100vh helyett 100dvh (Dynamic Viewport Height) */
-    height: 100dvh; 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-  }
-  @media (min-width: 540px) {
-    .fixed-app { height: 92vh; }
   }
 
   .fixed-page {
     position: relative;
-    flex: 1;
     display: flex;
     flex-direction: column;
     /* Apple iPhone "Safe Area" támogatása alul */
-    padding-bottom: env(safe-area-inset-bottom, 0px); 
-    overflow: hidden; 
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .floating-back {
@@ -274,11 +292,14 @@ const fagyiData: MenuItem[] = [
   }
 
   .menu-section { 
-    flex: 1; 
+    height: calc(100dvh - 57px);
     display: flex; 
     flex-direction: column; 
     /* Itt megemeltük az alsó paddingot 32px-re, plusz rászámoljuk az iPhone safe area-t! */
     padding: 0 8px calc(32px + env(safe-area-inset-bottom, 0px));
     overflow: hidden; 
+  }
+  @media (min-width: 540px) {
+    .menu-section { height: calc(92vh - 57px); }
   }
 </style>

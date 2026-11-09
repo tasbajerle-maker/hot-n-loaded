@@ -1,3 +1,24 @@
-# A Google még ismeri a régi étlap oldalt – a mostani burger oldalra küldjük.
-/etlap    /burgerek/    301
-/etlap/   /burgerek/    301
+# A Google még ismeri a régi React-es URL-eket – 301-gyel az új oldalakra irányítjuk őket.
+/etlap                        /burgerek/                  301
+/etlap/                       /burgerek/                  301
+/burger                       /burgerek/                  301
+/burger/                      /burgerek/                  301
+/fagyi                        /fagyik/                    301
+/fagyi/                       /fagyik/                    301
+/fagyi/*                      /fagyik/                    301
+/kapcsolat                    /contact/                   301
+/kapcsolat/                   /contact/                   301
+/szerviz                      /services/                  301
+/szerviz/                     /services/                  301
+/kinalat/kiraly-utca          /uzletek/kiraly-utca/       301
+/kinalat/kiraly-utca/         /uzletek/kiraly-utca/       301
+/kinalat/kaposztasmegyer      /uzletek/kaposztasmegyer/   301
+/kinalat/kaposztasmegyer/     /uzletek/kaposztasmegyer/   301
+/kinalat/nyirpalota-ut        /uzletek/ujpalota/          301
+/kinalat/nyirpalota-ut/       /uzletek/ujpalota/          301
+/kinalat/*                    /contact/                   301
+/hirek                        /                           301
+/hirek/                       /                           301
+/hirek/*                      /                           301
+/kuponok                      /                           301
+/kuponok/                     /                           301
