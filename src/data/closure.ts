@@ -5,7 +5,7 @@ export const CLOSURE = {
 	from: '2026-11-01T00:00:00+01:00',
 	until: '2026-11-02T00:00:00+01:00',
 	title: 'Ma, november 1-jén, Mindenszentek napján zárva tartunk',
-	subtitle: 'Holnap, hétfőn 10:00-tól újra várunk!',
+	subtitle: 'Holnap, hétfőn 12:00-tól újra várunk!',
 } as const;
 
 export const isClosedNow = (now = Date.now()) => now >= Date.parse(CLOSURE.from) && now < Date.parse(CLOSURE.until);
